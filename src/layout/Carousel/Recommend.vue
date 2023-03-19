@@ -1,13 +1,14 @@
 <template>
-  <div class="recommend-container" v-if="recommendList.length > 0">
-    <div class="recommend-content">
+  <div class="recommend-container" v-if="recommends.length > 0">
+    <slot></slot>
+    <div class="recommend-content base-card">
       <swiper :options="swiperOption" ref="mySwiper">
         <swiper-slide
-            v-for="(item,index) in recommendList"
+            v-for="(item,index) in recommends"
             :key="index"
             class="recommend-item"
         >
-          <img :src="item.cover" alt="" class="cover" :data-id="item.id">
+          <img :src="item.backgroundImg" alt="" class="cover" :data-id="item.id">
           <div class="recommend-info">
             <p class="recommend-title text-ellipsis">{{ item.title }}</p>
           </div>
@@ -22,16 +23,8 @@
 <script>
 
 export default {
-  name: "RecommendArticle",
+  name: "Recommend",
   props: {
-    slidesPerView: {
-      type: Number,
-      default: 3
-    },
-    slidesPerGroup: {
-      type: Number,
-      default: 3
-    },
     articleID: {
       type: Number,
       default: 0
@@ -39,14 +32,63 @@ export default {
   },
   data() {
     return {
-      recommendList: [],
+      recommends: [
+        {
+          backgroundImg: "/image/20221122113917.jpg",
+          title: "测试文章标题",
+          abstract: "测试文章描述",
+          createTime: "2023-01-01 12:23:34",
+          viewCount: 1,
+          collectCount: 2,
+          likeCount: 3,
+          category: {
+            categoryName: "java"
+          }
+        },
+        {
+          backgroundImg: "/image/20221122113917.jpg",
+          title: "测试文章标题2",
+          abstract: "测试文章描述2",
+          createTime: "2023-01-01 12:23:34",
+          viewCount: 10,
+          collectCount: 20,
+          likeCount: 30,
+          category: {
+            categoryName: "java"
+          }
+        },
+        {
+          backgroundImg: "/image/20221122113917.jpg",
+          title: "测试文章标题",
+          abstract: "测试文章描述",
+          createTime: "2023-01-01 12:23:34",
+          viewCount: 1,
+          collectCount: 2,
+          likeCount: 3,
+          category: {
+            categoryName: "java"
+          }
+        },
+        {
+          backgroundImg: "/image/20221122113917.jpg",
+          title: "测试文章标题2",
+          abstract: "测试文章描述2",
+          createTime: "2023-01-01 12:23:34",
+          viewCount: 10,
+          collectCount: 20,
+          likeCount: 30,
+          category: {
+            categoryName: "java"
+          }
+        }
+      ],
       swiperOption: {
         navigation: {
           nextEl: ".swiper-button-next",
           prevEl: ".swiper-button-prev",
         },
-        slidesPerView: this.slidesPerView,
-        slidesPerGroup: this.slidesPerGroup,
+        slidesPerView: 4,
+        slidesPerGroup: 4,
         spaceBetween: 15,
         preventLinksPropagation: false,
         on: {
@@ -55,7 +97,6 @@ export default {
             if (id === undefined) {
               return
             }
-            console.log("id:", id)
           }
         }
       },
@@ -72,12 +113,7 @@ export default {
   width: 100%;
 
   .recommend-content {
-    height: 180px;
-    background: var(--main-bg-color);
-    border-radius: var(--main-border-radius);
     padding: 15px;
-    box-shadow: var(--main-box-show);
-    overflow: hidden;
     --swiper-navigation-size: 25px;
 
     .swiper-button-disabled {
@@ -86,8 +122,10 @@ export default {
 
     .recommend-item {
       height: 150px;
+      border-radius: var(--main-border-radius);
       overflow: hidden;
       position: relative;
+      cursor: pointer;
 
       .recommend-info {
         position: absolute;

@@ -9,6 +9,7 @@ import 'swiper/css/swiper.css'
 import mavonEditor from 'mavon-editor'
 import 'mavon-editor/dist/css/index.css'
 import * as filters from '@/util/filters'
+import plugins from '@/util/piugins'
 
 import '@/assets/css/common.less'
 import '@/assets/css/media.less'
@@ -22,6 +23,7 @@ Vue.config.productionTip = false
 Vue.use(ElementUi)
 Vue.use(VueAwesomeSwiper)
 Vue.use(mavonEditor)
+Vue.use(plugins)
 
 new Vue({
     router,

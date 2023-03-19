@@ -3,7 +3,7 @@
     <Picture :background-img="article.backgroundImg"></Picture>
     <div class="article-info">
       <div>
-        <a class="a-title text-ellipsis">{{ article.title }}</a>
+        <a class="a-title text-ellipsis" @click.prevent="readArticle(article)">{{ article.title }}</a>
       </div>
       <div class="a-abstract text-ellipsis-2">
         {{ article.abstract }}
