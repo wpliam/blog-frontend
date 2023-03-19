@@ -1,0 +1,152 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+a {
+  text-decoration: none;
+  color: #4e5358;
+  cursor: pointer;
+}
+
+ul, li, ol {
+  list-style: none;
+}
+
+:root {
+  --main-bg-color: #fff;
+  --main-color: #303133;
+  --main-border-radius: 4px;
+  --main-box-show: 0 0 10px rgba(116, 116, 116, 0.08);
+
+  --wp--preset--color--brand: #409eff;
+  --wp--preset--color--pale-pink: #f78da7;
+  --wp--preset--color--vivid-red: #cf2e2e;
+  --wp--preset--color--luminous-vivid-orange: #ff6900;
+  --wp--preset--color--luminous-vivid-amber: #fcb900;
+  --wp--preset--color--light-green-cyan: #7bdcb5;
+  --wp--preset--color--vivid-green-cyan: #00d084;
+  --wp--preset--color--pale-cyan-blue: #8ed1fc;
+  --wp--preset--color--vivid-cyan-blue: #0693e3;
+  --wp--preset--color--vivid-purple: #9b51e0;
+  --wp--preset--color--title-hover: #F56C6C;
+
+  --wp--preset-font-size-small: 12px;
+  --wp--wp--preset-font-size-medium: 18px;
+  --wp--preset--spacing--20: 0.44rem;
+  --wp--preset--spacing--30: 0.67rem;
+  --wp--preset--spacing--40: 1rem;
+  --wp--preset--spacing--50: 1.5rem;
+  --wp--preset--spacing--60: 2.25rem;
+  --wp--preset--spacing--70: 3.38rem;
+  --wp--preset--spacing--80: 5.06rem;
+}
+
+.flex {
+  display: flex;
+}
+
+.space-between {
+  justify-content: space-between;
+}
+
+.center {
+  align-items: center;
+}
+
+.flex-between-center {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.base-card {
+  background: var(--main-bg-color);
+  border-radius: var(--main-border-radius);
+  color: var(--main-color);
+  box-shadow: var(--main-box-show);
+}
+
+.base-layout {
+  max-width: 1200px;
+  width: 90%;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+}
+
+.left-aside {
+  width: 70%;
+}
+
+.right-aside {
+  width: 28%;
+}
+
+.cover {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  overflow: hidden;
+  border-radius: var(--main-border-radius);
+  transition: 2s;
+}
+
+.cover:hover {
+  transform: scale(1.1);
+}
+
+.text-ellipsis {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.text-ellipsis-2 {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  word-break: break-word;
+}
+
+.card-title {
+  display: flex;
+  align-items: center;
+  height: 45px;
+  line-height: 45px;
+  padding: 0 15px;
+  font-size: 16px;
+  font-weight: 500;
+  color: #333;
+  border-bottom: 1px solid #ebeef5;
+  position: relative;
+}
+
+.card-title:after {
+  position: absolute;
+  content: '';
+  width: 0;
+  height: 2px;
+  top: auto;
+  left: 0;
+  bottom: -1px;
+  transition: 2s ease all;
+  border-radius: 2px;
+  background: black;
+}
+
+.card-title:hover:after {
+  width: 100%;
+  transition: 3s ease all;
+}
+
+.ml05 {
+  margin-left: 5px;
+}
+
+.mt20 {
+  margin-top: 20px;
+}
