@@ -27,7 +27,7 @@
             </a>
             <UserCard></UserCard>
           </el-popover>
-          <a class="search-btn" @click.prevent="">
+          <a class="search-btn" @click.prevent="openSearch">
             <svg-icon icon-class="search"></svg-icon>
           </a>
           <el-popover
@@ -42,17 +42,28 @@
         </div>
       </div>
     </div>
+    <el-drawer
+        :visible.sync="searchDrawer"
+        direction="ttb"
+        :modal="false"
+        :show-close="false"
+        :withHeader="false"
+        :before-close="handleClose">
+      <Search></Search>
+    </el-drawer>
   </div>
 </template>
 
 <script>
 import UserCard from "@/layout/UserCard";
+import Search from "@/components/Search";
 
 export default {
   name: "Nav",
-  components: {UserCard},
+  components: {Search, UserCard},
   data() {
     return {
+      searchDrawer: false,
       menus: [
         {
           name: "首页",
@@ -78,6 +89,12 @@ export default {
       }
       window.open(route.href, target)
     },
+    handleClose() {
+      this.searchDrawer = false
+    },
+    openSearch() {
+      this.searchDrawer = !this.searchDrawer
+    }
   }
 }
 </script>
@@ -119,6 +136,21 @@ export default {
         }
       }
     }
+  }
+}
+/deep/ .el-drawer__wrapper {
+  top: 60px;
+
+  .el-drawer {
+    min-height: 250px;
+  }
+
+  .el-drawer__body {
+    overflow: auto;
+  }
+
+  .el-drawer__container ::-webkit-scrollbar {
+    display: none;
   }
 }
 </style>
