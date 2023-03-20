@@ -25,6 +25,7 @@
             <a slot="reference">
               <svg-icon icon-class="female"></svg-icon>
             </a>
+            <UserCard></UserCard>
           </el-popover>
           <a class="search-btn" @click.prevent="">
             <svg-icon icon-class="search"></svg-icon>
@@ -45,8 +46,11 @@
 </template>
 
 <script>
+import UserCard from "@/layout/UserCard";
+
 export default {
   name: "Nav",
+  components: {UserCard},
   data() {
     return {
       menus: [

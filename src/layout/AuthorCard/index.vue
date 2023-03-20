@@ -17,7 +17,7 @@
     </div>
     <div class="author-action">
       <div class="flex">
-        <a class="follow action">
+        <a class="follow action" @click.prevent="giveFollow">
           <span v-if="isFollow">
             <svg-icon icon-class="solid-follow"/>
             已关注
@@ -48,6 +48,11 @@ export default {
         describe: "我不想介绍自己"
       }
     }
+  },
+  methods: {
+    giveFollow() {
+      this.isFollow = !this.isFollow
+    }
   }
 }
 </script>
@@ -75,14 +80,6 @@ export default {
       margin-top: 5px;
       display: flex;
       justify-content: center;
-
-      .nickname {
-
-      }
-
-      .nickname:hover {
-        color: var(--wp--preset--color--title-hover);
-      }
     }
 
     .describe {

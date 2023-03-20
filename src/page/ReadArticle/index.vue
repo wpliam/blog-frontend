@@ -26,17 +26,29 @@
           </div>
           <div class="r-actions">
             <div class="flex">
-              <a class="post-like flex-column-center action">
-                <svg-icon icon-class="like" class-name="small-svg"/>
-                <span class="">点赞 {{ article.likeCount }}</span>
+              <a class="post-like action" @click.prevent="giveLike">
+                <div v-if="isLike" class="flex-column-center">
+                  <svg-icon icon-class="like-red"/>
+                  <span class="post-btn" style="color: #d81e06">已赞 {{ article.likeCount }}</span>
+                </div>
+                <div v-else class="flex-column-center">
+                  <svg-icon icon-class="like" class-name="small-svg"/>
+                  <span class="post-btn">点赞 {{ article.likeCount }}</span>
+                </div>
               </a>
-              <a class="post-collect flex-column-center action">
-                <svg-icon icon-class="collection" class-name="small-svg"/>
-                <span class="">收藏 {{ article.collectCount }}</span>
+              <a class="post-collect action" @click.prevent="giveCollect">
+                <div v-if="isCollect" class="flex-column-center">
+                  <svg-icon icon-class="collect-red" class-name="small-svg"/>
+                  <span class="post-btn" style="color: #d81e06">已藏 {{ article.collectCount }}</span>
+                </div>
+                <div v-else class="flex-column-center">
+                  <svg-icon icon-class="collect" class-name="small-svg"/>
+                  <span class="post-btn">收藏 {{ article.collectCount }}</span>
+                </div>
               </a>
               <a class="post-share flex-column-center action">
                 <svg-icon icon-class="share" class-name="small-svg"/>
-                <span class="">分享</span>
+                <span class="post-btn">分享</span>
               </a>
             </div>
           </div>
@@ -68,18 +80,15 @@
           </div>
         </div>
         <Recommend class="mt20">
-          <div class="title-theme-parent">
-            <p class="title-theme">推荐</p>
-          </div>
+          <p class="title-theme">推荐</p>
         </Recommend>
         <Comment class="mt20">
-          <div class="title-theme-parent">
-            <p class="title-theme">评论</p>
-          </div>
+          <p class="title-theme">评论</p>
         </Comment>
       </div>
       <div class="right-aside">
         <AuthorCard></AuthorCard>
+        <Lovely class="mt20"></Lovely>
       </div>
     </div>
     <FootWaveLine></FootWaveLine>
@@ -92,12 +101,15 @@ import FootWaveLine from "@/layout/Footer/FootWaveLine";
 import Comment from "@/layout/Comment";
 import Recommend from "@/layout/Carousel/Recommend";
 import AuthorCard from "@/layout/AuthorCard";
+import Lovely from "@/layout/Lovely";
 
 export default {
   name: "ReadArticle",
-  components: {AuthorCard, Recommend, Comment, FootWaveLine, Nav},
+  components: {Lovely, AuthorCard, Recommend, Comment, FootWaveLine, Nav},
   data() {
     return {
+      isLike: false,
+      isCollect: false,
       article: {
         title: "测试文章的标题",
         content: "文章内容",
@@ -105,10 +117,10 @@ export default {
         collectCount: 5
       },
       next: {
-        title: "上一篇标题",
+        title: "下一篇标题",
       },
       prev: {
-        title: "下一篇标题",
+        title: "上一篇标题",
       },
       tags: [
         {
@@ -121,6 +133,14 @@ export default {
           tagName: "标签3"
         }
       ]
+    }
+  },
+  methods: {
+    giveLike() {
+      this.isLike = !this.isLike
+    },
+    giveCollect() {
+      this.isCollect = !this.isCollect
     }
   }
 }
@@ -141,7 +161,7 @@ export default {
       }
 
       .r-content {
-
+        margin-top: 20px;
       }
 
       .r-tags {
@@ -180,6 +200,10 @@ export default {
 
         .post-collect {
           margin: 0 30px;
+        }
+
+        .post-btn {
+          margin-top: 3px;
         }
       }
     }

@@ -31,6 +31,7 @@ ul, li, ol {
   --wp--preset--color--vivid-cyan-blue: #0693e3;
   --wp--preset--color--vivid-purple: #9b51e0;
   --wp--preset--color--title-hover: #F56C6C;
+  --wp--preset--color--nickname-hover: #0340f1;
 
   --wp--preset-font-size-small: 12px;
   --wp--wp--preset-font-size-medium: 18px;
@@ -83,11 +84,11 @@ ul, li, ol {
 }
 
 .left-aside {
-  width: 70%;
+  width: 72%;
 }
 
 .right-aside {
-  width: 28%;
+  width: 26%;
 }
 
 .cover {
@@ -149,15 +150,12 @@ ul, li, ol {
   transition: 3s ease all;
 }
 
-.title-theme-parent {
-  padding-bottom: 15px;
-}
-
 .title-theme {
   position: relative;
   padding-left: 1.2rem;
   font-size: 18px;
   font-weight: 600;
+  margin-bottom: 15px;
 }
 
 .title-theme:before {
@@ -172,15 +170,50 @@ ul, li, ol {
   box-shadow: 1px 1px 3px -1px var(--wp--preset--color--brand);
 }
 
+.nickname {
+  font-weight: bold;
+}
+
+.nickname:hover {
+  color: var(--wp--preset--color--nickname-hover);
+}
+
+.user-desc {
+  color: #999;
+  font-size: var(--wp--preset-font-size-small);
+}
+
 .small-svg {
   width: 2em !important;
   height: 2em !important;
+}
+
+.small-circle {
+  display: inline-block;
+  width: 36px;
+  height: 36px;
+  line-height: 36px;
+  text-align: center;
+  border-radius: 50%;
+}
+
+.medium-svg {
+  width: 3em !important;
+  height: 3em !important;
 }
 
 .ml05 {
   margin-left: 5px;
 }
 
+.mt05 {
+  margin-top: 5px;
+}
+
 .mt20 {
   margin-top: 20px;
+}
+
+.fs12 {
+  font-size: 12px;
 }

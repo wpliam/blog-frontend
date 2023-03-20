@@ -6,7 +6,7 @@
           :key="index"
           class="banner-item"
       >
-        <img :src="item.backgroundImage" alt="" class="cover">
+        <img :src="item.backgroundImage" alt="" class="banner-cover">
         <!--        <div class="banner-content">-->
         <!--          <p class="banner-title">{{ item.bigTitle }}</p>-->
         <!--          <p class="banner-subtitle">{{ item.subTitle }}</p>-->
@@ -92,6 +92,13 @@ export default {
     overflow: hidden;
     border-radius: var(--main-border-radius);
 
+    .banner-cover {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      overflow: hidden;
+      border-radius: var(--main-border-radius);
+    }
 
     .banner-content {
       position: absolute;

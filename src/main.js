@@ -8,6 +8,8 @@ import VueAwesomeSwiper from 'vue-awesome-swiper'
 import 'swiper/css/swiper.css'
 import mavonEditor from 'mavon-editor'
 import 'mavon-editor/dist/css/index.css'
+import scroll from 'vue-seamless-scroll'
+
 import * as filters from '@/util/filters'
 import plugins from '@/util/piugins'
 
@@ -24,6 +26,7 @@ Vue.use(ElementUi)
 Vue.use(VueAwesomeSwiper)
 Vue.use(mavonEditor)
 Vue.use(plugins)
+Vue.use(scroll)
 
 new Vue({
     router,

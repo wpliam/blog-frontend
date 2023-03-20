@@ -8,7 +8,8 @@
         <ArticleList class="mt20"></ArticleList>
       </div>
       <div class="right-aside">
-        <HotArticle></HotArticle>
+        <Notice></Notice>
+        <HotArticle class="mt20"></HotArticle>
       </div>
     </div>
     <FootWaveLine></FootWaveLine>
@@ -22,10 +23,11 @@ import Category from "@/layout/Category";
 import ArticleList from "@/layout/ArticleList";
 import FootWaveLine from "@/layout/Footer/FootWaveLine";
 import HotArticle from "@/layout/HotArticle";
+import Notice from "@/layout/Notice";
 
 export default {
   name: "Home",
-  components: {HotArticle, FootWaveLine, ArticleList, Category, Banner, Nav}
+  components: {Notice, HotArticle, FootWaveLine, ArticleList, Category, Banner, Nav}
 }
 </script>
 

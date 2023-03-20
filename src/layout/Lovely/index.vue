@@ -1,24 +1,23 @@
 <template>
-  <div class="hot-card base-card">
+  <div class="lovely-card base-card">
     <span class="card-title">
-      <svg-icon icon-class="hot-red"/>
-      <span class="ml05">热门文章</span>
+      <svg-icon icon-class="lovely"/>
+      <span class="ml05">猜你喜欢</span>
     </span>
-    <ul class="hot-list">
-      <li v-for="(article,index) in articles" :key="index" class="flex hot-item">
+    <ul class="lovely-list">
+      <li v-for="(article,index) in articles" :key="index" class="flex lovely-item">
         <Picture :background-img="article.backgroundImg" :width="93" :height="65"></Picture>
-        <div class="hot-content">
-          <a class="h-title text-ellipsis-2">
+        <div class="lovely-content">
+          <a class="l-title text-ellipsis-2">
             {{ article.title }}
           </a>
-          <div class="h-other flex-between-center">
-            <div class="h-time">
-              <svg-icon icon-class="date"/>
-              {{ article.createTime|computeDate }}
+          <div class="l-other flex-between-center">
+            <div class="l-user flex center">
+              <el-avatar :src="article.user.avatar" :size="15"></el-avatar>
+              <a class="nickname">{{ article.user.nickname }}</a>
             </div>
-            <div class="h-view">
-              <svg-icon icon-class="view"/>
-              {{ article.viewCount }}
+            <div class="l-view">
+              {{ article.viewCount }}人已阅读
             </div>
           </div>
         </div>
@@ -31,7 +30,7 @@
 import Picture from "@/components/Picture";
 
 export default {
-  name: "HotArticle",
+  name: "Lovely",
   components: {Picture},
   data() {
     return {
@@ -46,6 +45,10 @@ export default {
           likeCount: 3,
           category: {
             categoryName: "java"
+          },
+          user: {
+            avatar: "/image/avatar.jpg",
+            nickname: "苹果",
           }
         },
         {
@@ -58,6 +61,10 @@ export default {
           likeCount: 30,
           category: {
             categoryName: "java"
+          },
+          user: {
+            avatar: "/image/avatar.jpg",
+            nickname: "苹果",
           }
         },
         {
@@ -70,6 +77,10 @@ export default {
           likeCount: 30,
           category: {
             categoryName: "java"
+          },
+          user: {
+            avatar: "/image/avatar.jpg",
+            nickname: "苹果",
           }
         },
         {
@@ -82,6 +93,10 @@ export default {
           likeCount: 30,
           category: {
             categoryName: "java"
+          },
+          user: {
+            avatar: "/image/avatar.jpg",
+            nickname: "苹果",
           }
         },
         {
@@ -94,6 +109,10 @@ export default {
           likeCount: 30,
           category: {
             categoryName: "java"
+          },
+          user: {
+            avatar: "/image/avatar.jpg",
+            nickname: "苹果",
           }
         }
       ]
@@ -103,29 +122,29 @@ export default {
 </script>
 
 <style lang="less" scoped>
-.hot-card {
-  .hot-list {
+.lovely-card {
+  .lovely-list {
     padding: 5px 15px;
 
-    .hot-item {
+    .lovely-item {
       padding: 5px 0;
 
-      .hot-content {
+      .lovely-content {
         display: flex;
         flex-direction: column;
         flex: 1;
         margin-left: 10px;
 
-        .h-title {
+        .l-title {
           color: var(--main-color);
           font-size: 16px;
         }
 
-        .h-title:hover {
+        .l-title:hover {
           color: var(--wp--preset--color--title-hover);
         }
 
-        .h-other {
+        .l-other {
           margin-top: auto;
           font-size: 12px;
           color: #909399;
