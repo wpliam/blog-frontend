@@ -19,6 +19,14 @@ const routes = [
             title: "文章详情"
         },
         component: () => import('@/page/ReadArticle')
+    },
+    {
+        path: '/archive',
+        name: 'Archive',
+        meta: {
+            title: "归档"
+        },
+        component: () => import('@/page/Archive')
     }
 ]
 
