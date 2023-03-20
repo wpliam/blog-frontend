@@ -32,7 +32,7 @@
         <!--          </div>-->
         <!--        </div>-->
       </div>
-      <div class="archive-label archive mt20">
+      <div class="archive-label archive base-card mt20">
         <p class="label-title archive-title">标签</p>
         <ul class="label-list">
           <li v-for="(item,index) in tags" :key="index" class="label-item text-ellipsis"
@@ -41,7 +41,7 @@
           </li>
         </ul>
       </div>
-      <div class="archive-group archive mt20">
+      <div class="archive-group archive base-card mt20">
         <p class="time-title archive-title">时间轴</p>
         <ul class="archive-list">
           <li class="archive-item" v-for="(item,idx) in articles" :key="idx" @click="setActiveIdx(idx)">
@@ -52,7 +52,8 @@
                 <i class="el-icon-arrow-right" v-else></i>
               </div>
               <ol class="time-body" v-if="isActive(idx)">
-                <li class="time-item" v-for="(sub,index) in item.collapse" :key="index" @click="readArticle(sub)">
+                <li class="time-item text-ellipsis" v-for="(sub,index) in item.collapse" :key="index"
+                    @click="readArticle(sub)">
                   <span>{{ sub.createTime }}:</span>
                   <span>{{ sub.title }}</span>
                 </li>
@@ -183,9 +184,6 @@ export default {
   }
 
   .archive {
-    background: var(--main-bg-color);
-    box-shadow: var(--main-box-show);
-    border-radius: var(--main-border-radius);
     position: relative;
   }
 
@@ -298,9 +296,6 @@ export default {
             .time-item {
               margin-bottom: 15px;
               max-width: 100%;
-              overflow: hidden;
-              text-overflow: ellipsis;
-              white-space: nowrap;
               color: #606266;
               font-size: 14px;
             }

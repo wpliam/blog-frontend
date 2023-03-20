@@ -72,7 +72,7 @@ export default {
   name: "UserCard",
   data() {
     return {
-      isLogin: false,
+      isLogin: true,
       user: {
         avatar: "/image/avatar.jpg",
         nickname: "苹果",

@@ -21,6 +21,14 @@ const routes = [
         component: () => import('@/page/ReadArticle')
     },
     {
+        path: '/writeArticle',
+        name: 'WriteArticle',
+        meta: {
+            title: "写文章"
+        },
+        component: () => import('@/page/WriteArticle')
+    },
+    {
         path: '/archive',
         name: 'Archive',
         meta: {
