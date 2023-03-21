@@ -30,15 +30,20 @@
           <a class="search-btn" @click.prevent="openSearch">
             <svg-icon icon-class="search"></svg-icon>
           </a>
-          <el-popover
-              class="bell-btn"
-              placement="bottom"
-              width="100"
-              trigger="hover">
-            <a slot="reference">
-              <svg-icon icon-class="notice"></svg-icon>
-            </a>
-          </el-popover>
+<!--          <el-popover-->
+<!--              class="bell-btn"-->
+<!--              placement="bottom"-->
+<!--              width="100"-->
+<!--              trigger="hover">-->
+<!--            <a slot="reference">-->
+<!--              <svg-icon icon-class="notice"></svg-icon>-->
+<!--            </a>-->
+<!--            <ul>-->
+<!--              <li>未读消息</li>-->
+<!--              <li>私信消息</li>-->
+<!--              <li>系统通知</li>-->
+<!--            </ul>-->
+<!--          </el-popover>-->
         </div>
       </div>
     </div>
@@ -132,7 +137,7 @@ export default {
 
       .option {
         .search-btn {
-          margin: 0 20px;
+          margin-left: 20px;
         }
       }
     }

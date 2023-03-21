@@ -93,12 +93,12 @@
                           <el-input v-model="searchVal" placeholder="输入文章标题" size="small"></el-input>
                         </div>
                         <div class="two-line flex-between-center">
-                          <el-select v-model="searchCategoryID" size="small" clearable placeholder="请选择">
+                          <el-select v-model="searchCategoryName" size="small" clearable placeholder="请选择">
                             <el-option
                                 v-for="item in categoryList"
                                 :key="item.id"
                                 :label="item.categoryName"
-                                :value="item.id">
+                                :value="item.categoryName">
                             </el-option>
                           </el-select>
                           <el-button size="small" type="primary" @click="searchArticle">搜索</el-button>
@@ -233,7 +233,7 @@ export default {
       content: "", // 文章内容
 
       searchVal: "",
-      searchCategoryID: 0,
+      searchCategoryName: "",
 
       page: {
         offset: 1,
@@ -251,7 +251,16 @@ export default {
         categoryID: 0,
         source: 0,
       },
-      categoryList: [],
+      categoryList: [
+        {
+          id: 0,
+          categoryName: ""
+        },
+        {
+          id: 1,
+          categoryName: "java"
+        }
+      ],
 
       sourceData: [], // 搜索当前页的文章
       targetData: [] // 选中的文章
@@ -293,7 +302,6 @@ export default {
     },
     // 保存文章或者保存草稿
     setArticleInfo() {
-
       let article = {
         userID: 0,
         title: this.writeForm.title,
@@ -353,7 +361,6 @@ export default {
       })
     },
     recommendArticlePageClose() {
-      this.searchCategoryID = 0
       this.searchVal = ""
       this.targetData = []
       this.sourceData = []

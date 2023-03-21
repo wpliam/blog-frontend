@@ -29,7 +29,7 @@
     <div v-else>
       <div class="user-btn">
         <div class="flex">
-          <a class="flex-column-center blue-color">
+          <a class="flex-column-center blue-color" @click.prevent="openLogin">
             <span class="small-circle blue-bg-1"> <svg-icon icon-class="login"/></span>
             <span class="mt05 fs12">登录</span>
           </a>
@@ -72,7 +72,7 @@ export default {
   name: "UserCard",
   data() {
     return {
-      isLogin: true,
+      isLogin: false,
       user: {
         avatar: "/image/avatar.jpg",
         nickname: "苹果",

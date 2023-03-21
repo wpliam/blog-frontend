@@ -1,5 +1,6 @@
 import router from "@/router";
 import store from "@/store";
+import Account from "@/components/Account"
 import Vue from "vue";
 
 export const globalMixin = {
@@ -33,11 +34,12 @@ export const globalMixin = {
             let url = store.state.baseURL + router.currentRoute.fullPath
             window.open(url, "_self")
         },
-        // 去登录
-        // goLogin() {
-        //     const LoginBox = Vue.extend(Login)
-        //     let instance = new LoginBox().$mount()
-        //     document.body.appendChild(instance.$el)
-        // }
+        // 去登录或注册
+        openLogin() {
+            const AccountBox = Vue.extend(Account)
+            let instance = new AccountBox().$mount()
+            instance.withName("Login")
+            document.body.appendChild(instance.$el)
+        }
     }
 }
