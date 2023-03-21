@@ -16,7 +16,7 @@
             <p>10人搜索过</p>
           </div>
         </template>
-        <el-button slot="append" icon="el-icon-search" @click=""></el-button>
+        <el-button slot="append" icon="el-icon-search" @click="goSearch('1')"></el-button>
       </el-autocomplete>
       <div class="hot-search mt20" v-if="hotList.length > 0">
         <p class="muted">热门搜索</p>
@@ -100,9 +100,9 @@ export default {
       this.historyList.unshift(val)
       localStorage.setItem("historyList", JSON.stringify(this.historyList))
       let route = this.$router.resolve({
-        name: "SearchDetail",
+        name: "SearchResult",
         query: {
-          val: val
+          search: val
         }
       })
       let target = "_self"

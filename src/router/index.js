@@ -35,6 +35,14 @@ const routes = [
             title: "归档"
         },
         component: () => import('@/page/Archive')
+    },
+    {
+        path: '/searchResult',
+        name: 'SearchResult',
+        meta: {
+            title: "搜索结果"
+        },
+        component: () => import('@/page/SearchResult')
     }
 ]
 
