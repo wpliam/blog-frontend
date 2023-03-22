@@ -2,7 +2,7 @@
   <div class="comment-container">
     <slot></slot>
     <div class="comment-box" ref="comment-box">
-      <div class="comment-respond flex" ref="respond-box">
+      <div class="comment-respond flex" ref="respond-box" v-if="isLogin">
         <div class="comment-user" v-if="!isRespond">
           <el-avatar :src="user.avatar" fit="cover"></el-avatar>
         </div>
@@ -93,9 +93,7 @@
             </li>
           </ul>
         </div>
-        <div class="comment-empty" v-else>
-          <el-empty description="暂无评论"></el-empty>
-        </div>
+        <el-empty v-else description="暂无评论"></el-empty>
       </div>
     </div>
   </div>
@@ -115,9 +113,19 @@ export default {
   data() {
     return {
       isRespond: false,
+      isLogin: true,
       user: {},
       content: "",
-      comments: [],
+      comments: [
+        {
+          user: {
+            nickname: "apple",
+            avatar: "/image/avatar.jpg"
+          },
+          content: "测试评论内容",
+          createTime: "2002-12-12 12:12:12"
+        }
+      ],
       replyInfo: {}
     }
   },
@@ -137,6 +145,10 @@ export default {
     },
     // 回复
     respondMsg(e, root, sub) {
+      if (!this.isLogin) {
+        this.openLogin()
+        return
+      }
       this.replyInfo.parentID = root.id
       this.replyInfo.replyUserID = root.user.id
       this.replyInfo.replyCommentID = root.id

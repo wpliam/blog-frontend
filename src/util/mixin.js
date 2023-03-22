@@ -1,6 +1,6 @@
 import router from "@/router";
 import store from "@/store";
-import Account from "@/components/Account"
+import Enroll from "@/components/Enroll"
 import Vue from "vue";
 
 export const globalMixin = {
@@ -36,8 +36,8 @@ export const globalMixin = {
         },
         // 去登录或注册
         openLogin() {
-            const AccountBox = Vue.extend(Account)
-            let instance = new AccountBox().$mount()
+            const EnrollBox = Vue.extend(Enroll)
+            let instance = new EnrollBox().$mount()
             instance.withName("Login")
             document.body.appendChild(instance.$el)
         }

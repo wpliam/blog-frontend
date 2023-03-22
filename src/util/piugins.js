@@ -3,6 +3,6 @@ import {globalMixin} from "@/util/mixin";
 export default {
     install(Vue) {
         Vue.mixin(globalMixin)
-        // Vue.prototype.$login = Account.install
+        // Vue.prototype.$login = Enroll.install
     },
 }

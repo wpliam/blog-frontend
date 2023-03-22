@@ -1,6 +1,6 @@
 import axios from 'axios'
 import Vue from 'vue'
-import Login from '@/components/Account'
+import Enroll from '@/components/Enroll'
 import store from "@/store";
 import {Message} from "element-ui";
 
@@ -28,8 +28,8 @@ service.interceptors.response.use(
         const code = response.data.code || 0
         const msg = response.data.msg
         if (code === 401) {
-            const LoginBox = Vue.extend(Login)
-            let instance = new LoginBox().$mount()
+            const EnrollBox = Vue.extend(Enroll)
+            let instance = new EnrollBox().$mount()
             instance.withName("Login")
             document.body.appendChild(instance.$el)
             return Promise.reject("无效的会话,或者会话已过期,请登录.")

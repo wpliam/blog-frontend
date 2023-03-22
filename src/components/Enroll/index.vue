@@ -24,10 +24,10 @@
 
 <script>
 
-import Login from "@/components/Account/Login";
+import Login from "@/components/Enroll/Login";
 
 export default {
-  name: "Account",
+  name: "Enroll",
   components: {Login},
   data() {
     return {

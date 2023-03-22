@@ -43,33 +43,17 @@
           </a>
         </div>
       </div>
-      <div class="fast-login mt20" style="text-align: center">
-        <p class="separator">快速登录</p>
-        <div class="separator-btn">
-          <a>
-            <el-tooltip effect="dark" content="QQ登录" placement="top">
-              <svg-icon icon-class="qq" class-name="medium-svg"/>
-            </el-tooltip>
-          </a>
-          <a style="padding: 0 10px">
-            <el-tooltip effect="dark" content="微信登录" placement="top">
-              <svg-icon icon-class="wechat" class-name="medium-svg"/>
-            </el-tooltip>
-          </a>
-          <a>
-            <el-tooltip effect="dark" content="GitHub" placement="top">
-              <svg-icon icon-class="github" class-name="medium-svg"/>
-            </el-tooltip>
-          </a>
-        </div>
-      </div>
+      <FastLogin class="mt20"></FastLogin>
     </div>
   </div>
 </template>
 
 <script>
+import FastLogin from "@/components/FastLogin";
+
 export default {
   name: "UserCard",
+  components: {FastLogin},
   data() {
     return {
       isLogin: false,
@@ -88,30 +72,6 @@ export default {
   .user-btn {
     display: flex;
     justify-content: center;
-  }
-
-  .fast-login {
-    .separator {
-      text-align: center;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      font-size: 1em;
-      color: #b1b1b1;
-    }
-
-    .separator:after, .separator:before {
-      content: "";
-      background: #efefef;
-      max-width: 20%;
-      height: 1px;
-      margin: 0 1em;
-      flex: 1;
-    }
-
-    .separator-btn {
-      margin-top: 10px;
-    }
   }
 
   .blue-color {
