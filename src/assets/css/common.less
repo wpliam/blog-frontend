@@ -52,8 +52,16 @@ ul, li, ol {
   justify-content: space-between;
 }
 
+.content-center {
+  justify-content: center;
+}
+
 .center {
   align-items: center;
+}
+
+.text-center {
+  text-align: center;
 }
 
 .flex-between-center {
@@ -208,6 +216,29 @@ ul, li, ol {
   height: 3em !important;
 }
 
+.active-tab {
+  position: relative;
+  color: var(--wp--preset--color--brand);
+}
+
+.active-tab:before {
+  position: absolute;
+  top: 28px;
+  left: 0;
+  right: 0;
+  margin: auto;
+  width: 24px;
+  height: 2px;
+  content: '';
+  background: var(--wp--preset--color--brand);
+  border-radius: 4px;
+  box-shadow: 1px 1px 3px -1px var(--wp--preset--color--brand);
+}
+
+.highlight {
+  color: var(--wp--preset--color--brand);
+}
+
 .ml05 {
   margin-left: 5px;
 }
@@ -216,8 +247,16 @@ ul, li, ol {
   margin-top: 5px;
 }
 
+.mt10 {
+  margin-top: 10px;
+}
+
 .mt20 {
   margin-top: 20px;
+}
+
+.p15 {
+  padding: 15px;
 }
 
 .fs12 {

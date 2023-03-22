@@ -8,7 +8,8 @@
         <li class="opt-item icon-spot">点赞</li>
       </ul>
     </div>
-    <ArticleCard v-for="(article,index) in articles" :key="index" :article="article"></ArticleCard>
+    <ArticleCard v-for="(article,index) in articles" :key="index" :article="article" class="base-card p15 mt10">
+    </ArticleCard>
     <div class="article-page">
       <el-pagination
           layout="prev, pager, next"

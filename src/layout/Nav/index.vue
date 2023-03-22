@@ -30,32 +30,32 @@
           <a class="search-btn" @click.prevent="openSearch">
             <svg-icon icon-class="search"></svg-icon>
           </a>
-<!--          <el-popover-->
-<!--              class="bell-btn"-->
-<!--              placement="bottom"-->
-<!--              width="100"-->
-<!--              trigger="hover">-->
-<!--            <a slot="reference">-->
-<!--              <svg-icon icon-class="notice"></svg-icon>-->
-<!--            </a>-->
-<!--            <ul>-->
-<!--              <li>未读消息</li>-->
-<!--              <li>私信消息</li>-->
-<!--              <li>系统通知</li>-->
-<!--            </ul>-->
-<!--          </el-popover>-->
+          <!--          <el-popover-->
+          <!--              class="bell-btn"-->
+          <!--              placement="bottom"-->
+          <!--              width="100"-->
+          <!--              trigger="hover">-->
+          <!--            <a slot="reference">-->
+          <!--              <svg-icon icon-class="notice"></svg-icon>-->
+          <!--            </a>-->
+          <!--            <ul>-->
+          <!--              <li>未读消息</li>-->
+          <!--              <li>私信消息</li>-->
+          <!--              <li>系统通知</li>-->
+          <!--            </ul>-->
+          <!--          </el-popover>-->
         </div>
       </div>
     </div>
-    <el-drawer
+    <el-dialog
         :visible.sync="searchDrawer"
-        direction="ttb"
-        :modal="false"
+        title="搜索文章"
+        width="600px"
         :show-close="false"
-        :withHeader="false"
-        :before-close="handleClose">
+        :before-close="handleClose"
+    >
       <Search></Search>
-    </el-drawer>
+    </el-dialog>
   </div>
 </template>
 
@@ -69,6 +69,7 @@ export default {
   data() {
     return {
       searchDrawer: false,
+      activeIndex: 0,
       menus: [
         {
           name: "首页",
@@ -98,6 +99,9 @@ export default {
       this.searchDrawer = false
     },
     openSearch() {
+      if (this.$route.name === "SearchResult") {
+        return
+      }
       this.searchDrawer = !this.searchDrawer
     }
   }
@@ -141,21 +145,6 @@ export default {
         }
       }
     }
-  }
-}
-/deep/ .el-drawer__wrapper {
-  top: 60px;
-
-  .el-drawer {
-    min-height: 250px;
-  }
-
-  .el-drawer__body {
-    overflow: auto;
-  }
-
-  .el-drawer__container ::-webkit-scrollbar {
-    display: none;
   }
 }
 </style>

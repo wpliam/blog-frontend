@@ -1,5 +1,5 @@
 <template>
-  <div class="article-card base-card flex">
+  <div class="article-card flex">
     <Picture :background-img="article.backgroundImg"></Picture>
     <div class="article-info">
       <div>
@@ -11,10 +11,10 @@
       <div class="a-other flex-between-center">
         <div class="a-meta">
           <ul class="flex">
-            <li>{{ article.createTime }}</li>
-            <li class="m-item">{{ article.viewCount }} 阅读</li>
-            <li class="m-item">{{ article.collectCount }} 收藏</li>
-            <li class="m-item">{{ article.likeCount }} 点赞</li>
+            <li class="date">{{ article.createTime }}</li>
+            <li class="m-item view">{{ article.viewCount }} 阅读</li>
+            <li class="m-item collect">{{ article.collectCount }} 收藏</li>
+            <li class="m-item like">{{ article.likeCount }} 点赞</li>
           </ul>
         </div>
         <div class="a-last">
@@ -58,8 +58,7 @@ export default {
 
 <style lang="less" scoped>
 .article-card {
-  margin-top: 10px;
-  padding: 15px;
+  overflow: hidden;
 
   .article-info {
     display: flex;
@@ -90,15 +89,61 @@ export default {
       font-size: 13px;
 
       .a-meta {
-        .m-item {
-
-        }
-
         .m-item:before {
           content: "/";
           color: #c0c4cc;
           padding: 0 5px;
         }
+      }
+    }
+  }
+}
+
+/* 宽度小于 700px 的屏幕使用该样式*/
+@media screen and (max-width: 700px) {
+  .article-card {
+    .article-info {
+      .a-meta {
+        .like {
+          display: none;
+        }
+      }
+    }
+  }
+}
+
+/* 宽度小于 650px 的屏幕使用该样式*/
+@media screen and (max-width: 650px) {
+  .article-card {
+    .article-info {
+      .a-meta {
+        .collect {
+          display: none;
+        }
+      }
+    }
+  }
+}
+
+/* 宽度小于 650px 的屏幕使用该样式*/
+@media screen and (max-width: 600px) {
+  .article-card {
+    .article-info {
+      .a-meta {
+        .view {
+          display: none;
+        }
+      }
+    }
+  }
+}
+
+/* 宽度小于 650px 的屏幕使用该样式*/
+@media screen and (max-width: 500px) {
+  .article-card {
+    .article-info {
+      .a-last {
+        display: none;
       }
     }
   }
