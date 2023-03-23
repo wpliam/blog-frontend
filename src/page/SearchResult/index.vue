@@ -4,7 +4,7 @@
     <div class="base-line-layout">
       <div class="base-card search-frame">
         <div class="flex">
-          <Search style="width: 600px;overflow: hidden" @searchArticle="searchArticle" :value="searchVal">
+          <Search style="width: 600px;overflow: hidden" @searchArticle="searchArticle" :value="keyword">
           </Search>
         </div>
       </div>
@@ -17,13 +17,14 @@
         </ul>
         <div class="search-count">
           搜索
-          <span class="highlight">{{ searchVal }}</span>
+          <span class="highlight">{{ keyword }}</span>
           共找到
           <span class="highlight">{{ count }}</span>
           篇文章
         </div>
         <div class="search-list" v-if="articles.length > 0">
-          <ArticleCard v-for="(article,index) in articles" :key="index" :article="article" class="mt10">
+          <ArticleCard v-for="(article,index) in articles" :key="index" :article="article" :keyword="[keyword]"
+                       class="mt10">
           </ArticleCard>
         </div>
         <el-empty description="未找到相关文章" v-if="articles.length===0"></el-empty>
@@ -50,9 +51,9 @@ export default {
   components: {ArticleCard, Search, FootWaveLine, Nav},
   data() {
     return {
+      keyword: "",
       searchTab: ["文章"],
       activeIndex: 0,
-      searchVal: "",
       count: 10,
       articles: [
         {
@@ -65,6 +66,10 @@ export default {
           likeCount: 3,
           category: {
             categoryName: "java"
+          },
+          user: {
+            nickname: "apple",
+            avatar: "/image/avatar.jpg"
           }
         },
         {
@@ -77,6 +82,10 @@ export default {
           likeCount: 30,
           category: {
             categoryName: "java"
+          },
+          user: {
+            nickname: "apple",
+            avatar: "/image/avatar.jpg"
           }
         },
         {
@@ -89,6 +98,10 @@ export default {
           likeCount: 30,
           category: {
             categoryName: "java"
+          },
+          user: {
+            nickname: "apple",
+            avatar: "/image/avatar.jpg"
           }
         },
         {
@@ -101,15 +114,19 @@ export default {
           likeCount: 30,
           category: {
             categoryName: "java"
+          },
+          user: {
+            nickname: "apple",
+            avatar: "/image/avatar.jpg"
           }
         }
       ]
     }
   },
   created() {
-    let str = this.$route.query.search
-    if (str) {
-      this.searchVal = str
+    let keyword = this.$route.query.keyword
+    if (keyword) {
+      this.keyword = keyword
     }
   },
   methods: {
@@ -117,7 +134,7 @@ export default {
       this.activeIndex = index
     },
     searchArticle(item) {
-      this.searchVal = item.val
+      this.keyword = item.keyword
     }
   }
 }

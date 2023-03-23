@@ -9,7 +9,7 @@ import 'swiper/css/swiper.css'
 import mavonEditor from 'mavon-editor'
 import 'mavon-editor/dist/css/index.css'
 import scroll from 'vue-seamless-scroll'
-
+import textHighlight from 'vue-text-highlight'
 import * as filters from '@/util/filters'
 import plugins from '@/util/piugins'
 
@@ -22,6 +22,7 @@ Object.keys(filters).forEach(key => {
 })
 
 Vue.config.productionTip = false
+Vue.component('text-highlight', textHighlight)
 Vue.use(ElementUi)
 Vue.use(VueAwesomeSwiper)
 Vue.use(mavonEditor)

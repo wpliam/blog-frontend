@@ -30,7 +30,7 @@ ul, li, ol {
   --wp--preset--color--pale-cyan-blue: #8ed1fc;
   --wp--preset--color--vivid-cyan-blue: #0693e3;
   --wp--preset--color--vivid-purple: #9b51e0;
-  --wp--preset--color--title-hover: #F56C6C;
+  --wp--preset--color--title-hover: #409eff;
   --wp--preset--color--nickname-hover: #0340f1;
 
   --wp--preset-font-size-small: 12px;
@@ -91,10 +91,18 @@ ul, li, ol {
   justify-content: space-between;
 }
 
+.base-content-layout {
+  max-width: 1200px;
+  width: 90%;
+  margin: 20px auto;
+  display: flex;
+  justify-content: space-between;
+}
+
 .base-line-layout {
   max-width: 1200px;
   width: 90%;
-  margin: 0 auto;
+  margin: 20px auto;
 }
 
 .left-aside {
@@ -235,12 +243,26 @@ ul, li, ol {
   box-shadow: 1px 1px 3px -1px var(--wp--preset--color--brand);
 }
 
+.click-btn {
+  display: inline-block;
+  border-radius: var(--main-border-radius);
+  vertical-align: middle;
+  padding: 0.2em 0.6em;
+  text-align: center;
+  font-weight: 500;
+  font-size: 14px;
+}
+
 .highlight {
   color: var(--wp--preset--color--brand);
 }
 
 .ml05 {
   margin-left: 5px;
+}
+
+.mr05 {
+  margin-right: 5px;
 }
 
 .mt05 {

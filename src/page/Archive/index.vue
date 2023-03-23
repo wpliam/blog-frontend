@@ -1,7 +1,7 @@
 <template>
   <div class="archive-container">
     <Nav></Nav>
-    <div class="base-line-layout mt20">
+    <div class="base-line-layout">
       <div class="panel-group">
         <div class="panel-item flex-between-center">
           <svg-icon icon-class="archive-article" class-name="panel-icon"/>

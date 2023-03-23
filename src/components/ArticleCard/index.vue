@@ -3,19 +3,22 @@
     <Picture :background-img="article.backgroundImg"></Picture>
     <div class="article-info">
       <div>
-        <a class="a-title text-ellipsis" @click.prevent="readArticle(article)">{{ article.title }}</a>
+        <a class="a-title text-ellipsis" @click.prevent="readArticle(article)">
+          <text-highlight :queries="keyword">{{ article.title }}</text-highlight>
+        </a>
       </div>
       <div class="a-abstract text-ellipsis-2">
-        {{ article.abstract }}
+        <text-highlight :queries="keyword">{{ article.abstract }}</text-highlight>
       </div>
       <div class="a-other flex-between-center">
-        <div class="a-meta">
-          <ul class="flex">
-            <li class="date">{{ article.createTime }}</li>
-            <li class="m-item view">{{ article.viewCount }} 阅读</li>
-            <li class="m-item collect">{{ article.collectCount }} 收藏</li>
-            <li class="m-item like">{{ article.likeCount }} 点赞</li>
-          </ul>
+        <div class="a-meta flex center">
+          <a class="a-user flex center">
+            <el-avatar :src="article.user.avatar" :size="20"></el-avatar>
+            <span class="nickname ml05">{{ article.user.nickname }}</span>
+          </a>
+          <div class="a-date">
+            {{ article.createTime|computeDate }}
+          </div>
         </div>
         <div class="a-last">
           <a class="category-name">
@@ -48,11 +51,21 @@ export default {
           likeCount: 0,
           category: {
             categoryName: ""
+          },
+          user: {
+            nickname: "",
+            avatar: ""
           }
         }
       }
+    },
+    keyword: {
+      type: Array,
+      default() {
+        return [];
+      }
     }
-  }
+  },
 }
 </script>
 
@@ -89,14 +102,40 @@ export default {
       font-size: 13px;
 
       .a-meta {
-        .m-item:before {
-          content: "/";
-          color: #c0c4cc;
-          padding: 0 5px;
+        .a-user {
+
         }
+
+        .a-date {
+          display: flex;
+          align-items: center;
+          margin-left: 10px;
+        }
+
+        .a-date:before {
+          content: "";
+          width: 0.5em;
+          height: 0.5em;
+          border: 0.1em solid var(--wp--preset--color--vivid-purple);
+          border-radius: 1em;
+          margin: 0 0.5em;
+          vertical-align: 0.1em;
+          display: inline-block;
+        }
+
+        //.m-item:before {
+        //  content: "/";
+        //  color: #c0c4cc;
+        //  padding: 0 5px;
+        //}
       }
     }
   }
+}
+
+/deep/ .text__highlight {
+  color: var(--wp--preset--color--brand) !important;
+  background: none !important;
 }
 
 /* 宽度小于 700px 的屏幕使用该样式*/
@@ -104,7 +143,7 @@ export default {
   .article-card {
     .article-info {
       .a-meta {
-        .like {
+        .a-date {
           display: none;
         }
       }
@@ -112,40 +151,4 @@ export default {
   }
 }
 
-/* 宽度小于 650px 的屏幕使用该样式*/
-@media screen and (max-width: 650px) {
-  .article-card {
-    .article-info {
-      .a-meta {
-        .collect {
-          display: none;
-        }
-      }
-    }
-  }
-}
-
-/* 宽度小于 650px 的屏幕使用该样式*/
-@media screen and (max-width: 600px) {
-  .article-card {
-    .article-info {
-      .a-meta {
-        .view {
-          display: none;
-        }
-      }
-    }
-  }
-}
-
-/* 宽度小于 650px 的屏幕使用该样式*/
-@media screen and (max-width: 500px) {
-  .article-card {
-    .article-info {
-      .a-last {
-        display: none;
-      }
-    }
-  }
-}
 </style>

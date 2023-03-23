@@ -1,7 +1,7 @@
 <template>
   <div class="read-article-container">
     <Nav></Nav>
-    <div class="read-layout base-layout">
+    <div class="base-content-layout">
       <div class="left-aside">
         <div class="article-detail base-card">
           <div class="r-title">
@@ -148,97 +148,93 @@ export default {
 
 <style lang="less" scoped>
 .read-article-container {
-  .read-layout {
-    margin: 20px auto;
+  .article-detail {
+    padding: 20px;
 
-    .article-detail {
-      padding: 20px;
+    .r-title {
+      font-size: 22px;
+      font-weight: 700;
+      color: #4e5358;
+    }
 
-      .r-title {
-        font-size: 22px;
-        font-weight: 700;
-        color: #4e5358;
-      }
+    .r-content {
+      margin-top: 20px;
+    }
 
-      .r-content {
-        margin-top: 20px;
-      }
-
-      .r-tags {
-        .tag-item {
-          display: inline-block;
-          cursor: pointer;
-          flex-shrink: 0;
-          position: relative;
-          margin-right: 10px;
-          font-size: 12px;
-          background-color: #f2f6fc;
-          color: #909399;
-          border: 1px solid #f2f6fc;
-          padding: 0 8px;
-          height: 26px;
-          line-height: 26px;
-          border-radius: 13px;
-          max-width: 125px;
-          white-space: nowrap;
-          overflow: hidden;
-          text-overflow: ellipsis;
-          -webkit-transition: border .25s, color .25s;
-          transition: border .25s, color .25s;
-        }
-      }
-
-      .r-actions {
-        display: flex;
-        justify-content: center;
-        margin-top: 30px;
-
-        .action {
-          cursor: pointer;
-          opacity: .7;
-        }
-
-        .post-collect {
-          margin: 0 30px;
-        }
-
-        .post-btn {
-          margin-top: 3px;
-        }
+    .r-tags {
+      .tag-item {
+        display: inline-block;
+        cursor: pointer;
+        flex-shrink: 0;
+        position: relative;
+        margin-right: 10px;
+        font-size: 12px;
+        background-color: #f2f6fc;
+        color: #909399;
+        border: 1px solid #f2f6fc;
+        padding: 0 8px;
+        height: 26px;
+        line-height: 26px;
+        border-radius: 13px;
+        max-width: 125px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        -webkit-transition: border .25s, color .25s;
+        transition: border .25s, color .25s;
       }
     }
 
-    .article-adjoin {
-      display: grid;
-      grid-template-columns: auto auto;
-      grid-gap: 10px 20px;
-      margin-top: 20px;
+    .r-actions {
+      display: flex;
+      justify-content: center;
+      margin-top: 30px;
 
-      .prev {
-        padding: 15px;
-        text-align: left;
+      .action {
+        cursor: pointer;
+        opacity: .7;
       }
 
-      .next {
-        padding: 15px;
-        text-align: right;
+      .post-collect {
+        margin: 0 30px;
       }
 
-      .label {
-        color: #999;
-        font-size: 14px;
+      .post-btn {
+        margin-top: 3px;
       }
+    }
+  }
 
-      .adjoin-title {
-        color: #4e5358;
-        font-weight: bold;
-        margin-top: 5px;
-        font-size: 14px;
-      }
+  .article-adjoin {
+    display: grid;
+    grid-template-columns: auto auto;
+    grid-gap: 10px 20px;
+    margin-top: 20px;
 
-      .adjoin-title:hover {
-        color: var(--wp--preset--color--title-hover);
-      }
+    .prev {
+      padding: 15px;
+      text-align: left;
+    }
+
+    .next {
+      padding: 15px;
+      text-align: right;
+    }
+
+    .label {
+      color: #999;
+      font-size: 14px;
+    }
+
+    .adjoin-title {
+      color: #4e5358;
+      font-weight: bold;
+      margin-top: 5px;
+      font-size: 14px;
+    }
+
+    .adjoin-title:hover {
+      color: var(--wp--preset--color--title-hover);
     }
   }
 }

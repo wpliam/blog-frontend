@@ -1,7 +1,7 @@
 <template>
   <div class="home-container">
     <Nav></Nav>
-    <div class="home-content base-layout">
+    <div class="home-content base-content-layout">
       <div class="left-aside">
         <Banner></Banner>
         <Category class="mt20"></Category>
@@ -32,9 +32,5 @@ export default {
 </script>
 
 <style lang="less" scoped>
-.home-container {
-  .home-content {
-    margin: 20px auto;
-  }
-}
+
 </style>

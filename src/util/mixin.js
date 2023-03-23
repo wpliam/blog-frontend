@@ -20,6 +20,7 @@ export const globalMixin = {
             }
             window.open(route.href, target)
         },
+        // 写文章
         writeArticle() {
             if (this.$route.name === "WriteArticle") {
                 return
@@ -28,6 +29,21 @@ export const globalMixin = {
                 name: "WriteArticle",
             })
             window.open(route.href, "_blank")
+        },
+        // 用户中心
+        userCenter(userType = 0, uid = 0) {
+            let route = this.$router.resolve({
+                name: "UserCenter",
+                query: {
+                    userType: userType,
+                    uid: uid
+                }
+            })
+            let target = "_blank"
+            if (this.$route.name === "UserCenter") {
+                target = "_self"
+            }
+            window.open(route.href, target)
         },
         // 刷新当前路由
         refreshCurrRoute() {

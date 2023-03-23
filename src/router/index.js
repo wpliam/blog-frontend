@@ -43,6 +43,14 @@ const routes = [
             title: "搜索结果"
         },
         component: () => import('@/page/SearchResult')
+    },
+    {
+        path: '/userCenter',
+        name: 'UserCenter',
+        meta: {
+            title: "用户中心"
+        },
+        component: () => import('@/page/UserCenter')
     }
 ]
 

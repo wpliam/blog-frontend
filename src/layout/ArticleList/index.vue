@@ -4,8 +4,8 @@
       <div class="a-sort">排序</div>
       <ul class="flex center">
         <li class="opt-item">更新</li>
-        <li class="opt-item icon-spot">浏览</li>
-        <li class="opt-item icon-spot">点赞</li>
+        <li class="opt-item icon-spot">发布</li>
+<!--        <li class="opt-item icon-spot">点赞</li>-->
       </ul>
     </div>
     <ArticleCard v-for="(article,index) in articles" :key="index" :article="article" class="base-card p15 mt10">
@@ -38,6 +38,10 @@ export default {
           likeCount: 3,
           category: {
             categoryName: "java"
+          },
+          user: {
+            nickname: "apple",
+            avatar: "/image/avatar.jpg"
           }
         },
         {
@@ -50,6 +54,10 @@ export default {
           likeCount: 30,
           category: {
             categoryName: "java"
+          },
+          user: {
+            nickname: "apple",
+            avatar: "/image/avatar.jpg"
           }
         }
       ]

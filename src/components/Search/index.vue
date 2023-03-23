@@ -2,7 +2,7 @@
   <div class="search-container">
     <el-autocomplete
         class="search-text"
-        v-model="searchVal"
+        v-model="keyword"
         :fetch-suggestions="querySearch"
         placeholder="请输入内容"
         :trigger-on-focus="false"
@@ -15,7 +15,7 @@
           <p>10人搜索过</p>
         </div>
       </template>
-      <el-button slot="append" icon="el-icon-search" @click="goSearch(searchVal)"></el-button>
+      <el-button slot="append" icon="el-icon-search" @click="goSearch(keyword)"></el-button>
     </el-autocomplete>
     <div class="hot-search mt20" v-if="hotList.length > 0">
       <p class="muted">热门搜索</p>
@@ -63,7 +63,7 @@ export default {
   },
   data() {
     return {
-      searchVal: "", // 搜索的值
+      keyword: "", // 搜索的值
       hotList: ["测试一", "测试二", "测试三"], // 热门搜索列表
       historyList: ["aaa"], // 历史搜索列表
     }
@@ -71,7 +71,7 @@ export default {
   created() {
     // 如果有父组件有传值,这里直接赋值
     if (this.value) {
-      this.searchVal = this.value
+      this.keyword = this.value
     }
   },
   mounted() {
@@ -87,32 +87,33 @@ export default {
     },
     // 搜索框选中之后,将选中的值赋值给searchVal
     handleAutoSelect(item) {
-      this.searchVal = item.title
+      this.keyword = item.title
       this.goSearch(item.title)
     },
     // 去搜索
-    goSearch(val) {
-      if (val === "") {
+    goSearch(keyword) {
+      if (keyword === "") {
         this.$message.warning("搜索值不能为空")
         return
       }
       // 有搜索记录,删除之前的旧记录,将新的记录放在第一位
-      if (this.historyList.includes(val)) {
-        let index = this.historyList.indexOf(val)
+      if (this.historyList.includes(keyword)) {
+        let index = this.historyList.indexOf(keyword)
         this.historyList.splice(index, 1)
       }
-      this.historyList.unshift(val)
+      this.historyList.unshift(keyword)
       localStorage.setItem("historyList", JSON.stringify(this.historyList))
       if (this.$route.name === "SearchResult") {
-        this.$emit("searchArticle", {val: this.searchVal})
+        this.$emit("searchArticle", {keyword: keyword})
         return
       }
       let route = this.$router.resolve({
         name: "SearchResult",
         query: {
-          search: val
+          keyword: keyword
         }
       })
+      // let target = "_blank"
       let target = "_self"
       window.open(route.href, target)
     },

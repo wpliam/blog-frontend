@@ -1,7 +1,7 @@
 <template>
   <div class="user-card">
     <div v-if="isLogin">
-      <div class="flex">
+      <div class="flex user-info">
         <el-avatar :src="user.avatar"></el-avatar>
         <div class="ml10">
           <a class="nickname">{{ user.nickname }}</a>
@@ -9,9 +9,10 @@
           <p class="user-desc" v-else>这个人很懒,什么都没有写</p>
         </div>
       </div>
-      <div class="user-btn mt20">
+      <ClockIn ref="child" @click.native="$refs.child.clockIn()"></ClockIn>
+      <div class="user-btn">
         <div class="flex">
-          <a class="flex-column-center blue-color">
+          <a class="flex-column-center blue-color" @click.prevent="userCenter(0)">
             <span class="small-circle blue-bg-1"> <svg-icon icon-class="user"/></span>
             <span class="mt05 fs12">用户中心</span>
           </a>
@@ -50,13 +51,14 @@
 
 <script>
 import FastLogin from "@/components/FastLogin";
+import ClockIn from "@/components/Click/ClockIn";
 
 export default {
   name: "UserCard",
-  components: {FastLogin},
+  components: {ClockIn, FastLogin},
   data() {
     return {
-      isLogin: false,
+      isLogin: true,
       user: {
         avatar: "/image/avatar.jpg",
         nickname: "苹果",
@@ -69,9 +71,14 @@ export default {
 
 <style lang="less" scoped>
 .user-card {
+  .user-info {
+    margin-bottom: 10px;
+  }
+
   .user-btn {
     display: flex;
     justify-content: center;
+    margin-top: 20px;
   }
 
   .blue-color {

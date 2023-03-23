@@ -7,7 +7,7 @@
       <el-avatar :src="user.avatar" :size="80"></el-avatar>
       <div class="line">
         <div class="flex">
-          <a class="nickname text-ellipsis">{{ user.nickname }}</a>
+          <a class="nickname text-ellipsis" @click.prevent="userCenter(1)">{{ user.nickname }}</a>
         </div>
       </div>
       <div class="describe">
@@ -17,28 +17,20 @@
     </div>
     <div class="author-action">
       <div class="flex">
-        <a class="follow action" @click.prevent="giveFollow">
-          <span v-if="isFollow">
-            <svg-icon icon-class="solid-follow"/>
-            已关注
-          </span>
-          <span v-else>
-            <svg-icon icon-class="not-follow"/>
-            关注
-          </span>
-        </a>
-        <a class="chat action">
-          <svg-icon icon-class="message"/>
-          私信
-        </a>
+        <Follow class="mr05"></Follow>
+        <Chat class="ml05"></Chat>
       </div>
     </div>
   </div>
 </template>
 
 <script>
+import Follow from "@/components/Click/Follow";
+import Chat from "@/components/Click/Chat";
+
 export default {
   name: "AuthorCard",
+  components: {Chat, Follow},
   data() {
     return {
       isFollow: false,
@@ -95,27 +87,6 @@ export default {
     justify-content: center;
     padding-bottom: 15px;
 
-    .action {
-      display: inline-block;
-      border-radius: var(--main-border-radius);
-      vertical-align: middle;
-      padding: 0.2em 0.6em;
-      text-align: center;
-      font-weight: 500;
-      font-size: 14px;
-    }
-
-    .follow {
-      margin-right: 5px;
-      color: #ff5473;
-      background-color: rgba(255, 84, 115, .1);
-    }
-
-    .chat {
-      margin-left: 5px;
-      color: #2997f7;
-      background-color: rgba(41, 151, 247, .1);
-    }
   }
 }
 </style>
