@@ -12,7 +12,7 @@
       </div>
       <div class="a-other flex-between-center">
         <div class="a-meta flex center">
-          <a class="a-user flex center">
+          <a class="a-user flex center" @click.prevent="userCenter(1)">
             <el-avatar :src="article.user.avatar" :size="20"></el-avatar>
             <span class="nickname ml05">{{ article.user.nickname }}</span>
           </a>
@@ -20,12 +20,10 @@
             {{ article.createTime|computeDate }}
           </div>
         </div>
-        <div class="a-last">
-          <a class="category-name">
-            <svg-icon icon-class="category"/>
-            {{ article.category.categoryName }}
-          </a>
-        </div>
+        <a>
+          <svg-icon icon-class="category"/>
+          {{ article.category.categoryName }}
+        </a>
       </div>
     </div>
   </div>
@@ -122,12 +120,6 @@ export default {
           vertical-align: 0.1em;
           display: inline-block;
         }
-
-        //.m-item:before {
-        //  content: "/";
-        //  color: #c0c4cc;
-        //  padding: 0 5px;
-        //}
       }
     }
   }

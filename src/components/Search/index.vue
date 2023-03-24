@@ -96,6 +96,7 @@ export default {
         this.$message.warning("搜索值不能为空")
         return
       }
+      this.keyword = keyword
       // 有搜索记录,删除之前的旧记录,将新的记录放在第一位
       if (this.historyList.includes(keyword)) {
         let index = this.historyList.indexOf(keyword)

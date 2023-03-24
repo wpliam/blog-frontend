@@ -5,17 +5,43 @@
       <div class="user-header base-card">
         <div class="user-cover">
           <img :src="user.cover" alt="" class="user-bg">
+          <div v-if="userType==='1'" class="bg-count flex center">
+            <el-tooltip effect="dark" :content="`人气值${10}`" placement="top">
+              <span>
+                <svg-icon icon-class="hot"/>
+                <span class="count">10</span>
+              </span>
+            </el-tooltip>
+            <el-tooltip effect="dark" :content="`获得${10}个点赞`" placement="top" style="margin: 0 10px">
+              <span class="count">
+                <svg-icon icon-class="like"/>
+                <span class="count">10</span>
+              </span>
+            </el-tooltip>
+            <el-tooltip effect="dark" :content="`共${10}个粉丝`" placement="top">
+              <span class="count">
+                <svg-icon icon-class="fans"/>
+                <span class="count">10</span>
+              </span>
+            </el-tooltip>
+          </div>
         </div>
         <div class="header-content base-layout">
           <div class="h-left">
-            <el-avatar shape="square" :size="100" :src="user.avatar" style="margin-top: -50px"></el-avatar>
+            <el-avatar shape="square" :size="100" :src="user.avatar" style="margin-top: -60px"></el-avatar>
             <div class="user-info">
               <a class="nickname">{{ user.nickname }}</a>
               <p class="user-desc mt05">{{ user.desc }}</p>
             </div>
           </div>
           <div class="h-right">
-            <ClockIn ref="child" @click.native="$refs.child.clockIn()"></ClockIn>
+            <div v-if="userType==='0'">
+              <ClockIn ref="child" @click.native="$refs.child.clockIn()"></ClockIn>
+            </div>
+            <div v-if="userType==='1'">
+              <Follow class="mr05"></Follow>
+              <Chat class="ml05"></Chat>
+            </div>
           </div>
         </div>
       </div>
@@ -45,13 +71,37 @@
         </div>
       </div>
       <div class="author-content base-card" v-if="userType === '1'">
-        <ul class="flex author-tab">
-          <li v-for="(tab,index) in ['文章','收藏','评论','粉丝']" :key="index" class="each-tab" @click.prevent=""
-              :class="activeIndex===index?'active-tab':''">
-            {{ tab }}
-          </li>
-        </ul>
-        <el-empty description="暂无内容"></el-empty>
+        <el-tabs v-model="activeName" @tab-click="handleClick">
+          <el-tab-pane v-for="(tab,index) in option" :label="tab.label" :name="tab.name" :key="index">
+            <div v-if="activeName==='article' || activeName==='collect'">
+              <div v-if="articles.length > 0">
+                <ul class="article-content">
+                  <li v-for="(article,index) in articles" :key="index">
+                    <img :src="article.backgroundImg" class="c-img" alt="">
+                    <a class="text-ellipsis-2 c-title">{{ article.title }}</a>
+                    <div class="flex-between-center mt10 c-option">
+                      <div class="c-date">
+                        {{ article.createTime|computeDate }}
+                      </div>
+                      <a>
+                        <svg-icon icon-class="category"/>
+                        {{ article.category.categoryName }}
+                      </a>
+                    </div>
+                  </li>
+                </ul>
+              </div>
+            </div>
+            <el-pagination
+                class="page"
+                background
+                hide-on-single-page
+                layout="prev, pager, next"
+                :total="page.total">
+            </el-pagination>
+            <el-empty v-if="emptyText" :description="emptyText"></el-empty>
+          </el-tab-pane>
+        </el-tabs>
       </div>
     </div>
     <FootWaveLine></FootWaveLine>
@@ -63,15 +113,138 @@ import Nav from "@/layout/Nav";
 import FootWaveLine from "@/layout/Footer/FootWaveLine";
 import Picture from "@/components/Picture";
 import ClockIn from "@/components/Click/ClockIn";
+import Follow from "@/components/Click/Follow";
+import Chat from "@/components/Click/Chat";
 
 export default {
   name: "UserCenter",
-  components: {ClockIn, Picture, FootWaveLine, Nav},
+  components: {Chat, Follow, ClockIn, Picture, FootWaveLine, Nav},
+  computed: {
+    emptyText() {
+      if (this.articles.length === 0 && (this.activeName === 'article' || this.activeName === 'collect')) {
+        return "暂无文章内容"
+      }
+      if (this.comments.length === 0 && this.activeName === 'comment') {
+        return '暂无评论内容'
+      }
+      if (this.fans.length === 0 && this.activeName === 'fans') {
+        return "暂无粉丝"
+      }
+      return ""
+    }
+  },
   data() {
     return {
       userType: this.$route.query.userType,
       uid: this.$route.query.uid,
-      activeIndex: 0,
+      activeName: "article",
+      articles: [
+        {
+          backgroundImg: "/image/20221122113917.jpg",
+          title: "测试文章标题",
+          abstract: "测试文章描述",
+          createTime: "2023-01-01 12:23:34",
+          viewCount: 1,
+          collectCount: 2,
+          likeCount: 3,
+          category: {
+            categoryName: "java"
+          },
+          user: {
+            nickname: "apple",
+            avatar: "/image/avatar.jpg"
+          }
+        },
+        {
+          backgroundImg: "/image/20221122113917.jpg",
+          title: "测试文章标题2",
+          abstract: "测试文章描述2",
+          createTime: "2023-01-01 12:23:34",
+          viewCount: 10,
+          collectCount: 20,
+          likeCount: 30,
+          category: {
+            categoryName: "java"
+          },
+          user: {
+            nickname: "apple",
+            avatar: "/image/avatar.jpg"
+          }
+        },
+        {
+          backgroundImg: "/image/20221122114204.jpg",
+          title: "测试文章标题2",
+          abstract: "测试文章描述2",
+          createTime: "2023-01-01 12:23:34",
+          viewCount: 10,
+          collectCount: 20,
+          likeCount: 30,
+          category: {
+            categoryName: "java"
+          },
+          user: {
+            nickname: "apple",
+            avatar: "/image/avatar.jpg"
+          }
+        },
+        {
+          backgroundImg: "/image/20221122114232.jpg",
+          title: "测试文章标题2",
+          abstract: "测试文章描述2",
+          createTime: "2023-01-01 12:23:34",
+          viewCount: 10,
+          collectCount: 20,
+          likeCount: 30,
+          category: {
+            categoryName: "java"
+          },
+          user: {
+            nickname: "apple",
+            avatar: "/image/avatar.jpg"
+          }
+        },
+        {
+          backgroundImg: "/image/20221122114232.jpg",
+          title: "测试文章标题2",
+          abstract: "测试文章描述2",
+          createTime: "2023-01-01 12:23:34",
+          viewCount: 10,
+          collectCount: 20,
+          likeCount: 30,
+          category: {
+            categoryName: "java"
+          },
+          user: {
+            nickname: "apple",
+            avatar: "/image/avatar.jpg"
+          }
+        }
+      ], // 文章
+      comments: [], // 评论
+      fans: [], // 粉丝
+      page: {
+        offset: 1,
+        limit: 10,
+        total: 20
+      },
+      option: [
+        {
+          label: "文章",
+          name: "article",
+        },
+        {
+          label: "收藏",
+          name: "collect",
+        },
+        {
+          label: "评论",
+          name: "comment",
+        },
+        {
+          label: "粉丝",
+          name: "fans",
+        }
+      ],
       user: {
         cover: "/image/banner1.jpg",
         avatar: "/image/avatar.jpg",
@@ -80,7 +253,11 @@ export default {
       },
     }
   },
-  methods: {}
+  methods: {
+    handleClick(tab, event) {
+
+    }
+  }
 }
 </script>
 
@@ -95,6 +272,7 @@ export default {
       object-fit: cover;
       overflow: hidden;
       border-radius: var(--main-border-radius) var(--main-border-radius) 0 0;
+      position: relative;
 
       .user-bg {
         width: 100%;
@@ -102,10 +280,30 @@ export default {
         object-fit: cover;
         overflow: hidden;
       }
+
+      .bg-count {
+        position: absolute;
+        top: 1em;
+        right: 0;
+        border-radius: 50px 0 0 50px;
+        text-shadow: none;
+        box-shadow: 0 1px 5px rgba(0, 0, 0, .2);
+        z-index: 1;
+        padding: 3px 8px;
+        color: white;
+        background-color: black;
+        opacity: .8;
+
+        .count {
+          margin-left: 2px;
+          opacity: 1;
+        }
+      }
     }
 
     .header-content {
       margin-top: 10px;
+      position: relative;
 
       .h-left {
         display: flex;
@@ -154,18 +352,60 @@ export default {
 
   .author-content {
     margin-top: 20px;
-    padding: 15px;
-    .author-tab {
-      color: #999;
-      border-bottom: 1px solid #ebeef5;
-      padding-bottom: 15px;
+    padding: 10px 15px;
 
-      .each-tab {
-        margin-right: 15px;
-        cursor: pointer;
+    .article-content {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      grid-column-gap: 20px;
+      grid-row-gap: 20px;
+
+      .c-img {
+        width: 100%;
+        height: 180px;
+        object-fit: cover;
+        overflow: hidden;
+        border-radius: var(--main-border-radius);
+      }
+
+      .c-title {
+        font-size: 16px;
+        font-weight: bold;
+        color: var(--main-color);
+      }
+
+      .c-title:hover {
+        color: var(--wp--preset--color--title-hover);
+      }
+
+      .c-option {
+        font-size: 14px;
+        color: #999;
+
+        .c-date {
+
+        }
+
+        .c-date:before {
+          content: "";
+          width: 0.5em;
+          height: 0.5em;
+          border: 0.1em solid var(--wp--preset--color--vivid-purple);
+          border-radius: 1em;
+          vertical-align: 0.1em;
+          display: inline-block;
+        }
+
+        .c-meta {
+
+        }
       }
     }
   }
+}
+
+/deep/ .el-tabs__item {
+  padding: 0 10px;
 }
 
 /* 宽度小于 760px 的屏幕使用该样式*/

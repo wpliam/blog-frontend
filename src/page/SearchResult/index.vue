@@ -29,12 +29,13 @@
         </div>
         <el-empty description="未找到相关文章" v-if="articles.length===0"></el-empty>
       </div>
-      <div class="search-page">
-        <el-pagination
-            layout="prev, pager, next"
-            :total="20">
-        </el-pagination>
-      </div>
+      <el-pagination
+          class="page"
+          background
+          hide-on-single-page
+          layout="prev, pager, next"
+          :total="20">
+      </el-pagination>
     </div>
     <FootWaveLine></FootWaveLine>
   </div>
@@ -177,11 +178,6 @@ export default {
       grid-gap: 10px 20px;
       margin-top: 10px;
     }
-  }
-
-  .search-page {
-    text-align: center;
-    margin: 20px 0;
   }
 }
 

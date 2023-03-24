@@ -5,17 +5,18 @@
       <ul class="flex center">
         <li class="opt-item">更新</li>
         <li class="opt-item icon-spot">发布</li>
-<!--        <li class="opt-item icon-spot">点赞</li>-->
+        <!--        <li class="opt-item icon-spot">点赞</li>-->
       </ul>
     </div>
     <ArticleCard v-for="(article,index) in articles" :key="index" :article="article" class="base-card p15 mt10">
     </ArticleCard>
-    <div class="article-page">
-      <el-pagination
-          layout="prev, pager, next"
-          :total="20">
-      </el-pagination>
-    </div>
+    <el-pagination
+        class="page"
+        background
+        hide-on-single-page
+        layout="prev, pager, next"
+        :total="20">
+    </el-pagination>
   </div>
 </template>
 
