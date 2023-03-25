@@ -135,16 +135,6 @@ export default {
     },
     isActive(index) {
       return this.activeIdx.indexOf(index) > -1
-    },
-    randomColor() {
-      // let color = "rgba("
-      // for (let i = 0; i < 3; i++) {
-      //   color += Math.random() * 256 + ","
-      // }
-      // let alpha = (Math.random() * 10 / 10).toFixed(1)
-      // alpha = alpha === "0.0" ? "0.8" : alpha
-      // color += alpha + ")"
-      return "rgba(241,230,230,0.8)"
     }
   }
 }

@@ -1,9 +1,11 @@
 <template>
-  <div class="hot-card base-card">
-    <span class="card-title">
-      <svg-icon icon-class="hot-red"/>
-      <span class="ml05">热门文章</span>
-    </span>
+  <el-card class="hot-card" shadow="hover" :body-style="{ padding: '10px'}">
+    <div slot="header">
+      <span class="card-title">
+        <svg-icon icon-class="hot-red"/>
+        <span class="ml05">热门文章</span>
+      </span>
+    </div>
     <ul class="hot-list">
       <li v-for="(article,index) in articles" :key="index" class="flex hot-item">
         <Picture :background-img="article.backgroundImg" :width="93" :height="65"></Picture>
@@ -24,7 +26,7 @@
         </div>
       </li>
     </ul>
-  </div>
+  </el-card>
 </template>
 
 <script>
@@ -105,10 +107,8 @@ export default {
 <style lang="less" scoped>
 .hot-card {
   .hot-list {
-    padding: 5px 15px;
-
     .hot-item {
-      padding: 5px 0;
+      margin-bottom: 10px;
 
       .hot-content {
         display: flex;
@@ -132,6 +132,13 @@ export default {
         }
       }
     }
+
+    .hot-item:last-child {
+      margin-bottom: 0;
+    }
   }
+}
+/deep/ .el-card__header{
+  padding: 12px 15px;
 }
 </style>

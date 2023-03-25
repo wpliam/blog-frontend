@@ -17,7 +17,7 @@ export default {
   padding: 5px 20px;
   color: #fff;
   vertical-align: middle;
-  font-weight: 400;
+  font-weight: bold;
   text-shadow: 0 0 0;
   text-align: center;
   border-radius: var(--main-border-radius);

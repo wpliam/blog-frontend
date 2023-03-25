@@ -15,5 +15,6 @@ export default {
 .chat {
   color: #2997f7;
   background-color: rgba(41, 151, 247, .1);
+  font-weight: bold;
 }
 </style>

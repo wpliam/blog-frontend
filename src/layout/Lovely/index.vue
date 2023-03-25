@@ -1,9 +1,11 @@
 <template>
-  <div class="lovely-card base-card">
-    <span class="card-title">
-      <svg-icon icon-class="lovely"/>
-      <span class="ml05">猜你喜欢</span>
-    </span>
+  <el-card class="lovely-card" shadow="hover" :body-style="{ padding: '10px'}">
+    <div slot="header">
+      <span class="card-title">
+        <svg-icon icon-class="lovely"/>
+        <span class="ml05">猜你喜欢</span>
+      </span>
+    </div>
     <ul class="lovely-list">
       <li v-for="(article,index) in articles" :key="index" class="flex lovely-item">
         <Picture :background-img="article.backgroundImg" :width="93" :height="65"></Picture>
@@ -23,7 +25,7 @@
         </div>
       </li>
     </ul>
-  </div>
+  </el-card>
 </template>
 
 <script>
@@ -124,10 +126,8 @@ export default {
 <style lang="less" scoped>
 .lovely-card {
   .lovely-list {
-    padding: 5px 15px;
-
     .lovely-item {
-      padding: 5px 0;
+      margin-bottom: 10px;
 
       .lovely-content {
         display: flex;
@@ -151,6 +151,14 @@ export default {
         }
       }
     }
+
+    .lovely-item:last-child {
+      margin-bottom: 0;
+    }
   }
+}
+
+/deep/ .el-card__header {
+  padding: 12px 15px;
 }
 </style>

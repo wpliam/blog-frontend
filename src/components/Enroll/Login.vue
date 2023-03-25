@@ -58,7 +58,16 @@ export default {
   methods: {
     login() {
       if (this.loginForm.username === "admin" && this.loginForm.password === "123456") {
-        setUserInfo({token: "111"})
+        let userInfo = {
+          token: "111",
+          user: {
+            id: 1,
+            avatar: "/image/avatar.jpg",
+            nickname: "苹果",
+            describe: "我不想介绍自己"
+          }
+        }
+        setUserInfo(userInfo)
         this.refreshCurrRoute()
         return
       }

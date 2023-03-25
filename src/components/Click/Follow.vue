@@ -31,5 +31,6 @@ export default {
 .follow {
   color: #ff5473;
   background-color: rgba(255, 84, 115, .1);
+  font-weight: bold;
 }
 </style>

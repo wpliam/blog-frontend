@@ -39,35 +39,47 @@
               <ClockIn ref="child" @click.native="$refs.child.clockIn()"></ClockIn>
             </div>
             <div v-if="role==='1'">
-              <Follow class="mr05"></Follow>
-              <Chat class="ml05"></Chat>
+              <a v-if="youSelf" class="user-center-btn" @click.prevent="userCenter(0)">
+                <svg-icon icon-class="user"/>
+                <span>用户中心</span>
+              </a>
+              <div v-else>
+                <Follow class="mr05"></Follow>
+                <Chat class="ml05"></Chat>
+              </div>
             </div>
           </div>
         </div>
       </div>
       <div class="user-content" v-if="role === '0'">
         <div class="c-left">
-          <div class="base-card user-count">
-            <a class="flex-column-center">
-              <div class="count">0</div>
-              <div class="name">文章</div>
-            </a>
-            <a class="flex-column-center">
-              <div class="count">0</div>
-              <div class="name">评论</div>
-            </a>
-            <a class="flex-column-center">
-              <div class="count">0</div>
-              <div class="name">收藏</div>
-            </a>
-            <a class="flex-column-center">
-              <div class="count">1888</div>
-              <div class="name">粉丝</div>
-            </a>
-          </div>
+          <el-card>
+            <div class="user-count">
+              <a class="flex-column-center">
+                <div class="count">0</div>
+                <div class="name">文章</div>
+              </a>
+              <a class="flex-column-center">
+                <div class="count">0</div>
+                <div class="name">评论</div>
+              </a>
+              <a class="flex-column-center">
+                <div class="count">0</div>
+                <div class="name">收藏</div>
+              </a>
+              <a class="flex-column-center">
+                <div class="count">1888</div>
+                <div class="name">粉丝</div>
+              </a>
+            </div>
+          </el-card>
         </div>
         <div class="c-right">
-
+          <el-tabs type="border-card">
+            <el-tab-pane label="个人资料">
+              <Personal></Personal>
+            </el-tab-pane>
+          </el-tabs>
         </div>
       </div>
       <div class="author-content base-card" v-if="role === '1'">
@@ -115,10 +127,12 @@ import Picture from "@/components/Picture";
 import ClockIn from "@/components/Click/ClockIn";
 import Follow from "@/components/Click/Follow";
 import Chat from "@/components/Click/Chat";
+import {localUserInfo} from "@/util/storage";
+import Personal from "@/layout/UserCard/Personal";
 
 export default {
   name: "UserCenter",
-  components: {Chat, Follow, ClockIn, Picture, FootWaveLine, Nav},
+  components: {Personal, Chat, Follow, ClockIn, Picture, FootWaveLine, Nav},
   computed: {
     emptyText() {
       if (this.articles.length === 0 && (this.activeName === 'article' || this.activeName === 'collect')) {
@@ -131,6 +145,13 @@ export default {
         return "暂无粉丝"
       }
       return ""
+    },
+    youSelf() {
+      let userInfo = localUserInfo();
+      if (userInfo && userInfo.user) {
+        return userInfo.user.id === parseInt(this.uid)
+      }
+      return false
     }
   },
   data() {
@@ -316,6 +337,16 @@ export default {
       .h-right {
         display: flex;
         align-items: center;
+
+        .user-center-btn {
+          display: inline-block;
+          border-radius: var(--main-border-radius);
+          font-size: 14px;
+          font-weight: bold;
+          padding: 2px 10px;
+          color: #2997f7;
+          background: rgba(41, 151, 247, .1);
+        }
       }
     }
   }
@@ -330,8 +361,8 @@ export default {
 
       .user-count {
         display: flex;
+        align-items: center;
         justify-content: space-around;
-        padding: 10px;
 
         .count {
           font-size: 1.4em;
@@ -406,6 +437,10 @@ export default {
 
 /deep/ .el-tabs__item {
   padding: 0 10px;
+}
+
+/deep/ .el-card__body {
+  padding: 10px;
 }
 
 /* 宽度小于 760px 的屏幕使用该样式*/

@@ -2,7 +2,7 @@
   <div class="foot-wave-line ">
     <div class="foot-content flex-between-center base-card">
       <div class="my-face">
-        走自己的路,让别人去说吧
+        稍微慢一点跳
       </div>
       <div class="random-article">
         <el-tooltip effect="dark"

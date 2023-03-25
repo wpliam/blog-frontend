@@ -9,6 +9,14 @@ export function getToken() {
     return item.token
 }
 
+export function localUserInfo() {
+    let userInfo = localStorage.getItem(authKey);
+    if (userInfo) {
+        return JSON.parse(userInfo)
+    }
+    return {}
+}
+
 export function isLogin() {
     return getToken() !== ""
 }

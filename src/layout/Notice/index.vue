@@ -1,9 +1,11 @@
 <template>
-  <div class="notice-card base-card">
-    <span class="card-title">
-      <svg-icon icon-class="bulletin"/>
-      <span class="ml05">公告</span>
-    </span>
+  <el-card class="notice-card" shadow="hover" :body-style="{ padding: '0 10px'}">
+    <div slot="header">
+      <span class="card-title">
+        <svg-icon icon-class="bulletin"/>
+        <span class="ml05">公告</span>
+      </span>
+    </div>
     <div class="notice-content">
       <vue-seamless-scroll :data="notices" :class-option="optionHover">
         <ul>
@@ -13,7 +15,7 @@
         </ul>
       </vue-seamless-scroll>
     </div>
-  </div>
+  </el-card>
 </template>
 
 <script>
@@ -49,16 +51,16 @@ export default {
 
 <style lang="less" scoped>
 .notice-card {
-  position: relative;
-
   .notice-content {
     overflow: hidden;
-    padding: 0 15px;
     height: 210px;
 
     .notice-line {
-      margin-top: 10px;
+
     }
   }
+}
+/deep/ .el-card__header{
+  padding: 12px 15px;
 }
 </style>

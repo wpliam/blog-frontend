@@ -70,9 +70,18 @@ export default {
   },
   methods: {
     logout() {
-      console.log("退出登录")
-      removeUserInfo()
-      this.refreshCurrRoute()
+      this.$confirm("确定退出登录?", '提示', {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning"
+      }).then(() => {
+        removeUserInfo()
+        this.$message.success("退出成功")
+        this.refreshCurrRoute()
+      }).catch(() => {
+
+      })
+
     }
   }
 }

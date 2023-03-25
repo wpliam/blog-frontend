@@ -10,6 +10,7 @@
       <div class="right-aside">
         <Notice></Notice>
         <HotArticle class="mt20"></HotArticle>
+        <TagCloud class="mt20"></TagCloud>
       </div>
     </div>
     <FootWaveLine></FootWaveLine>
@@ -24,10 +25,11 @@ import ArticleList from "@/layout/ArticleList";
 import FootWaveLine from "@/layout/Footer/FootWaveLine";
 import HotArticle from "@/layout/HotArticle";
 import Notice from "@/layout/Notice";
+import TagCloud from "@/layout/TagCloud";
 
 export default {
   name: "Home",
-  components: {Notice, HotArticle, FootWaveLine, ArticleList, Category, Banner, Nav}
+  components: {TagCloud, Notice, HotArticle, FootWaveLine, ArticleList, Category, Banner, Nav}
 }
 </script>
 
