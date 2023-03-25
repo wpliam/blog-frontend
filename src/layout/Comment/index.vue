@@ -2,7 +2,7 @@
   <div class="comment-container">
     <slot></slot>
     <div class="comment-box" ref="comment-box">
-      <div class="comment-respond flex" ref="respond-box" v-if="isLogin">
+      <div class="comment-respond flex" ref="respond-box" v-if="hasLogin">
         <div class="comment-user" v-if="!isRespond">
           <el-avatar :src="user.avatar" fit="cover"></el-avatar>
         </div>
@@ -27,6 +27,7 @@
           </div>
         </div>
       </div>
+      <Logged v-if="!hasLogin"></Logged>
       <div class="msg-comments" ref="list-dom">
         <div class="comment-show" v-if="comments.length > 0">
           <ul>
@@ -101,8 +102,11 @@
 
 <script>
 
+import Logged from "@/components/Logged";
+
 export default {
   name: "Comment",
+  components: {Logged},
   inject: ["reload"],
   props: {
     articleID: {
@@ -113,7 +117,6 @@ export default {
   data() {
     return {
       isRespond: false,
-      isLogin: true,
       user: {},
       content: "",
       comments: [
@@ -145,7 +148,7 @@ export default {
     },
     // 回复
     respondMsg(e, root, sub) {
-      if (!this.isLogin) {
+      if (!this.hasLogin) {
         this.openLogin()
         return
       }

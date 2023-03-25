@@ -2,8 +2,14 @@ import router from "@/router";
 import store from "@/store";
 import Enroll from "@/components/Enroll"
 import Vue from "vue";
+import {isLogin} from "@/util/storage";
 
 export const globalMixin = {
+    data() {
+        return {
+            hasLogin: isLogin()
+        }
+    },
     methods: {
         // 读取文章
         readArticle(article) {
@@ -31,11 +37,11 @@ export const globalMixin = {
             window.open(route.href, "_blank")
         },
         // 用户中心
-        userCenter(userType = 0, uid = 0) {
+        userCenter(role = 0, uid = 0) {
             let route = this.$router.resolve({
                 name: "UserCenter",
                 query: {
-                    userType: userType,
+                    role: role,
                     uid: uid
                 }
             })

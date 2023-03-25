@@ -22,7 +22,7 @@
           <span class="highlight">{{ count }}</span>
           篇文章
         </div>
-        <div class="search-list" v-if="articles.length > 0">
+        <div class="search-article-list" v-if="articles.length > 0">
           <ArticleCard v-for="(article,index) in articles" :key="index" :article="article" :keyword="[keyword]"
                        class="mt10">
           </ArticleCard>
@@ -172,7 +172,7 @@ export default {
       font-size: 14px;
     }
 
-    .search-list {
+    .search-article-list {
       display: grid;
       grid-template-columns: auto auto;
       grid-gap: 10px 20px;
@@ -181,11 +181,11 @@ export default {
   }
 }
 
-/* 宽度小于 700px 的屏幕使用该样式*/
-@media screen and (max-width: 1000px) {
+/* 宽度小于 960px 的屏幕使用该样式*/
+@media screen and (max-width: 980px) {
   .search-result-container {
     .search-result {
-      .search-list {
+      .search-article-list {
         grid-template-columns: auto;
       }
     }

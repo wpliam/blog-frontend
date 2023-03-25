@@ -7,6 +7,39 @@
           <div class="r-title">
             {{ article.title }}
           </div>
+          <div class="r-header">
+            <div class="flex">
+              <span class="mr05">
+                <svg-icon icon-class="date"/>
+                于 {{ article.createTime }} 发布
+              </span>
+              <span class="ml10">
+                <svg-icon icon-class="view"/>
+                阅读 {{ article.viewCount }}
+              </span>
+              <span class="ml10">
+                <svg-icon icon-class="collect"/>
+                收藏 {{ article.collectCount }}
+              </span>
+              <span class="ml10">
+                <svg-icon icon-class="like"/>
+                点赞 {{ article.likeCount }}
+              </span>
+            </div>
+            <div class="flex mt05">
+              <div class="r-category flex center">
+                <span class="label">文章分类: </span>
+                <a class="category-name">{{ article.category.categoryName }}</a>
+              </div>
+              <div class="r-tags flex center">
+                <span class="label">文章标签: </span>
+                <a class="tag-item" v-for="(tag,index) in tags" :key="index">
+                  <svg-icon icon-class="slidebar"/>
+                  {{ tag.tagName }}
+                </a>
+              </div>
+            </div>
+          </div>
           <div class="r-content">
             <mavon-editor
                 v-html="article.content"
@@ -17,12 +50,6 @@
                 :editable="false"
             >
             </mavon-editor>
-          </div>
-          <div class="r-tags">
-            <a class="tag-item" v-for="(tag,index) in tags" :key="index">
-              <svg-icon icon-class="slidebar"/>
-              {{ tag.tagName }}
-            </a>
           </div>
           <div class="r-actions">
             <div class="flex">
@@ -39,7 +66,7 @@
               <a class="post-collect action" @click.prevent="giveCollect">
                 <div v-if="isCollect" class="flex-column-center">
                   <svg-icon icon-class="collect-red" class-name="small-svg"/>
-                  <span class="post-btn" style="color: #d81e06">已藏 {{ article.collectCount }}</span>
+                  <span class="post-btn" style="color: #d81e06">已收藏 {{ article.collectCount }}</span>
                 </div>
                 <div v-else class="flex-column-center">
                   <svg-icon icon-class="collect" class-name="small-svg"/>
@@ -113,6 +140,11 @@ export default {
       article: {
         title: "测试文章的标题",
         content: "文章内容",
+        createTime: "2022-12-12 12:12:12",
+        category: {
+          categoryName: "java"
+        },
+        viewCount: 20,
         likeCount: 10,
         collectCount: 5
       },
@@ -157,32 +189,55 @@ export default {
       color: #4e5358;
     }
 
-    .r-content {
-      margin-top: 20px;
+    .r-header {
+      margin-top: 15px;
+      padding: 5px;
+      background: #f8f8f8;
+      border-radius: var(--main-border-radius);
+      color: #999aaa;
+      font-size: 14px;
+      overflow: hidden;
+
+      .r-category {
+        .category-name {
+          margin-left: 3px;
+          border-radius: var(--main-border-radius);
+          font-size: 14px;
+          color: #5094d5;
+          padding: 1px 5px;
+          background-color: #f2f6fc;
+        }
+      }
+
+      .r-tags {
+        margin-left: 10px;
+
+        .tag-item {
+          display: inline-block;
+          cursor: pointer;
+          flex-shrink: 0;
+          position: relative;
+          margin-right: 5px;
+          font-size: 12px;
+          background-color: #f2f6fc;
+          color: #909399;
+          border: 1px solid #f2f6fc;
+          padding: 0 8px;
+          height: 26px;
+          line-height: 26px;
+          border-radius: 13px;
+          max-width: 125px;
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          -webkit-transition: border .25s, color .25s;
+          transition: border .25s, color .25s;
+        }
+      }
     }
 
-    .r-tags {
-      .tag-item {
-        display: inline-block;
-        cursor: pointer;
-        flex-shrink: 0;
-        position: relative;
-        margin-right: 10px;
-        font-size: 12px;
-        background-color: #f2f6fc;
-        color: #909399;
-        border: 1px solid #f2f6fc;
-        padding: 0 8px;
-        height: 26px;
-        line-height: 26px;
-        border-radius: 13px;
-        max-width: 125px;
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        -webkit-transition: border .25s, color .25s;
-        transition: border .25s, color .25s;
-      }
+    .r-content {
+      margin-top: 20px;
     }
 
     .r-actions {
@@ -221,11 +276,6 @@ export default {
       text-align: right;
     }
 
-    .label {
-      color: #999;
-      font-size: 14px;
-    }
-
     .adjoin-title {
       color: #4e5358;
       font-weight: bold;
@@ -236,6 +286,11 @@ export default {
     .adjoin-title:hover {
       color: var(--wp--preset--color--title-hover);
     }
+  }
+
+  .label {
+    color: #999;
+    font-size: 14px;
   }
 }
 

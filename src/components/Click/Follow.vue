@@ -1,5 +1,5 @@
 <template>
-  <a class="follow click-btn">
+  <a class="follow click-btn" @click.prevent="giveFollow">
     <span v-if="isFollow">
       <svg-icon icon-class="solid-follow"/>
       已关注
@@ -16,7 +16,12 @@ export default {
   name: "Follow",
   data() {
     return {
-      isFollow: true
+      isFollow: false
+    }
+  },
+  methods: {
+    giveFollow() {
+      this.isFollow = !this.isFollow
     }
   }
 }

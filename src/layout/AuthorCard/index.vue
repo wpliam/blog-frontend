@@ -10,6 +10,7 @@
           <a class="nickname text-ellipsis" @click.prevent="userCenter(1)">{{ user.nickname }}</a>
         </div>
       </div>
+      <AuthorCount class="mt10" :need-fans="true"></AuthorCount>
       <div class="describe">
         <span v-if="user.describe">{{ user.describe }}</span>
         <span v-else>这个人很懒,什么都没有说</span>
@@ -27,13 +28,13 @@
 <script>
 import Follow from "@/components/Click/Follow";
 import Chat from "@/components/Click/Chat";
+import AuthorCount from "@/components/Click/AuthorCount";
 
 export default {
   name: "AuthorCard",
-  components: {Chat, Follow},
+  components: {AuthorCount, Chat, Follow},
   data() {
     return {
-      isFollow: false,
       user: {
         avatar: "/image/avatar.jpg",
         nickname: "苹果",
@@ -41,11 +42,7 @@ export default {
       }
     }
   },
-  methods: {
-    giveFollow() {
-      this.isFollow = !this.isFollow
-    }
-  }
+  methods: {}
 }
 </script>
 
@@ -75,7 +72,7 @@ export default {
     }
 
     .describe {
-      margin-top: 5px;
+      margin-top: 10px;
       font-size: 14px;
       color: #909399;
       opacity: .85;

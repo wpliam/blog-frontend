@@ -1,12 +1,12 @@
 <template>
-  <div>
+  <div @click.prevent="clockIn">
     <a class="click-btn already-click" v-if="hasClock">
       <svg-icon icon-class="already-clock"/>
       已签到
     </a>
     <a class="click-btn not-click" v-else>
       <svg-icon icon-class="not-clock"/>
-      签到
+      {{ title }}
     </a>
   </div>
 </template>
@@ -14,7 +14,12 @@
 <script>
 export default {
   name: "ClockIn",
-  props: {},
+  props: {
+    title: {
+      type: String,
+      default: "签到"
+    }
+  },
   data() {
     return {
       hasClock: false

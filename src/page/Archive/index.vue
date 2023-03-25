@@ -154,7 +154,7 @@ export default {
 .archive-container {
   .panel-group {
     display: grid;
-    grid-template-columns: auto auto auto;
+    grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
     grid-gap: 10px 20px;
 
     .panel-item {
@@ -330,14 +330,6 @@ export default {
         border-radius: 50%;
         background: #ebeef5;
       }
-    }
-  }
-}
-
-@media screen and(max-width: 720px) {
-  .archive-container {
-    .panel-group {
-      grid-template-columns: auto;
     }
   }
 }

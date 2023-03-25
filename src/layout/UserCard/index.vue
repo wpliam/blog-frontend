@@ -1,6 +1,6 @@
 <template>
   <div class="user-card">
-    <div v-if="isLogin">
+    <div v-if="hasLogin">
       <div class="flex user-info">
         <el-avatar :src="user.avatar"></el-avatar>
         <div class="ml10">
@@ -9,7 +9,8 @@
           <p class="user-desc" v-else>这个人很懒,什么都没有写</p>
         </div>
       </div>
-      <ClockIn ref="child" @click.native="$refs.child.clockIn()"></ClockIn>
+      <ClockIn title="签到领取今日奖励"></ClockIn>
+      <AuthorCount class="author-count"></AuthorCount>
       <div class="user-btn">
         <div class="flex">
           <a class="flex-column-center blue-color" @click.prevent="userCenter(0)">
@@ -20,7 +21,7 @@
             <span class="small-circle green-bg-1"> <svg-icon icon-class="edit"/></span>
             <span class="mt05 fs12">发布文章</span>
           </a>
-          <a class="flex-column-center red-color">
+          <a class="flex-column-center red-color" @click.prevent="logout">
             <span class="small-circle red-bg-1"> <svg-icon icon-class="return"/></span>
             <span class="mt05 fs12">退出登录</span>
           </a>
@@ -52,18 +53,26 @@
 <script>
 import FastLogin from "@/components/FastLogin";
 import ClockIn from "@/components/Click/ClockIn";
+import AuthorCount from "@/components/Click/AuthorCount";
+import {removeUserInfo} from "@/util/storage";
 
 export default {
   name: "UserCard",
-  components: {ClockIn, FastLogin},
+  components: {AuthorCount, ClockIn, FastLogin},
   data() {
     return {
-      isLogin: true,
       user: {
         avatar: "/image/avatar.jpg",
         nickname: "苹果",
         describe: "我不想介绍自己"
       }
+    }
+  },
+  methods: {
+    logout() {
+      console.log("退出登录")
+      removeUserInfo()
+      this.refreshCurrRoute()
     }
   }
 }
@@ -75,10 +84,16 @@ export default {
     margin-bottom: 10px;
   }
 
+  .author-count {
+    margin-top: 20px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #ebeef5;
+  }
+
   .user-btn {
     display: flex;
     justify-content: center;
-    margin-top: 20px;
+    margin-top: 10px;
   }
 
   .blue-color {

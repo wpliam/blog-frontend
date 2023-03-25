@@ -40,7 +40,7 @@ const routes = [
         path: '/searchResult',
         name: 'SearchResult',
         meta: {
-            title: "搜索结果"
+            title: "搜索"
         },
         component: () => import('@/page/SearchResult')
     },

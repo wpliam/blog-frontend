@@ -16,7 +16,7 @@
         </el-input>
       </el-form-item>
       <div class="option">
-        <a class="login-btn btn" v-if="true" @click="">
+        <a class="login-btn btn" v-if="true" @click.prevent="login">
           登录
         </a>
       </div>
@@ -25,6 +25,8 @@
 </template>
 
 <script>
+import {setUserInfo} from "@/util/storage";
+
 export default {
   name: "Login",
   data() {
@@ -53,6 +55,16 @@ export default {
       },
     }
   },
+  methods: {
+    login() {
+      if (this.loginForm.username === "admin" && this.loginForm.password === "123456") {
+        setUserInfo({token: "111"})
+        this.refreshCurrRoute()
+        return
+      }
+      this.$message.error("用户名或密码错误")
+    }
+  }
 }
 </script>
 

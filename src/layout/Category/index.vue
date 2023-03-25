@@ -24,11 +24,9 @@
       </div>
       <ul class="mt20">
         <li class="c-article-item flex-between-center" v-for="(article,idx) in item.articles" :key="idx">
-          <div class="text-ellipsis">
-            <a class="c-article-title">
-              {{ article.title }}
-            </a>
-          </div>
+          <a class="c-article-title text-ellipsis">
+            {{ article.title }}
+          </a>
           <div class="c-article-date">
             <i class="el-icon-time"></i>
             {{ article.updateTime | computeDate }}
@@ -55,7 +53,7 @@ export default {
           backgroundImg: "/image/20221122113917.jpg",
           articles: [
             {
-              title: "测试文章1",
+              title: "测试文章1测试文章1测试文章1测试文章1测试文章1测试文章1测试文章1测试文章1测试文章1测试文章1",
               updateTime: "2022-01-03 12:12:13"
             },
             {
@@ -97,8 +95,9 @@ export default {
 <style lang="less" scoped>
 .category-container {
   display: grid;
-  grid-template-columns: auto auto;
-  grid-gap: 10px 20px;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  grid-column-gap: 20px;
+  grid-row-gap: 15px;
 
   .category-item {
     padding: 10px;
@@ -159,8 +158,8 @@ export default {
 
       .c-article-title {
         color: #4e5358;
-        margin-left: -3px;
         font-size: 14px;
+        max-width: 80%;
       }
 
       .c-article-title:hover {
@@ -173,7 +172,7 @@ export default {
         height: 0.5em;
         border: 0.1em solid var(--wp--preset--color--vivid-purple);
         border-radius: 1em;
-        margin: 0 0.5em;
+        margin-left: 0.5em;
         vertical-align: 0.1em;
         display: inline-block;
       }
@@ -183,12 +182,6 @@ export default {
         color: #b1b1b1;
       }
     }
-  }
-}
-
-@media screen and (max-width: 800px) {
-  .category-container {
-    grid-template-columns: auto;
   }
 }
 </style>

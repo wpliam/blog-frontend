@@ -5,7 +5,7 @@
       <div class="user-header base-card">
         <div class="user-cover">
           <img :src="user.cover" alt="" class="user-bg">
-          <div v-if="userType==='1'" class="bg-count flex center">
+          <div v-if="role==='1'" class="bg-count flex center">
             <el-tooltip effect="dark" :content="`人气值${10}`" placement="top">
               <span>
                 <svg-icon icon-class="hot"/>
@@ -35,17 +35,17 @@
             </div>
           </div>
           <div class="h-right">
-            <div v-if="userType==='0'">
+            <div v-if="role==='0'">
               <ClockIn ref="child" @click.native="$refs.child.clockIn()"></ClockIn>
             </div>
-            <div v-if="userType==='1'">
+            <div v-if="role==='1'">
               <Follow class="mr05"></Follow>
               <Chat class="ml05"></Chat>
             </div>
           </div>
         </div>
       </div>
-      <div class="user-content" v-if="userType === '0'">
+      <div class="user-content" v-if="role === '0'">
         <div class="c-left">
           <div class="base-card user-count">
             <a class="flex-column-center">
@@ -70,7 +70,7 @@
 
         </div>
       </div>
-      <div class="author-content base-card" v-if="userType === '1'">
+      <div class="author-content base-card" v-if="role === '1'">
         <el-tabs v-model="activeName" @tab-click="handleClick">
           <el-tab-pane v-for="(tab,index) in option" :label="tab.label" :name="tab.name" :key="index">
             <div v-if="activeName==='article' || activeName==='collect'">
@@ -135,7 +135,7 @@ export default {
   },
   data() {
     return {
-      userType: this.$route.query.userType,
+      role: this.$route.query.role,
       uid: this.$route.query.uid,
       activeName: "article",
       articles: [
@@ -309,7 +309,7 @@ export default {
         display: flex;
 
         .user-info {
-          margin-left: 8px;
+          margin-left: 10px;
         }
       }
 
