@@ -36,7 +36,7 @@ export default {
   },
   methods: {
     wordClickHandler(name, value, vm) {
-      console.log('wordClickHandler', name, value, vm);
+      this.goClassResult(value, 1)
     }
   },
   data() {

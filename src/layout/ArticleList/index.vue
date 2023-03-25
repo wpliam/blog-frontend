@@ -5,7 +5,6 @@
       <ul class="flex center">
         <li class="opt-item">更新</li>
         <li class="opt-item icon-spot">发布</li>
-        <!--        <li class="opt-item icon-spot">点赞</li>-->
       </ul>
     </div>
     <ArticleCard v-for="(article,index) in articles" :key="index" :article="article" class="base-card p15 mt10">
@@ -30,6 +29,7 @@ export default {
     return {
       articles: [
         {
+          id: 1,
           backgroundImg: "/image/20221122113917.jpg",
           title: "测试文章标题",
           abstract: "测试文章描述",
@@ -38,6 +38,7 @@ export default {
           collectCount: 2,
           likeCount: 3,
           category: {
+            id: 1,
             categoryName: "java"
           },
           user: {
@@ -46,6 +47,7 @@ export default {
           }
         },
         {
+          id: 2,
           backgroundImg: "/image/20221122113917.jpg",
           title: "测试文章标题2",
           abstract: "测试文章描述2",
@@ -54,6 +56,7 @@ export default {
           collectCount: 20,
           likeCount: 30,
           category: {
+            id: 2,
             categoryName: "java"
           },
           user: {

@@ -58,6 +58,7 @@ export default {
       count: 10,
       articles: [
         {
+          id: 2,
           backgroundImg: "/image/20221122113917.jpg",
           title: "测试文章标题",
           abstract: "测试文章描述",
@@ -66,6 +67,7 @@ export default {
           collectCount: 2,
           likeCount: 3,
           category: {
+            id: 1,
             categoryName: "java"
           },
           user: {
@@ -74,6 +76,7 @@ export default {
           }
         },
         {
+          id: 3,
           backgroundImg: "/image/20221122113917.jpg",
           title: "测试文章标题2",
           abstract: "测试文章描述2",
@@ -82,6 +85,7 @@ export default {
           collectCount: 20,
           likeCount: 30,
           category: {
+            id: 2,
             categoryName: "java"
           },
           user: {
@@ -90,6 +94,7 @@ export default {
           }
         },
         {
+          id: 4,
           backgroundImg: "/image/20221122114204.jpg",
           title: "测试文章标题2",
           abstract: "测试文章描述2",
@@ -98,6 +103,7 @@ export default {
           collectCount: 20,
           likeCount: 30,
           category: {
+            id: 4,
             categoryName: "java"
           },
           user: {
@@ -106,6 +112,7 @@ export default {
           }
         },
         {
+          id: 5,
           backgroundImg: "/image/20221122114232.jpg",
           title: "测试文章标题2",
           abstract: "测试文章描述2",
@@ -114,6 +121,7 @@ export default {
           collectCount: 20,
           likeCount: 30,
           category: {
+            id: 6,
             categoryName: "java"
           },
           user: {

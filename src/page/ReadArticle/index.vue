@@ -15,16 +15,22 @@
               </span>
               <span class="ml10">
                 <svg-icon icon-class="view"/>
-                阅读 {{ article.viewCount }}
+                <span> 阅读 {{ article.viewCount }}</span>
               </span>
-              <span class="ml10">
-                <svg-icon icon-class="collect"/>
-                收藏 {{ article.collectCount }}
-              </span>
-              <span class="ml10">
-                <svg-icon icon-class="like"/>
-                点赞 {{ article.likeCount }}
-              </span>
+              <a class="ml10 h-count">
+                <svg-icon icon-class="comment"/>
+                <span> 评论 {{ article.commentCount }}</span>
+              </a>
+              <a class="ml10 h-count" @click.prevent="giveCollect">
+                <div v-if="isCollect">
+                  <svg-icon icon-class="collect-red"/>
+                  <span style="color: #d81e06"> 已收藏 {{ article.collectCount }}</span>
+                </div>
+                <div v-else>
+                  <svg-icon icon-class="collect"/>
+                  <span> 收藏 {{ article.collectCount }}</span>
+                </div>
+              </a>
             </div>
             <div class="flex mt05">
               <div class="r-category flex center">
@@ -146,7 +152,8 @@ export default {
         },
         viewCount: 20,
         likeCount: 10,
-        collectCount: 5
+        collectCount: 5,
+        commentCount: 10,
       },
       next: {
         title: "下一篇标题",
@@ -197,6 +204,11 @@ export default {
       color: #999aaa;
       font-size: 14px;
       overflow: hidden;
+
+      .h-count {
+        color: #999aaa;
+        font-size: 14px;
+      }
 
       .r-category {
         .category-name {

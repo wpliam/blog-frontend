@@ -20,7 +20,7 @@
             {{ article.createTime|computeDate }}
           </div>
         </div>
-        <a>
+        <a @click.prevent="goClassResult(article.category.id,0)">
           <svg-icon icon-class="category"/>
           {{ article.category.categoryName }}
         </a>
@@ -48,6 +48,7 @@ export default {
           collectCount: 0,
           likeCount: 0,
           category: {
+            id: 1,
             categoryName: ""
           },
           user: {

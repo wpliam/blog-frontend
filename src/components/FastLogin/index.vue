@@ -42,7 +42,7 @@ export default {
 
   .separator:after, .separator:before {
     content: "";
-    background: #efefef;
+    background: rgba(217, 217, 217, .9);
     max-width: 20%;
     height: 1px;
     margin: 0 1em;

@@ -1,6 +1,6 @@
 <template>
   <div class="nav-container">
-    <div class="horizontal base-card">
+    <div class="horizontal">
       <div class="horizontal-content base-layout">
         <div class="switch">
           <a>
@@ -120,6 +120,8 @@ export default {
     position: fixed;
     top: 0;
     z-index: 1600;
+    background: var(--main-bg-color);
+    box-shadow: var(--main-box-show);
 
     .horizontal-content {
       .switch {

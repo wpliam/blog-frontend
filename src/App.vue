@@ -29,3 +29,9 @@ export default {
   }
 }
 </script>
+
+<style lang="less">
+#app {
+  background: rgba(242, 244, 245, .9);
+}
+</style>

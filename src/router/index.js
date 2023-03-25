@@ -51,6 +51,14 @@ const routes = [
             title: "用户中心"
         },
         component: () => import('@/page/UserCenter')
+    },
+    {
+        path: '/classResult',
+        name: 'ClassResult',
+        meta: {
+            title: ""
+        },
+        component: () => import('@/page/ClassResult')
     }
 ]
 

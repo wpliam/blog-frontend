@@ -1,6 +1,6 @@
 <template>
   <div class="foot-wave-line ">
-    <div class="foot-content flex-between-center base-card">
+    <div class="foot-content flex-between-center">
       <div class="my-face">
         稍微慢一点跳
       </div>
@@ -50,7 +50,8 @@ export default {
     bottom: 0;
     position: fixed;
     z-index: 1600;
-
+    background: var(--main-bg-color);
+    box-shadow: var(--main-box-show);
 
     .my-face {
       animation: my-face 5s infinite ease-in-out;

@@ -9,13 +9,13 @@
           </div>
         </Picture>
         <div class="category-content">
-          <a class="category-name">{{ item.categoryName }}</a>
+          <a class="category-name" @click.prevent="goClassResult(item.id,0)">{{ item.categoryName }}</a>
           <div class="category-meta flex-between-center">
             <span class="count">
               <i class="el-icon-document"></i>
               共{{ item.total }}篇文章
             </span>
-            <a class="more">
+            <a class="more" @click.prevent="goClassResult(item.id,0)">
               <i class="el-icon-arrow-right"></i>
               更多文章
             </a>
@@ -47,6 +47,7 @@ export default {
     return {
       aggregations: [
         {
+          id: 1,
           categoryName: "测试分类名",
           total: 10,
           viewCount: 20,
@@ -67,6 +68,7 @@ export default {
           ]
         },
         {
+          id: 2,
           categoryName: "测试分类名2",
           total: 30,
           viewCount: 467,
@@ -178,7 +180,7 @@ export default {
       }
 
       .c-article-date {
-        font-size: 14px;
+        font-size: 12px;
         color: #b1b1b1;
       }
     }

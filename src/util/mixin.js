@@ -51,6 +51,21 @@ export const globalMixin = {
             }
             window.open(route.href, target)
         },
+        // t=0分类 t=1 标签
+        goClassResult(id, contentType = 0) {
+            let route = this.$router.resolve({
+                name: "ClassResult",
+                query: {
+                    id: id,
+                    contentType: contentType
+                }
+            })
+            let target = "_blank"
+            if (this.$route.name === "ClassResult") {
+                target = "_self"
+            }
+            window.open(route.href, target)
+        },
         // 刷新当前路由
         refreshCurrRoute() {
             let url = store.state.baseURL + router.currentRoute.fullPath

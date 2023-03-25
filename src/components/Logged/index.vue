@@ -28,7 +28,7 @@ export default {
 .logged-box {
   width: 100%;
   padding: 20px;
-  background: #e1e1e1;
+  background: rgba(241, 241, 241, .9);
   text-align: center;
 
   .logged-title {
