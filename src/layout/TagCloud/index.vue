@@ -28,7 +28,7 @@ export default {
   computed: {
     myColors() {
       let colors = []
-      for (let i = 0; i < 10; i++) {
+      for (let i = 0; i < 20; i++) {
         colors.push(this.randomColor())
       }
       return colors

@@ -85,7 +85,7 @@ export const globalMixin = {
                 color += Math.random() * 256 + ","
             }
             let alpha = (Math.random() * 10 / 10).toFixed(1)
-            alpha = alpha === "0.0" ? "0.8" : alpha
+            alpha = alpha < "0.5" ? "0.8" : alpha
             color += alpha + ")"
             return color
         }
