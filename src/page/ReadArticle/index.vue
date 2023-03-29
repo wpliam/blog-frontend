@@ -11,7 +11,7 @@
             <div class="flex">
               <span class="mr05">
                 <svg-icon icon-class="date"/>
-                于 {{ article.createTime }} 发布
+                于 {{ article.createTime|timeLayout }} 发布
               </span>
               <span class="ml10">
                 <svg-icon icon-class="view"/>
@@ -19,7 +19,7 @@
               </span>
               <a class="ml10 h-count">
                 <svg-icon icon-class="comment"/>
-                <span> 评论 {{ article.commentCount }}</span>
+                <span> 评论 {{ commentCount }}</span>
               </a>
               <a class="ml10 h-count" @click.prevent="giveCollect">
                 <div v-if="isCollect">
@@ -35,9 +35,9 @@
             <div class="flex mt05">
               <div class="r-category flex center">
                 <span class="label">文章分类: </span>
-                <a class="category-name">{{ article.category.categoryName }}</a>
+                <a class="category-name">{{ article.categoryName }}</a>
               </div>
-              <div class="r-tags flex center">
+              <div class="r-tags flex center" v-if="tags">
                 <span class="label">文章标签: </span>
                 <a class="tag-item" v-for="(tag,index) in tags" :key="index">
                   <svg-icon icon-class="slidebar"/>
@@ -88,7 +88,7 @@
         </div>
         <div class="article-adjoin">
           <div class="base-card prev">
-            <a>
+            <a @click.prevent="readArticle(prev)">
               <div class="label">
                 <i class="el-icon-d-arrow-left"></i>
                 上一篇
@@ -100,7 +100,7 @@
             </a>
           </div>
           <div class="base-card next">
-            <a>
+            <a @click.prevent="readArticle(next)">
               <div class="label">
                 <i class="el-icon-d-arrow-right"></i>
                 下一篇
@@ -112,10 +112,10 @@
             </a>
           </div>
         </div>
-        <Recommend class="mt20">
+        <Recommend class="mt20" v-if="recommend" :recommends="recommend">
           <p class="title-theme">推荐</p>
         </Recommend>
-        <Comment class="mt20">
+        <Comment class="mt20" :comments="comment">
           <p class="title-theme">评论</p>
         </Comment>
       </div>
@@ -135,46 +135,48 @@ import Comment from "@/layout/Comment";
 import Recommend from "@/layout/Carousel/Recommend";
 import AuthorCard from "@/layout/AuthorCard";
 import Lovely from "@/layout/Lovely";
+import {readArticle} from "@/api/article";
 
 export default {
   name: "ReadArticle",
   components: {Lovely, AuthorCard, Recommend, Comment, FootWaveLine, Nav},
   data() {
     return {
+      articleID: parseInt(this.$route.query.articleID.toString()),
       isLike: false,
       isCollect: false,
-      article: {
-        title: "测试文章的标题",
-        content: "文章内容",
-        createTime: "2022-12-12 12:12:12",
-        category: {
-          categoryName: "java"
-        },
-        viewCount: 20,
-        likeCount: 10,
-        collectCount: 5,
-        commentCount: 10,
-      },
-      next: {
-        title: "下一篇标题",
-      },
-      prev: {
-        title: "上一篇标题",
-      },
-      tags: [
-        {
-          tagName: "标签1"
-        },
-        {
-          tagName: "标签2"
-        },
-        {
-          tagName: "标签3"
-        }
-      ]
+      article: {},
+      next: {},
+      prev: {},
+      tags: [],
+      recommend: [],
+      comment: [],
+      commentCount: 0
     }
   },
+  created() {
+    this.getArticleInfo()
+  },
   methods: {
+    async getArticleInfo() {
+      const res = await readArticle(this.articleID);
+      if (res) {
+        this.article = res.article
+        this.next = res.next
+        this.prev = res.prev
+        this.tags = res.tags
+        this.recommend = res.recommend
+        this.comment = res.comment
+      }
+      if (this.comment) {
+        this.commentCount = this.comment.length
+        for (let item of this.comment) {
+          if (item.subComment) {
+            this.commentCount = this.commentCount + item.subComment.length
+          }
+        }
+      }
+    },
     giveLike() {
       this.isLike = !this.isLike
     },

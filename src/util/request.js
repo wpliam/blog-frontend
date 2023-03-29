@@ -3,6 +3,7 @@ import Vue from 'vue'
 import Enroll from '@/components/Enroll'
 import store from "@/store";
 import {Message} from "element-ui";
+import {getToken} from "@/util/storage";
 
 const service = axios.create({
     baseURL: store.state.requestURL,
@@ -11,7 +12,7 @@ const service = axios.create({
 
 service.interceptors.request.use(
     config => {
-        const token = "";
+        const token = getToken();
         if (token) {
             config.headers.Authorization = `Bearer ${token}`
         }

@@ -35,8 +35,7 @@
       <div class="archive-label archive base-card mt20">
         <p class="label-title archive-title">标签</p>
         <ul class="label-list">
-          <li v-for="(item,index) in tags" :key="index" class="label-item text-ellipsis"
-              :style="{background:randomColor()}">
+          <li v-for="(item,index) in tags" :key="index" class="label-item text-ellipsis">
             {{ item.tagName }}
           </li>
         </ul>
@@ -54,7 +53,7 @@
               <ol class="time-body" v-if="isActive(idx)">
                 <li class="time-item text-ellipsis" v-for="(sub,index) in item.collapse" :key="index"
                     @click="readArticle(sub)">
-                  <span>{{ sub.createTime }}:</span>
+                  <span>{{ sub.createTime|timeLayout }}:</span>
                   <span>{{ sub.title }}</span>
                 </li>
               </ol>
@@ -70,6 +69,7 @@
 <script>
 import Nav from "@/layout/Nav";
 import FootWaveLine from "@/layout/Footer/FootWaveLine";
+import {getArticleArchive} from "@/api/article";
 
 export default {
   name: "Archive",
@@ -119,13 +119,38 @@ export default {
           ]
         }
       ],
-
       activeIdx: [],
     }
   },
-  mounted() {
+  created() {
+    this.getArticleArchive()
   },
   methods: {
+    async getArticleArchive() {
+      const res = await getArticleArchive()
+      if (res) {
+        console.log("res:", typeof res.article)
+        this.articleCount = res.articleCount
+        this.tagCount = res.tagCount
+        this.categoryCount = res.categoryCount
+        this.tags = res.tags
+        let keys = []
+        Object.keys(res.article).forEach(key => {
+          keys.push(key)
+        })
+        keys.sort((a, b) => {
+          return Date.parse(b) - Date.parse(a)
+        })
+        let articles = []
+        for (let key of keys) {
+          articles.push({
+            timestamp: key,
+            collapse: res.article[key]
+          })
+        }
+        this.articles = articles
+      }
+    },
     setActiveIdx(index) {
       if (this.isActive(index)) {
         this.activeIdx.splice(this.activeIdx.indexOf(index), 1)

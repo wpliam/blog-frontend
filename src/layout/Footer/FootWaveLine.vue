@@ -20,20 +20,43 @@
 
 <script>
 
+import {searchArticleList} from "@/api/article";
+
 export default {
   name: "FootWaveLine",
   data() {
     return {
-      randomArticle: {
-        title: "推荐文章"
-      }
+      timer: null,
+      articles: [],
+      index: 0,
+      randomArticle: {}
     }
   },
   mounted() {
-
+    this.getRandomArticle()
+    this.timer = setInterval(this.addRandomArticle, 2000)
   },
-  methods: {},
+  methods: {
+    async getRandomArticle() {
+      const res = await searchArticleList({searchType: 1})
+      if (res) {
+        this.articles = res.articles
+        this.addRandomArticle()
+      }
+    },
+    addRandomArticle() {
+      let index = Math.floor(Math.random() * this.articles.length)
+      while (index === this.index) {
+        index = Math.floor(Math.random() * this.articles.length)
+      }
+      this.index = index
+      this.randomArticle = this.articles[index]
+    }
+  },
   beforeDestroy() {
+    if (this.timer) {
+      clearInterval(this.timer)
+    }
   }
 }
 </script>
@@ -47,6 +70,7 @@ export default {
     width: 100%;
     height: 50px;
     line-height: 50px;
+    left: 0;
     bottom: 0;
     position: fixed;
     z-index: 1600;

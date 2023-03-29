@@ -8,7 +8,7 @@
     </div>
     <ul class="hot-list">
       <li v-for="(article,index) in articles" :key="index" class="flex hot-item">
-        <Picture :background-img="article.backgroundImg" :width="93" :height="65"></Picture>
+        <Picture :background-img="article.cover" :width="93" :height="65"></Picture>
         <div class="hot-content">
           <a class="h-title text-ellipsis-2">
             {{ article.title }}
@@ -31,74 +31,25 @@
 
 <script>
 import Picture from "@/components/Picture";
+import {getHotArticle} from "@/api/article";
 
 export default {
   name: "HotArticle",
   components: {Picture},
   data() {
     return {
-      articles: [
-        {
-          backgroundImg: "/image/20221122113917.jpg",
-          title: "测试文章标题",
-          abstract: "测试文章描述",
-          createTime: "2023-01-01 12:23:34",
-          viewCount: 1,
-          collectCount: 2,
-          likeCount: 3,
-          category: {
-            categoryName: "java"
-          }
-        },
-        {
-          backgroundImg: "/image/20221122113935.jpg",
-          title: "测试文章标题2",
-          abstract: "测试文章描述2",
-          createTime: "2023-01-01 12:23:34",
-          viewCount: 10,
-          collectCount: 20,
-          likeCount: 30,
-          category: {
-            categoryName: "java"
-          }
-        },
-        {
-          backgroundImg: "/image/20221122114159.jpg",
-          title: "测试文章标题2",
-          abstract: "测试文章描述2",
-          createTime: "2023-01-01 12:23:34",
-          viewCount: 10,
-          collectCount: 20,
-          likeCount: 30,
-          category: {
-            categoryName: "java"
-          }
-        },
-        {
-          backgroundImg: "/image/20221122114139.jpg",
-          title: "测试文章标题2",
-          abstract: "测试文章描述2",
-          createTime: "2023-01-01 12:23:34",
-          viewCount: 10,
-          collectCount: 20,
-          likeCount: 30,
-          category: {
-            categoryName: "java"
-          }
-        },
-        {
-          backgroundImg: "/image/20221122113924.jpg",
-          title: "测试文章标题2",
-          abstract: "测试文章描述2",
-          createTime: "2023-01-01 12:23:34",
-          viewCount: 10,
-          collectCount: 20,
-          likeCount: 30,
-          category: {
-            categoryName: "java"
-          }
-        }
-      ]
+      articles: []
+    }
+  },
+  created() {
+    this.getHotArticle()
+  },
+  methods: {
+    async getHotArticle() {
+      const res = await getHotArticle()
+      if (res) {
+        this.articles = res.articles
+      }
     }
   }
 }
@@ -138,7 +89,8 @@ export default {
     }
   }
 }
-/deep/ .el-card__header{
+
+/deep/ .el-card__header {
   padding: 12px 15px;
 }
 </style>

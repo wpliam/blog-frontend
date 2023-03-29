@@ -2,7 +2,7 @@
   <div class="category-container">
     <div class="base-card category-item" v-for="(item,index) in aggregations" :key="index">
       <div class="flex">
-        <Picture :background-img="item.backgroundImg" :width="140" :height="98">
+        <Picture :background-img="item.cover" :width="140" :height="98">
           <div class="c-badge">
             <svg-icon icon-class="hot"/>
             {{ item.viewCount }}
@@ -39,56 +39,25 @@
 
 <script>
 import Picture from "@/components/Picture";
+import {getCategoryCard} from "@/api/category";
 
 export default {
   name: "Category",
   components: {Picture},
   data() {
     return {
-      aggregations: [
-        {
-          id: 1,
-          categoryName: "测试分类名",
-          total: 10,
-          viewCount: 20,
-          backgroundImg: "/image/20221122113917.jpg",
-          articles: [
-            {
-              title: "测试文章1测试文章1测试文章1测试文章1测试文章1测试文章1测试文章1测试文章1测试文章1测试文章1",
-              updateTime: "2022-01-03 12:12:13"
-            },
-            {
-              title: "测试文章2",
-              updateTime: "2022-01-03 12:12:13"
-            },
-            {
-              title: "测试文章3",
-              updateTime: "2022-01-03 12:12:13"
-            }
-          ]
-        },
-        {
-          id: 2,
-          categoryName: "测试分类名2",
-          total: 30,
-          viewCount: 467,
-          backgroundImg: "/image/20221122114150.jpg",
-          articles: [
-            {
-              title: "测试文章4",
-              updateTime: "2022-01-03 12:12:13"
-            },
-            {
-              title: "测试文章5",
-              updateTime: "2022-01-03 12:12:13"
-            },
-            {
-              title: "测试文章6",
-              updateTime: "2022-01-03 12:12:13"
-            }
-          ]
-        }
-      ]
+      aggregations: []
+    }
+  },
+  created() {
+    this.getCategoryCard()
+  },
+  methods: {
+    async getCategoryCard() {
+      const res = await getCategoryCard()
+      if (res) {
+        this.aggregations = res.categoryCard
+      }
     }
   }
 }

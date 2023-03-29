@@ -8,7 +8,7 @@
             :key="index"
             class="recommend-item"
         >
-          <img :src="item.backgroundImg" alt="" class="cover" :data-id="item.id">
+          <img :src="item.cover" alt="" class="cover" :data-id="item.id">
           <div class="recommend-info">
             <p class="recommend-title text-ellipsis">{{ item.title }}</p>
           </div>
@@ -25,63 +25,15 @@
 export default {
   name: "Recommend",
   props: {
-    articleID: {
-      type: Number,
-      default: 0
+    recommends: {
+      type: Array,
+      default() {
+        return []
+      }
     }
   },
   data() {
     return {
-      recommends: [
-        {
-          backgroundImg: "/image/20221122113917.jpg",
-          title: "测试文章标题",
-          abstract: "测试文章描述",
-          createTime: "2023-01-01 12:23:34",
-          viewCount: 1,
-          collectCount: 2,
-          likeCount: 3,
-          category: {
-            categoryName: "java"
-          }
-        },
-        {
-          backgroundImg: "/image/20221122113917.jpg",
-          title: "测试文章标题2",
-          abstract: "测试文章描述2",
-          createTime: "2023-01-01 12:23:34",
-          viewCount: 10,
-          collectCount: 20,
-          likeCount: 30,
-          category: {
-            categoryName: "java"
-          }
-        },
-        {
-          backgroundImg: "/image/20221122113917.jpg",
-          title: "测试文章标题",
-          abstract: "测试文章描述",
-          createTime: "2023-01-01 12:23:34",
-          viewCount: 1,
-          collectCount: 2,
-          likeCount: 3,
-          category: {
-            categoryName: "java"
-          }
-        },
-        {
-          backgroundImg: "/image/20221122113917.jpg",
-          title: "测试文章标题2",
-          abstract: "测试文章描述2",
-          createTime: "2023-01-01 12:23:34",
-          viewCount: 10,
-          collectCount: 20,
-          likeCount: 30,
-          category: {
-            categoryName: "java"
-          }
-        }
-      ],
       swiperOption: {
         navigation: {
           nextEl: ".swiper-button-next",

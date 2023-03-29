@@ -20,6 +20,8 @@
 
 <script>
 
+import {getBannerCard} from "@/api/banner";
+
 export default {
   name: "Banner",
   data() {
@@ -36,23 +38,7 @@ export default {
           disableOnInteraction: false
         },
       },
-      banners: [
-        {
-          backgroundImage: "/image/banner1.jpg",
-          bigTitle: "",
-          subTitle: ""
-        },
-        {
-          backgroundImage: "/image/banner2.jpg",
-          bigTitle: "",
-          subTitle: ""
-        },
-        {
-          backgroundImage: "/image/banner3.jpg",
-          bigTitle: "",
-          subTitle: ""
-        }
-      ]
+      banners: []
     }
   },
   computed: {
@@ -60,11 +46,20 @@ export default {
       return this.$refs.mySwiper.$swiper
     }
   },
+  created() {
+    this.getBanner()
+  },
   mounted() {
     this.swiper.navigation.$nextEl.addClass('hide')
     this.swiper.navigation.$prevEl.addClass('hide')
   },
   methods: {
+    async getBanner() {
+      const res = await getBannerCard();
+      if (res) {
+        this.banners = res.banners
+      }
+    },
     onMouseenter() {
       this.swiper.autoplay.stop()
       this.swiper.navigation.$nextEl.removeClass('hide')

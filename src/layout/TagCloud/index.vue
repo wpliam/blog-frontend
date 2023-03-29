@@ -9,11 +9,12 @@
     <div>
       <wordCloud
           :data="tags"
-          nameKey="name"
-          valueKey="value"
+          nameKey="tagName"
+          valueKey="id"
+          :wordPadding="5"
           :color="myColors"
           :showTooltip="false"
-          :fontSize="[10,30]"
+          :fontSize="[10,20]"
           :wordClick="wordClickHandler">
       </wordCloud>
     </div>
@@ -21,6 +22,7 @@
 </template>
 <script>
 import wordCloud from 'vue-wordcloud'
+import {getTagCard} from "@/api/tag";
 
 export default {
   name: 'TagCloud',
@@ -34,48 +36,29 @@ export default {
       return colors
     }
   },
+  data() {
+    return {
+      tags: []
+    }
+  },
+  created() {
+    this.getTagCard()
+  },
   methods: {
+    async getTagCard() {
+      const res = await getTagCard();
+      if (res) {
+        this.tags = res.tags
+      }
+    },
     wordClickHandler(name, value, vm) {
       this.goClassResult(value, 1)
     }
   },
-  data() {
-    return {
-      tags: [{
-        "name": "Cat",
-        "value": 26
-      },
-        {
-          "name": "fish",
-          "value": 19
-        },
-        {
-          "name": "things",
-          "value": 18
-        },
-        {
-          "name": "look",
-          "value": 16
-        },
-        {
-          "name": "two",
-          "value": 15
-        },
-        {
-          "name": "fun",
-          "value": 9
-        }
-      ]
-    }
-  }
 }
 </script>
 
 <style lang="less" scoped>
-.tag-card {
-
-}
-
 /deep/ .el-card__header {
   padding: 12px 15px;
 }

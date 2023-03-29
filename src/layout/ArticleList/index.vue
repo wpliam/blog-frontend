@@ -3,8 +3,8 @@
     <div class="article-option flex center">
       <div class="a-sort">排序</div>
       <ul class="flex center">
-        <li class="opt-item">更新</li>
-        <li class="opt-item icon-spot">发布</li>
+        <li class="opt-item" @click.prevent="handleTabChange(2)">更新</li>
+        <li class="opt-item icon-spot" @click.prevent="handleTabChange(1)">发布</li>
       </ul>
     </div>
     <ArticleCard v-for="(article,index) in articles" :key="index" :article="article" class="base-card p15 mt10">
@@ -14,57 +14,65 @@
         background
         hide-on-single-page
         layout="prev, pager, next"
-        :total="20">
+        @current-change="handleCurrChange"
+        :current-page="page.offset"
+        :total="page.total">
     </el-pagination>
   </div>
 </template>
 
 <script>
 import ArticleCard from "@/components/ArticleCard";
+import {searchArticleList} from "@/api/article";
 
 export default {
   name: "ArticleDetail",
   components: {ArticleCard},
   data() {
     return {
-      articles: [
-        {
-          id: 1,
-          backgroundImg: "/image/20221122113917.jpg",
-          title: "测试文章标题",
-          abstract: "测试文章描述",
-          createTime: "2023-01-01 12:23:34",
-          viewCount: 1,
-          collectCount: 2,
-          likeCount: 3,
-          category: {
-            id: 1,
-            categoryName: "java"
-          },
-          user: {
-            nickname: "apple",
-            avatar: "/image/avatar.jpg"
-          }
+      searchArticleParam: {
+        keyword: "",
+        cid: 0,
+        tagID: 0,
+        order: 0,
+        searchType: 0,
+        page: {
+          offset: 1,
+          limit: 10,
+          total: 0
         },
-        {
-          id: 2,
-          backgroundImg: "/image/20221122113917.jpg",
-          title: "测试文章标题2",
-          abstract: "测试文章描述2",
-          createTime: "2023-01-01 12:23:34",
-          viewCount: 10,
-          collectCount: 20,
-          likeCount: 30,
-          category: {
-            id: 2,
-            categoryName: "java"
-          },
-          user: {
-            nickname: "apple",
-            avatar: "/image/avatar.jpg"
-          }
-        }
-      ]
+      },
+      page: {
+        offset: 1,
+        limit: 10,
+        total: 0
+      },
+      articles: []
+    }
+  },
+  created() {
+    this.searchArticle(this.searchArticleParam)
+  },
+  methods: {
+    async searchArticle(searchArticleParam) {
+      const res = await searchArticleList(searchArticleParam);
+      if (res) {
+        console.log("res:", res)
+        this.articles = res.articles
+        this.page = res.page
+      }
+    },
+    handleCurrChange(offset) {
+      let req = this.searchArticleParam
+      req.page.offset = offset
+      this.searchArticle(req);
+    },
+    // 选项切换触发 1:发布 2:更新
+    handleTabChange(order) {
+      let req = this.searchArticleParam
+      req.order = order
+      req.page = {offset: 1, limit: 10}
+      this.searchArticle(req)
     }
   }
 }

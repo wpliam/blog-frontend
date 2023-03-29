@@ -1,6 +1,6 @@
 <template>
   <div class="article-card flex">
-    <Picture :background-img="article.backgroundImg"></Picture>
+    <Picture :background-img="article.cover"></Picture>
     <div class="article-info">
       <div>
         <a class="a-title text-ellipsis" @click.prevent="readArticle(article)">
@@ -13,16 +13,16 @@
       <div class="a-other flex-between-center">
         <div class="a-meta flex center">
           <a class="a-user flex center" @click.prevent="userCenter(1)">
-            <el-avatar :src="article.user.avatar" :size="20"></el-avatar>
-            <span class="nickname ml05">{{ article.user.nickname }}</span>
+            <el-avatar :src="article.avatar" :size="20"></el-avatar>
+            <span class="nickname ml05">{{ article.nickname }}</span>
           </a>
           <div class="a-date">
             {{ article.createTime|computeDate }}
           </div>
         </div>
-        <a @click.prevent="goClassResult(article.category.id,0)">
+        <a @click.prevent="goClassResult(article.cid,0)">
           <svg-icon icon-class="category"/>
-          {{ article.category.categoryName }}
+          {{ article.categoryName }}
         </a>
       </div>
     </div>
@@ -40,18 +40,16 @@ export default {
       type: Object,
       default() {
         return {
-          backgroundImg: "",
+          cover: "",
           title: "",
           abstract: "",
           createTime: "",
-          viewCount: 0,
-          collectCount: 0,
-          likeCount: 0,
           category: {
-            id: 1,
+            id: 0,
             categoryName: ""
           },
           user: {
+            id: 0,
             nickname: "",
             avatar: ""
           }

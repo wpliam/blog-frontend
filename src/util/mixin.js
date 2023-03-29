@@ -13,11 +13,13 @@ export const globalMixin = {
     methods: {
         // 读取文章
         readArticle(article) {
+            if (!article) {
+                return
+            }
             let route = this.$router.resolve({
                 name: "ReadArticle",
                 query: {
                     articleID: article.id,
-                    userID: article.userID
                 }
             })
             let target = "_blank"

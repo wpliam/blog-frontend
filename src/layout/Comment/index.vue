@@ -29,7 +29,7 @@
       </div>
       <Logged v-if="!hasLogin"></Logged>
       <div class="msg-comments" ref="list-dom">
-        <div class="comment-show" v-if="comments.length > 0">
+        <div class="comment-show" v-if="comments">
           <ul>
             <li class="comment-item" v-for="(root,index) in comments" :key="root.id">
               <div class="root-comment flex">
@@ -40,7 +40,7 @@
                   <div class="comment-header flex-between-center">
                     <a href="#" class="i-user">{{ root.user.nickname }}</a>
                     <div class="i-time">
-                      {{ root.createTime }}
+                      {{ root.createTime|timeLayout }}
                     </div>
                   </div>
                   <div class="comment-content">
@@ -71,7 +71,7 @@
                     <div class="comment-header flex-between-center">
                       <a href="#" class="i-user">{{ sub.user.nickname }}</a>
                       <div class="i-time">
-                        {{ sub.createTime }}
+                        {{ sub.createTime|timeLayout }}
                       </div>
                     </div>
                     <div class="comment-content">
@@ -109,9 +109,11 @@ export default {
   components: {Logged},
   inject: ["reload"],
   props: {
-    articleID: {
-      type: Number,
-      default: 0
+    comments: {
+      type: Array,
+      default() {
+        return []
+      }
     }
   },
   data() {
@@ -119,16 +121,6 @@ export default {
       isRespond: false,
       user: {},
       content: "",
-      comments: [
-        {
-          user: {
-            nickname: "apple",
-            avatar: "/image/avatar.jpg"
-          },
-          content: "测试评论内容",
-          createTime: "2002-12-12 12:12:12"
-        }
-      ],
       replyInfo: {}
     }
   },
