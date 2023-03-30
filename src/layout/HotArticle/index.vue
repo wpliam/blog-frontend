@@ -10,7 +10,7 @@
       <li v-for="(article,index) in articles" :key="index" class="flex hot-item">
         <Picture :background-img="article.cover" :width="93" :height="65"></Picture>
         <div class="hot-content">
-          <a class="h-title text-ellipsis-2">
+          <a class="h-title text-ellipsis-2" @click.prevent="readArticle(article)">
             {{ article.title }}
           </a>
           <div class="h-other flex-between-center">

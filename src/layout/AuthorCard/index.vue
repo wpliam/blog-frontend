@@ -10,7 +10,13 @@
           <a class="nickname text-ellipsis" @click.prevent="userCenter(1)">{{ user.nickname }}</a>
         </div>
       </div>
-      <AuthorCount class="mt10" :need-fans="true"></AuthorCount>
+      <AuthorCount class="mt10"
+                   :need-fans="true"
+                   :article-count="user.articleCount"
+                   :comment-count="user.commentCount"
+                   :hot-count="user.hotCount"
+                   :fans-count="user.fansCount"
+      />
       <div class="describe">
         <span v-if="user.describe">{{ user.describe }}</span>
         <span v-else>这个人很懒,什么都没有说</span>
@@ -29,20 +35,34 @@
 import Follow from "@/components/Click/Follow";
 import Chat from "@/components/Click/Chat";
 import AuthorCount from "@/components/Click/AuthorCount";
+import {staticUserInfo} from "@/api/user";
 
 export default {
   name: "AuthorCard",
   components: {AuthorCount, Chat, Follow},
-  data() {
-    return {
-      user: {
-        avatar: "/image/avatar.jpg",
-        nickname: "苹果",
-        describe: "我不想介绍自己"
-      }
+  props: {
+    uid: {
+      type: Number,
+      default: 0
     }
   },
-  methods: {}
+  data() {
+    return {
+      user: {}
+    }
+  },
+  created() {
+    this.staticUserInfo()
+  },
+  methods: {
+    async staticUserInfo() {
+      console.log("uid:", this.uid)
+      const res = await staticUserInfo(this.uid);
+      if (res) {
+        this.user = res.user
+      }
+    }
+  }
 }
 </script>
 

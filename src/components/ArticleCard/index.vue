@@ -20,7 +20,7 @@
             {{ article.createTime|computeDate }}
           </div>
         </div>
-        <a @click.prevent="goClassResult(article.cid,0)">
+        <a @click.prevent="goClassResult(article.cid,article.categoryName,0)">
           <svg-icon icon-class="category"/>
           {{ article.categoryName }}
         </a>

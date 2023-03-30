@@ -3,7 +3,8 @@ import Vue from 'vue'
 import Enroll from '@/components/Enroll'
 import store from "@/store";
 import {Message} from "element-ui";
-import {getToken} from "@/util/storage";
+import {getToken, localUserInfo} from "@/util/storage";
+import {refreshToken} from "@/api/user";
 
 const service = axios.create({
     baseURL: store.state.requestURL,
@@ -29,6 +30,13 @@ service.interceptors.response.use(
         const code = response.data.code || 0
         const msg = response.data.msg
         if (code === 401) {
+            let user = localUserInfo();
+            let token = getToken()
+            if (user && token) {
+                refreshToken(token, user).then(res => {
+                    console.log("refresh token res:", res)
+                })
+            }
             const EnrollBox = Vue.extend(Enroll)
             let instance = new EnrollBox().$mount()
             instance.withName("Login")

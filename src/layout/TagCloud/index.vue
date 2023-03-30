@@ -52,7 +52,7 @@ export default {
       }
     },
     wordClickHandler(name, value, vm) {
-      this.goClassResult(value, 1)
+      this.goClassResult(value, name, 1)
     }
   },
 }

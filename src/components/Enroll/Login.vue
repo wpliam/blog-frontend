@@ -26,6 +26,7 @@
 
 <script>
 import {setUserInfo} from "@/util/storage";
+import {login} from "@/api/user";
 
 export default {
   name: "Login",
@@ -56,22 +57,18 @@ export default {
     }
   },
   methods: {
-    login() {
-      if (this.loginForm.username === "admin" && this.loginForm.password === "123456") {
+    async login() {
+      const res = await login(this.loginForm.username, this.loginForm.password);
+      if (res) {
         let userInfo = {
-          token: "111",
-          user: {
-            id: 1,
-            avatar: "/image/avatar.jpg",
-            nickname: "苹果",
-            describe: "我不想介绍自己"
-          }
+          token: res.token,
+          user: res.user
         }
         setUserInfo(userInfo)
         this.refreshCurrRoute()
-        return
+      } else {
+        console.log("用户名或密码错误")
       }
-      this.$message.error("用户名或密码错误")
     }
   }
 }

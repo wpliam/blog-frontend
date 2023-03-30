@@ -9,13 +9,15 @@
           </div>
         </Picture>
         <div class="category-content">
-          <a class="category-name" @click.prevent="goClassResult(item.id,0)">{{ item.categoryName }}</a>
+          <a class="category-name" @click.prevent="goClassResult(item.cid,item.categoryName,0)">
+            {{ item.categoryName }}
+          </a>
           <div class="category-meta flex-between-center">
             <span class="count">
               <i class="el-icon-document"></i>
               共{{ item.total }}篇文章
             </span>
-            <a class="more" @click.prevent="goClassResult(item.id,0)">
+            <a class="more" @click.prevent="goClassResult(item.cid,item.categoryName,0)">
               <i class="el-icon-arrow-right"></i>
               更多文章
             </a>
@@ -24,7 +26,7 @@
       </div>
       <ul class="mt20">
         <li class="c-article-item flex-between-center" v-for="(article,idx) in item.articles" :key="idx">
-          <a class="c-article-title text-ellipsis">
+          <a class="c-article-title text-ellipsis" @click.prevent="readArticle(article)">
             {{ article.title }}
           </a>
           <div class="c-article-date">

@@ -59,7 +59,7 @@
           </div>
           <div class="r-actions">
             <div class="flex">
-              <a class="post-like action" @click.prevent="giveLike">
+              <a class="post-like action" @click.prevent="giveThumb">
                 <div v-if="isLike" class="flex-column-center">
                   <svg-icon icon-class="like-red"/>
                   <span class="post-btn" style="color: #d81e06">已赞 {{ article.likeCount }}</span>
@@ -120,7 +120,7 @@
         </Comment>
       </div>
       <div class="right-aside">
-        <AuthorCard></AuthorCard>
+        <AuthorCard :uid="uid"></AuthorCard>
         <Lovely class="mt20"></Lovely>
       </div>
     </div>
@@ -136,6 +136,7 @@ import Recommend from "@/layout/Carousel/Recommend";
 import AuthorCard from "@/layout/AuthorCard";
 import Lovely from "@/layout/Lovely";
 import {readArticle} from "@/api/article";
+import {giveThumb} from "@/api/shared";
 
 export default {
   name: "ReadArticle",
@@ -143,6 +144,7 @@ export default {
   data() {
     return {
       articleID: parseInt(this.$route.query.articleID.toString()),
+      uid: parseInt(this.$route.query.uid.toString()),
       isLike: false,
       isCollect: false,
       article: {},
@@ -177,8 +179,9 @@ export default {
         }
       }
     },
-    giveLike() {
-      this.isLike = !this.isLike
+    async giveThumb() {
+      const res = await giveThumb();
+      console.log("giveThumb res:", res)
     },
     giveCollect() {
       this.isCollect = !this.isCollect

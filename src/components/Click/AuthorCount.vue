@@ -1,34 +1,34 @@
 <template>
   <div class="count-container">
     <a class="count-article count-base">
-      <el-tooltip effect="dark" :content="`共${10}篇文章`" placement="top">
+      <el-tooltip effect="dark" :content="`共${articleCount}篇文章`" placement="top">
         <span>
           <svg-icon icon-class="article"/>
-          <span class="ml02">10</span>
+          <span class="ml02">{{ articleCount }}</span>
         </span>
       </el-tooltip>
     </a>
     <a class="count-comment count-base">
-      <el-tooltip effect="dark" :content="`共${10}条评论`" placement="top">
+      <el-tooltip effect="dark" :content="`共${commentCount}条评论`" placement="top">
         <span>
           <svg-icon icon-class="comment"/>
-          <span class="ml02">10</span>
+          <span class="ml02">{{ commentCount }}</span>
         </span>
       </el-tooltip>
     </a>
     <a class="count-hot count-base">
-      <el-tooltip effect="dark" :content="`人气值${10}`" placement="top">
+      <el-tooltip effect="dark" :content="`人气值${hotCount}`" placement="top">
         <span>
           <svg-icon icon-class="hot"/>
-          <span class="ml02">10</span>
+          <span class="ml02">{{ hotCount }}</span>
         </span>
       </el-tooltip>
     </a>
     <a class="count-fans count-base" v-if="needFans">
-      <el-tooltip effect="dark" :content="`共${10}个粉丝`" placement="top">
+      <el-tooltip effect="dark" :content="`共${fansCount}个粉丝`" placement="top">
         <span>
           <svg-icon icon-class="solid-follow"/>
-          <span class="ml02">10</span>
+          <span class="ml02">{{ fansCount }}</span>
         </span>
       </el-tooltip>
     </a>
@@ -42,6 +42,22 @@ export default {
     needFans: {
       type: Boolean,
       default: false
+    },
+    articleCount: {
+      type: Number,
+      default: 0
+    },
+    hotCount: {
+      type: Number,
+      default: 0
+    },
+    commentCount: {
+      type: Number,
+      default: 0
+    },
+    fansCount: {
+      type: Number,
+      default: 0
     }
   }
 }

@@ -10,7 +10,11 @@
         </div>
       </div>
       <ClockIn title="签到领取今日奖励"></ClockIn>
-      <AuthorCount class="author-count"></AuthorCount>
+      <AuthorCount class="author-count"
+                   :article-count="user.articleCount"
+                   :comment-count="user.commentCount"
+                   :hot-count="user.hotCount"
+      />
       <div class="user-btn">
         <div class="flex">
           <a class="flex-column-center blue-color" @click.prevent="userCenter(0)">
@@ -54,34 +58,42 @@
 import FastLogin from "@/components/FastLogin";
 import ClockIn from "@/components/Click/ClockIn";
 import AuthorCount from "@/components/Click/AuthorCount";
-import {removeUserInfo} from "@/util/storage";
+import {localUserInfo, removeUserInfo} from "@/util/storage";
+import {logout, staticUserInfo} from "@/api/user";
 
 export default {
   name: "UserCard",
   components: {AuthorCount, ClockIn, FastLogin},
   data() {
     return {
-      user: {
-        avatar: "/image/avatar.jpg",
-        nickname: "苹果",
-        describe: "我不想介绍自己"
-      }
+      user: {}
+    }
+  },
+  created() {
+    let userInfo = localUserInfo();
+    if (this.hasLogin && userInfo) {
+      this.staticUserInfo(userInfo.id)
     }
   },
   methods: {
+    async staticUserInfo(uid) {
+      const res = await staticUserInfo(uid);
+      if (res) {
+        this.user = res.user
+      }
+    },
     logout() {
       this.$confirm("确定退出登录?", '提示', {
         confirmButtonText: "确定",
         cancelButtonText: "取消",
         type: "warning"
       }).then(() => {
+        logout()
         removeUserInfo()
-        this.$message.success("退出成功")
         this.refreshCurrRoute()
       }).catch(() => {
 
       })
-
     }
   }
 }

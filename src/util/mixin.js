@@ -20,6 +20,7 @@ export const globalMixin = {
                 name: "ReadArticle",
                 query: {
                     articleID: article.id,
+                    uid: article.uid,
                 }
             })
             let target = "_blank"
@@ -54,11 +55,12 @@ export const globalMixin = {
             window.open(route.href, target)
         },
         // t=0分类 t=1 标签
-        goClassResult(id, contentType = 0) {
+        goClassResult(id, name, contentType) {
             let route = this.$router.resolve({
                 name: "ClassResult",
                 query: {
                     id: id,
+                    name: name,
                     contentType: contentType
                 }
             })

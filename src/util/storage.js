@@ -12,7 +12,7 @@ export function getToken() {
 export function localUserInfo() {
     let userInfo = localStorage.getItem(authKey);
     if (userInfo) {
-        return JSON.parse(userInfo)
+        return JSON.parse(userInfo).user
     }
     return {}
 }

@@ -6,23 +6,25 @@
         <div class="content-title">
           <svg-icon v-if="contentType===0" icon-class="category"/>
           <svg-icon v-if="contentType===1" icon-class="tag"/>
-          <span class="content-name">教程分享</span>
-          <span class="content-count">共23篇</span>
+          <span class="content-name">{{ name }}</span>
+          <span class="content-count">共{{ page.total }}篇</span>
         </div>
       </div>
       <div class="class-result">
-        <div class="result-list" v-if="articles.length > 0">
+        <div class="result-list" v-if="articles">
           <ArticleCard v-for="(article,index) in articles" :key="index" :article="article"
                        class="mt10 base-card result-item">
           </ArticleCard>
         </div>
-        <el-empty v-if="articles.length === 0" description="暂无相关文章"></el-empty>
+        <el-empty v-else description="暂无相关文章"></el-empty>
         <el-pagination
             class="page"
             background
             hide-on-single-page
+            @current-change="handleCurrChange"
+            :current-page="page.offset"
             layout="prev, pager, next"
-            :total="20">
+            :total="page.total">
         </el-pagination>
       </div>
     </div>
@@ -35,6 +37,7 @@
 import Nav from "@/layout/Nav";
 import FootWaveLine from "@/layout/Footer/FootWaveLine";
 import ArticleCard from "@/components/ArticleCard";
+import {searchArticleList} from "@/api/article";
 
 export default {
   name: "ClassResult",
@@ -42,46 +45,50 @@ export default {
   data() {
     return {
       id: parseInt(this.$route.query.id.toString()),
+      name: this.$route.query.name,
       contentType: parseInt(this.$route.query.contentType.toString()),
-      articles: [
-        {
-          id: 1,
-          backgroundImg: "/image/20221122113917.jpg",
-          title: "测试文章标题",
-          abstract: "测试文章描述",
-          createTime: "2023-01-01 12:23:34",
-          viewCount: 1,
-          collectCount: 2,
-          likeCount: 3,
-          category: {
-            id: 1,
-            categoryName: "java"
-          },
-          user: {
-            nickname: "apple",
-            avatar: "/image/avatar.jpg"
-          }
+      searchArticleParam: {
+        keyword: "",
+        cid: 0,
+        tagID: 0,
+        order: 0,
+        searchType: 0,
+        page: {
+          offset: 1,
+          limit: 10,
+          total: 0
         },
-        {
-          id: 2,
-          backgroundImg: "/image/20221122113917.jpg",
-          title: "测试文章标题2",
-          abstract: "测试文章描述2",
-          createTime: "2023-01-01 12:23:34",
-          viewCount: 10,
-          collectCount: 20,
-          likeCount: 30,
-          category: {
-            id: 2,
-            categoryName: "java"
-          },
-          user: {
-            nickname: "apple",
-            avatar: "/image/avatar.jpg"
-          }
-        }
-      ]
+      },
+      page: {
+        offset: 1,
+        limit: 10,
+        total: 0
+      },
+      articles: []
     }
+  },
+  created() {
+    this.searchArticle()
+  },
+  methods: {
+    async searchArticle() {
+      if (this.contentType === 0) {
+        this.searchArticleParam.cid = this.id
+      }
+      if (this.contentType === 1) {
+        this.searchArticleParam.tagID = this.id
+      }
+      const res = await searchArticleList(this.searchArticleParam);
+      if (res) {
+        this.page = res.page
+        this.articles = res.articles
+      }
+    },
+    handleCurrChange(offset) {
+      let req = this.searchArticleParam
+      req.page.offset = offset
+      this.searchArticle(req);
+    },
   }
 }
 </script>
