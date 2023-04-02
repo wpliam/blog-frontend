@@ -21,8 +21,8 @@
                 <svg-icon icon-class="comment"/>
                 <span> 评论 {{ commentCount }}</span>
               </a>
-              <a class="ml10 h-count" @click.prevent="giveCollect">
-                <div v-if="isCollect">
+              <a class="ml10 h-count" @click.prevent="giveCollect(articleID)">
+                <div v-if="article.isCollect">
                   <svg-icon icon-class="collect-red"/>
                   <span style="color: #d81e06"> 已收藏 {{ article.collectCount }}</span>
                 </div>
@@ -59,8 +59,8 @@
           </div>
           <div class="r-actions">
             <div class="flex">
-              <a class="post-like action" @click.prevent="giveThumb">
-                <div v-if="isLike" class="flex-column-center">
+              <a class="post-like action" @click.prevent="giveThumb(articleID,0)">
+                <div v-if="article.isLike" class="flex-column-center">
                   <svg-icon icon-class="like-red"/>
                   <span class="post-btn" style="color: #d81e06">已赞 {{ article.likeCount }}</span>
                 </div>
@@ -69,8 +69,8 @@
                   <span class="post-btn">点赞 {{ article.likeCount }}</span>
                 </div>
               </a>
-              <a class="post-collect action" @click.prevent="giveCollect">
-                <div v-if="isCollect" class="flex-column-center">
+              <a class="post-collect action" @click.prevent="giveCollect(articleID)">
+                <div v-if="article.isCollect" class="flex-column-center">
                   <svg-icon icon-class="collect-red" class-name="small-svg"/>
                   <span class="post-btn" style="color: #d81e06">已收藏 {{ article.collectCount }}</span>
                 </div>
@@ -136,7 +136,7 @@ import Recommend from "@/layout/Carousel/Recommend";
 import AuthorCard from "@/layout/AuthorCard";
 import Lovely from "@/layout/Lovely";
 import {readArticle} from "@/api/article";
-import {giveThumb} from "@/api/shared";
+import {addViewCount, giveCollect, giveThumb} from "@/api/shared";
 
 export default {
   name: "ReadArticle",
@@ -145,8 +145,6 @@ export default {
     return {
       articleID: parseInt(this.$route.query.articleID.toString()),
       uid: parseInt(this.$route.query.uid.toString()),
-      isLike: false,
-      isCollect: false,
       article: {},
       next: {},
       prev: {},
@@ -158,6 +156,7 @@ export default {
   },
   created() {
     this.getArticleInfo()
+    addViewCount(this.articleID)
   },
   methods: {
     async getArticleInfo() {
@@ -179,12 +178,20 @@ export default {
         }
       }
     },
-    async giveThumb() {
-      const res = await giveThumb();
-      console.log("giveThumb res:", res)
+    async giveThumb(id, likeType) {
+      const res = await giveThumb(id, likeType);
+      if (res) {
+        this.article.isLike = res.isLike
+        this.article.likeCount = res.likeCount
+      }
     },
-    giveCollect() {
-      this.isCollect = !this.isCollect
+    async giveCollect(id) {
+      const res = await giveCollect(id);
+      console.log("giveCollect res:", res)
+      if (res) {
+        this.article.isCollect = res.isCollect
+        this.article.collectCount = res.collectCount
+      }
     }
   }
 }

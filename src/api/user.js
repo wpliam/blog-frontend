@@ -1,4 +1,6 @@
 import request from "@/util/request";
+import axios from "axios";
+import store from "@/store";
 
 // 登录
 export function login(username, password) {
@@ -19,18 +21,20 @@ export function logout() {
     })
 }
 
-export function refreshToken(token, uid) {
-    return request({
-        url: "/api/refresh_token",
-        date: {
-            token, uid
-        }
-    })
-}
-
 export function staticUserInfo(uid) {
     return request({
         url: `/api/static_user_info/${uid}`,
         method: "get"
     })
+}
+
+export function getUserInfo(uid) {
+    return request({
+        url: `/api/get_user_info/${uid}`,
+        method: "get"
+    })
+}
+
+export function refreshToken(uid, token) {
+    return axios.post(store.state.requestURL + "/api/refresh_token", {uid: uid, token: token})
 }

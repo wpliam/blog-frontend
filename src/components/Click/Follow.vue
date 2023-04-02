@@ -1,6 +1,6 @@
 <template>
-  <a class="follow click-btn" @click.prevent="giveFollow">
-    <span v-if="isFollow">
+  <a class="follow click-btn" @click.prevent="giveFollow(authorID)">
+    <span v-if="$store.getters.getFollow">
       <svg-icon icon-class="solid-follow"/>
       已关注
     </span>
@@ -12,16 +12,25 @@
 </template>
 
 <script>
+import {giveFollow} from "@/api/shared";
+
 export default {
   name: "Follow",
-  data() {
-    return {
-      isFollow: false
+  props: {
+    authorID: {
+      type: Number,
+      default: 0
     }
   },
+  data() {
+    return {}
+  },
   methods: {
-    giveFollow() {
-      this.isFollow = !this.isFollow
+    async giveFollow(authorID) {
+      const res = await giveFollow(authorID);
+      if (res) {
+        this.$store.commit("setFollow", res.isFollow)
+      }
     }
   }
 }

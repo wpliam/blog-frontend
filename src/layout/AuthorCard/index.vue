@@ -7,24 +7,20 @@
       <el-avatar :src="user.avatar" :size="80"></el-avatar>
       <div class="line">
         <div class="flex">
-          <a class="nickname text-ellipsis" @click.prevent="userCenter(1)">{{ user.nickname }}</a>
+          <a class="nickname text-ellipsis" @click.prevent="userCenter(1,uid)">{{ user.nickname }}</a>
         </div>
       </div>
       <AuthorCount class="mt10"
-                   :need-fans="true"
-                   :article-count="user.articleCount"
-                   :comment-count="user.commentCount"
-                   :hot-count="user.hotCount"
-                   :fans-count="user.fansCount"
-      />
+                   :uid="uid"
+                   :need-fans="true"/>
       <div class="describe">
         <span v-if="user.describe">{{ user.describe }}</span>
         <span v-else>这个人很懒,什么都没有说</span>
       </div>
     </div>
-    <div class="author-action">
+    <div class="author-action" v-if="!youSelf(uid)">
       <div class="flex">
-        <Follow class="mr05"></Follow>
+        <Follow class="mr05" :authorID="uid"></Follow>
         <Chat class="ml05"></Chat>
       </div>
     </div>
@@ -35,7 +31,7 @@
 import Follow from "@/components/Click/Follow";
 import Chat from "@/components/Click/Chat";
 import AuthorCount from "@/components/Click/AuthorCount";
-import {staticUserInfo} from "@/api/user";
+import {getUserInfo} from "@/api/user";
 
 export default {
   name: "AuthorCard",
@@ -48,21 +44,18 @@ export default {
   },
   data() {
     return {
-      user: {}
+      user: {},
     }
   },
   created() {
-    this.staticUserInfo()
-  },
-  methods: {
-    async staticUserInfo() {
-      console.log("uid:", this.uid)
-      const res = await staticUserInfo(this.uid);
+    getUserInfo(this.uid).then(res => {
       if (res) {
         this.user = res.user
+        this.$store.commit("setFollow", res.isFollow)
       }
-    }
-  }
+    })
+  },
+  methods: {}
 }
 </script>
 

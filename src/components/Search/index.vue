@@ -12,12 +12,12 @@
       <template slot-scope="{ item }">
         <div class="flex-between-center">
           <p class="text-ellipsis">{{ item.title }}</p>
-          <p>10人搜索过</p>
+          <!--          <p>10人搜索过</p>-->
         </div>
       </template>
       <el-button slot="append" icon="el-icon-search" @click="goSearch(keyword)"></el-button>
     </el-autocomplete>
-    <div class="hot-search mt20" v-if="hotList.length > 0">
+    <div class="hot-search mt20" v-if="hotList.length>0">
       <p class="muted">热门搜索</p>
       <div class="tags">
         <el-tag
@@ -31,7 +31,7 @@
         </el-tag>
       </div>
     </div>
-    <div class="history-search mt20" v-if="historyList.length > 0">
+    <div class="history-search mt20" v-if="historyList.length>0">
       <div class="flex-between-center">
         <p class="muted">历史搜索</p>
         <a @click.prevent="clearHistoryList"><i class="el-icon-delete"></i></a>
@@ -53,6 +53,8 @@
 
 <script>
 
+import {searchArticleList} from "@/api/article";
+
 export default {
   name: "Search",
   props: {
@@ -65,7 +67,7 @@ export default {
     return {
       keyword: "", // 搜索的值
       hotList: ["测试一", "测试二", "测试三"], // 热门搜索列表
-      historyList: ["aaa"], // 历史搜索列表
+      historyList: [], // 历史搜索列表
     }
   },
   created() {
@@ -82,11 +84,28 @@ export default {
   },
   methods: {
     // 获取搜索列表,根据输入的值调用后台接口查询,cb将搜索到的结果回调
-    querySearch(queryStr, cb) {
-
+    querySearch(queryStr, callback) {
+      let req = {
+        keyword: queryStr,
+        cid: 0,
+        tagID: 0,
+        order: 0,
+        searchType: 0,
+        page: {
+          offset: 1,
+          limit: 10,
+          total: 0
+        },
+      }
+      searchArticleList(req).then(res => {
+        if (res && res.articles) {
+          callback(res.articles)
+        }
+      })
     },
     // 搜索框选中之后,将选中的值赋值给searchVal
     handleAutoSelect(item) {
+      console.log("handleAutoSelect title:", item.title)
       this.keyword = item.title
       this.goSearch(item.title)
     },
@@ -104,9 +123,9 @@ export default {
       }
       this.historyList.unshift(keyword)
       localStorage.setItem("historyList", JSON.stringify(this.historyList))
+      let target = "_blank"
       if (this.$route.name === "SearchResult") {
-        this.$emit("searchArticle", {keyword: keyword})
-        return
+        target = "_self"
       }
       let route = this.$router.resolve({
         name: "SearchResult",
@@ -114,8 +133,6 @@ export default {
           keyword: keyword
         }
       })
-      // let target = "_blank"
-      let target = "_self"
       window.open(route.href, target)
     },
     // 清理历史记录

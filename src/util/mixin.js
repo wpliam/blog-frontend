@@ -2,12 +2,12 @@ import router from "@/router";
 import store from "@/store";
 import Enroll from "@/components/Enroll"
 import Vue from "vue";
-import {isLogin} from "@/util/storage";
+import {getToken, localUserInfo} from "@/util/storage";
 
 export const globalMixin = {
     data() {
         return {
-            hasLogin: isLogin()
+            hasLogin: !!getToken()
         }
     },
     methods: {
@@ -92,6 +92,17 @@ export const globalMixin = {
             alpha = alpha < "0.5" ? "0.8" : alpha
             color += alpha + ")"
             return color
+        },
+        // 判断当前登录用户是不是作者自己
+        youSelf(authorID) {
+            if (authorID === 0) {
+                return false
+            }
+            let user = localUserInfo();
+            if (!user) {
+                return false
+            }
+            return user.id === authorID
         }
     }
 }

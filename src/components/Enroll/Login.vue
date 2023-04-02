@@ -25,7 +25,7 @@
 </template>
 
 <script>
-import {setUserInfo} from "@/util/storage";
+import {setToken, setUserInfo} from "@/util/storage";
 import {login} from "@/api/user";
 
 export default {
@@ -60,11 +60,8 @@ export default {
     async login() {
       const res = await login(this.loginForm.username, this.loginForm.password);
       if (res) {
-        let userInfo = {
-          token: res.token,
-          user: res.user
-        }
-        setUserInfo(userInfo)
+        setToken(res.token)
+        setUserInfo(res.user)
         this.refreshCurrRoute()
       } else {
         console.log("用户名或密码错误")

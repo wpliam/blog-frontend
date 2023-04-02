@@ -4,7 +4,6 @@ import Enroll from '@/components/Enroll'
 import store from "@/store";
 import {Message} from "element-ui";
 import {getToken, localUserInfo} from "@/util/storage";
-import {refreshToken} from "@/api/user";
 
 const service = axios.create({
     baseURL: store.state.requestURL,
@@ -33,15 +32,13 @@ service.interceptors.response.use(
             let user = localUserInfo();
             let token = getToken()
             if (user && token) {
-                refreshToken(token, user).then(res => {
-                    console.log("refresh token res:", res)
-                })
+
             }
             const EnrollBox = Vue.extend(Enroll)
             let instance = new EnrollBox().$mount()
             instance.withName("Login")
             document.body.appendChild(instance.$el)
-            return Promise.reject("无效的会话,或者会话已过期,请登录.")
+            return Promise.reject(msg)
         } else if (code === 500) {
             Message({
                 message: msg,

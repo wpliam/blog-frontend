@@ -33,5 +33,6 @@ export default {
 <style lang="less">
 #app {
   background: rgba(242, 244, 245, .9);
+  min-height: 100vh;
 }
 </style>

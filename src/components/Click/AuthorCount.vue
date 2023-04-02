@@ -36,6 +36,8 @@
 </template>
 
 <script>
+import {staticUserInfo} from "@/api/user";
+
 export default {
   name: "AuthorCount",
   props: {
@@ -43,21 +45,33 @@ export default {
       type: Boolean,
       default: false
     },
-    articleCount: {
+    uid: {
       type: Number,
       default: 0
-    },
-    hotCount: {
-      type: Number,
-      default: 0
-    },
-    commentCount: {
-      type: Number,
-      default: 0
-    },
-    fansCount: {
-      type: Number,
-      default: 0
+    }
+  },
+  data() {
+    return {
+      articleCount: 0,
+      commentCount: 0,
+      hotCount: 0,
+      fansCount: 0
+    }
+  },
+  created() {
+    if (this.uid > 0) {
+      this.staticUserInfo(this.uid)
+    }
+  },
+  methods: {
+    async staticUserInfo(uid) {
+      const res = await staticUserInfo(uid);
+      if (res) {
+        this.articleCount = res.articleCount
+        this.commentCount = res.commentCount
+        this.hotCount = res.hotCount
+        this.fansCount = res.fansCount
+      }
     }
   }
 }

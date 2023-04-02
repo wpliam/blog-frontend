@@ -4,71 +4,75 @@
     <div class="base-line-layout">
       <div class="user-header base-card">
         <div class="user-cover">
-          <img :src="user.cover" alt="" class="user-bg">
-          <div v-if="role==='1'" class="bg-count flex center">
-            <el-tooltip effect="dark" :content="`人气值${10}`" placement="top">
+          <img :src="userBaseInfo.cover" alt="" class="user-bg">
+          <div v-if="role===1" class="bg-count flex center">
+            <el-tooltip effect="dark" :content="`人气值${userCountInfo.hotCount}`" placement="top">
               <span>
                 <svg-icon icon-class="hot"/>
-                <span class="count">10</span>
+                <span class="count">{{ userCountInfo.hotCount }}</span>
               </span>
             </el-tooltip>
-            <el-tooltip effect="dark" :content="`获得${10}个点赞`" placement="top" style="margin: 0 10px">
+            <el-tooltip effect="dark" :content="`获得${userCountInfo.likeCount}个点赞`" placement="top"
+                        style="margin: 0 10px">
               <span class="count">
                 <svg-icon icon-class="like"/>
-                <span class="count">10</span>
+                <span class="count">{{ userCountInfo.likeCount }}</span>
               </span>
             </el-tooltip>
-            <el-tooltip effect="dark" :content="`共${10}个粉丝`" placement="top">
+            <el-tooltip effect="dark" :content="`共${userCountInfo.fansCount}个粉丝`" placement="top">
               <span class="count">
                 <svg-icon icon-class="fans"/>
-                <span class="count">10</span>
+                <span class="count">{{ userCountInfo.fansCount }}</span>
               </span>
             </el-tooltip>
           </div>
         </div>
         <div class="header-content base-layout">
           <div class="h-left">
-            <el-avatar shape="square" :size="100" :src="user.avatar" style="margin-top: -60px"></el-avatar>
+            <el-avatar shape="square" :size="100" :src="userBaseInfo.avatar" style="margin-top: -60px"></el-avatar>
             <div class="user-info">
-              <a class="nickname">{{ user.nickname }}</a>
-              <p class="user-desc mt05">{{ user.desc }}</p>
+              <a class="nickname">{{ userBaseInfo.nickname }}</a>
+              <p class="user-desc mt05">
+                <span v-if="userBaseInfo.desc">{{ userBaseInfo.desc }}</span>
+                <span v-else>这个人很懒,什么都没有写</span>
+              </p>
             </div>
           </div>
           <div class="h-right">
-            <div v-if="role==='0'">
+            <div v-if="role===0">
               <ClockIn ref="child" @click.native="$refs.child.clockIn()"></ClockIn>
             </div>
-            <div v-if="role==='1'">
-              <a v-if="youSelf" class="user-center-btn" @click.prevent="userCenter(0)">
+            <div v-if="role===1">
+              <a v-if="youSelf(uid)" class="user-center-btn" @click.prevent="userCenter(0,uid)">
                 <svg-icon icon-class="user"/>
                 <span>用户中心</span>
               </a>
               <div v-else>
-                <Follow class="mr05"></Follow>
+                <Follow class="mr05" :authorID="uid"></Follow>
                 <Chat class="ml05"></Chat>
               </div>
             </div>
           </div>
         </div>
       </div>
-      <div class="user-content" v-if="role === '0'">
+      <div class="user-content" v-if="role === 0">
         <div class="c-left">
           <el-card>
             <div class="user-count">
               <a class="flex-column-center">
-                <div class="count">0</div>
+                <div class="count">{{ userCountInfo.articleCount }}</div>
                 <div class="name">文章</div>
               </a>
               <a class="flex-column-center">
-                <div class="count">0</div>
+                <div class="count">{{ userCountInfo.commentCount }}</div>
                 <div class="name">评论</div>
               </a>
               <a class="flex-column-center">
-                <div class="count">0</div>
+                <div class="count">{{ userCountInfo.collectCount }}</div>
                 <div class="name">收藏</div>
               </a>
               <a class="flex-column-center">
-                <div class="count">1888</div>
+                <div class="count">{{ userCountInfo.fansCount }}</div>
                 <div class="name">粉丝</div>
               </a>
             </div>
@@ -77,19 +81,45 @@
         <div class="c-right">
           <el-tabs type="border-card">
             <el-tab-pane label="个人资料">
-              <Personal></Personal>
+              <div class="personal-box">
+                <div class="base-info">
+                  <div class="flex-between-center personal-title">
+                    <span>基本资料</span>
+                    <div>
+                      <el-button @click.prevent="edit" v-if="disabled" type="text">编辑</el-button>
+                      <el-button @click.prevent="save" v-else type="text">保存</el-button>
+                    </div>
+                  </div>
+                  <el-form ref="personalForm" :model="userBaseInfo" label-position="left" label-width="80px"
+                           :disabled="disabled">
+                    <el-form-item label="用户昵称" prop="nickname">
+                      <el-input v-model="userBaseInfo.nickname"></el-input>
+                    </el-form-item>
+                    <el-form-item label="用户id" prop="username">
+                      <el-input v-model="userBaseInfo.username" :readonly="true"></el-input>
+                    </el-form-item>
+                    <el-form-item label="性别">
+                      <el-radio v-model="userBaseInfo.sex" :label="0">男</el-radio>
+                      <el-radio v-model="userBaseInfo.sex" :label="1">女</el-radio>
+                    </el-form-item>
+                    <el-form-item label="个人简介" prop="desc">
+                      <el-input v-model="userBaseInfo.desc"></el-input>
+                    </el-form-item>
+                  </el-form>
+                </div>
+              </div>
             </el-tab-pane>
           </el-tabs>
         </div>
       </div>
-      <div class="author-content base-card" v-if="role === '1'">
+      <div class="author-content base-card" v-if="role === 1">
         <el-tabs v-model="activeName" @tab-click="handleClick">
           <el-tab-pane v-for="(tab,index) in option" :label="tab.label" :name="tab.name" :key="index">
             <div v-if="activeName==='article' || activeName==='collect'">
               <div v-if="articles.length > 0">
                 <ul class="article-content">
                   <li v-for="(article,index) in articles" :key="index">
-                    <img :src="article.backgroundImg" class="c-img" alt="">
+                    <img :src="article.cover" class="c-img" alt="">
                     <a class="text-ellipsis-2 c-title">{{ article.title }}</a>
                     <div class="flex-between-center mt10 c-option">
                       <div class="c-date">
@@ -97,7 +127,7 @@
                       </div>
                       <a>
                         <svg-icon icon-class="category"/>
-                        {{ article.category.categoryName }}
+                        {{ article.categoryName }}
                       </a>
                     </div>
                   </li>
@@ -109,7 +139,10 @@
                 background
                 hide-on-single-page
                 layout="prev, pager, next"
-                :total="page.total">
+                @current-change="handleCurrChange"
+                :current-page="searchArticleReq.page.offset"
+                :page-size="searchArticleReq.page.limit"
+                :total="searchArticleReq.page.total">
             </el-pagination>
             <el-empty v-if="emptyText" :description="emptyText"></el-empty>
           </el-tab-pane>
@@ -127,12 +160,12 @@ import Picture from "@/components/Picture";
 import ClockIn from "@/components/Click/ClockIn";
 import Follow from "@/components/Click/Follow";
 import Chat from "@/components/Click/Chat";
-import {localUserInfo} from "@/util/storage";
-import Personal from "@/layout/UserCard/Personal";
+import {getUserInfo, staticUserInfo} from "@/api/user";
+import {searchArticleList} from "@/api/article";
 
 export default {
   name: "UserCenter",
-  components: {Personal, Chat, Follow, ClockIn, Picture, FootWaveLine, Nav},
+  components: {Chat, Follow, ClockIn, Picture, FootWaveLine, Nav},
   computed: {
     emptyText() {
       if (this.articles.length === 0 && (this.activeName === 'article' || this.activeName === 'collect')) {
@@ -145,108 +178,33 @@ export default {
         return "暂无粉丝"
       }
       return ""
-    },
-    youSelf() {
-      let userInfo = localUserInfo();
-      if (userInfo && userInfo.user) {
-        return userInfo.user.id === parseInt(this.uid)
-      }
-      return false
     }
   },
   data() {
     return {
-      role: this.$route.query.role,
-      uid: this.$route.query.uid,
+      role: parseInt(this.$route.query.role.toString()),
+      uid: parseInt(this.$route.query.uid.toString()),
       activeName: "article",
-      articles: [
-        {
-          backgroundImg: "/image/20221122113917.jpg",
-          title: "测试文章标题",
-          abstract: "测试文章描述",
-          createTime: "2023-01-01 12:23:34",
-          viewCount: 1,
-          collectCount: 2,
-          likeCount: 3,
-          category: {
-            categoryName: "java"
-          },
-          user: {
-            nickname: "apple",
-            avatar: "/image/avatar.jpg"
-          }
-        },
-        {
-          backgroundImg: "/image/20221122113917.jpg",
-          title: "测试文章标题2",
-          abstract: "测试文章描述2",
-          createTime: "2023-01-01 12:23:34",
-          viewCount: 10,
-          collectCount: 20,
-          likeCount: 30,
-          category: {
-            categoryName: "java"
-          },
-          user: {
-            nickname: "apple",
-            avatar: "/image/avatar.jpg"
-          }
-        },
-        {
-          backgroundImg: "/image/20221122114204.jpg",
-          title: "测试文章标题2",
-          abstract: "测试文章描述2",
-          createTime: "2023-01-01 12:23:34",
-          viewCount: 10,
-          collectCount: 20,
-          likeCount: 30,
-          category: {
-            categoryName: "java"
-          },
-          user: {
-            nickname: "apple",
-            avatar: "/image/avatar.jpg"
-          }
-        },
-        {
-          backgroundImg: "/image/20221122114232.jpg",
-          title: "测试文章标题2",
-          abstract: "测试文章描述2",
-          createTime: "2023-01-01 12:23:34",
-          viewCount: 10,
-          collectCount: 20,
-          likeCount: 30,
-          category: {
-            categoryName: "java"
-          },
-          user: {
-            nickname: "apple",
-            avatar: "/image/avatar.jpg"
-          }
-        },
-        {
-          backgroundImg: "/image/20221122114232.jpg",
-          title: "测试文章标题2",
-          abstract: "测试文章描述2",
-          createTime: "2023-01-01 12:23:34",
-          viewCount: 10,
-          collectCount: 20,
-          likeCount: 30,
-          category: {
-            categoryName: "java"
-          },
-          user: {
-            nickname: "apple",
-            avatar: "/image/avatar.jpg"
-          }
-        }
-      ], // 文章
+      articles: [], // 文章
       comments: [], // 评论
       fans: [], // 粉丝
       page: {
         offset: 1,
         limit: 10,
-        total: 20
+        total: 0
+      },
+      searchArticleReq: {
+        keyword: "",
+        cid: 0,
+        uid: 0,
+        tagID: 0,
+        order: 0,
+        searchType: 0,
+        page: {
+          offset: 1,
+          limit: 10,
+          total: 0
+        },
       },
       option: [
         {
@@ -266,17 +224,61 @@ export default {
           name: "fans",
         }
       ],
-      user: {
-        cover: "/image/banner1.jpg",
-        avatar: "/image/avatar.jpg",
-        nickname: "apple",
-        desc: "我不想介绍自己"
-      },
+      disabled: true, // 编辑,保存开关
+      userBaseInfo: {}, // 用户基本信息
+      userCountInfo: {} // 用户计数信息
+    }
+  },
+  created() {
+    this.getUserInfo(this.uid)
+    this.staticUserInfo(this.uid)
+    // 查询的是作者信息,初始化时需要获取一下作者的文章信息
+    if (this.role === 1) {
+      this.searchArticleReq.uid = this.uid
+      this.searchArticleList(this.searchArticleReq)
     }
   },
   methods: {
+    async getUserInfo(uid) {
+      const res = await getUserInfo(uid);
+      if (res) {
+        this.userBaseInfo = res.user
+        this.$store.commit("setFollow", res.isFollow)
+        if (this.userBaseInfo.desc === "") {
+          this.userBaseInfo.desc = "这个人很懒,什么都没有写"
+        }
+        this.userBaseInfo.cover = "/image/banner1.jpg"
+      }
+    },
+    async staticUserInfo(uid) {
+      const res = await staticUserInfo(uid);
+      if (res) {
+        this.userCountInfo = res
+      }
+    },
+    // 搜索文章
+    async searchArticleList(req) {
+      const res = await searchArticleList(req);
+      if (res && res.articles) {
+        this.articles = res.articles
+        this.searchArticleReq.page = res.page
+      }
+    },
+    handleCurrChange(offset) {
+      let req = this.searchArticleReq
+      req.page.offset = offset
+      this.searchArticle(req);
+    },
     handleClick(tab, event) {
 
+    },
+    // 个人资料编辑按钮
+    edit() {
+      this.disabled = false
+    },
+    // 个人资料保存按钮
+    save() {
+      this.disabled = true
     }
   }
 }
@@ -378,6 +380,19 @@ export default {
 
     .c-right {
       width: 70%;
+
+      .border-card {
+        .personal-box {
+          .personal-title {
+            height: 40px;
+            line-height: 40px;
+            border-bottom: 1px solid #ebeef5;
+            margin-bottom: 20px;
+            font-size: 14px;
+            color: #999999;
+          }
+        }
+      }
     }
   }
 

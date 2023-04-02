@@ -1,7 +1,7 @@
 <template>
   <div class="home-container">
     <Nav></Nav>
-    <div class="home-content base-content-layout">
+    <div class="base-content-layout">
       <div class="left-aside">
         <Banner></Banner>
         <Category class="mt20"></Category>
@@ -32,7 +32,3 @@ export default {
   components: {TagCloud, Notice, HotArticle, FootWaveLine, ArticleList, Category, Banner, Nav}
 }
 </script>
-
-<style lang="less" scoped>
-
-</style>

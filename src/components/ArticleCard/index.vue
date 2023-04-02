@@ -12,7 +12,7 @@
       </div>
       <div class="a-other flex-between-center">
         <div class="a-meta flex center">
-          <a class="a-user flex center" @click.prevent="userCenter(1)">
+          <a class="a-user flex center" @click.prevent="userCenter(1,article.uid)">
             <el-avatar :src="article.avatar" :size="20"></el-avatar>
             <span class="nickname ml05">{{ article.nickname }}</span>
           </a>

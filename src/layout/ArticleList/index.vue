@@ -7,14 +7,14 @@
         <li class="opt-item icon-spot" @click.prevent="handleTabChange(1)">发布</li>
       </ul>
     </div>
-    <ArticleCard v-for="(article,index) in articles" :key="index" :article="article" class="base-card p15 mt10">
-    </ArticleCard>
+    <ArticleCard v-for="(article,index) in articles" :key="index" :article="article" class="base-card p15 mt10"/>
     <el-pagination
         class="page"
         background
         hide-on-single-page
         layout="prev, pager, next"
         @current-change="handleCurrChange"
+        :page-size="page.limit"
         :current-page="page.offset"
         :total="page.total">
     </el-pagination>
@@ -26,7 +26,7 @@ import ArticleCard from "@/components/ArticleCard";
 import {searchArticleList} from "@/api/article";
 
 export default {
-  name: "ArticleDetail",
+  name: "ArticleList",
   components: {ArticleCard},
   data() {
     return {
@@ -57,7 +57,6 @@ export default {
     async searchArticle(searchArticleParam) {
       const res = await searchArticleList(searchArticleParam);
       if (res) {
-        console.log("res:", res)
         this.articles = res.articles
         this.page = res.page
       }
@@ -123,11 +122,6 @@ export default {
       opacity: .3;
       vertical-align: 0.2em;
     }
-  }
-
-  .article-page {
-    margin-top: 15px;
-    text-align: center;
   }
 }
 </style>

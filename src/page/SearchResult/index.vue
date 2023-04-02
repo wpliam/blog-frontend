@@ -4,7 +4,7 @@
     <div class="base-line-layout">
       <div class="base-card search-frame">
         <div class="flex">
-          <Search style="width: 600px;overflow: hidden" @searchArticle="searchArticle" :value="keyword">
+          <Search style="width: 600px;overflow: hidden" :value="keyword">
           </Search>
         </div>
       </div>
@@ -19,22 +19,25 @@
           搜索
           <span class="highlight">{{ keyword }}</span>
           共找到
-          <span class="highlight">{{ count }}</span>
+          <span class="highlight">{{ searchArticleReq.page.total }}</span>
           篇文章
         </div>
-        <div class="search-article-list" v-if="articles.length > 0">
+        <div class="search-article-list" v-if="articles">
           <ArticleCard v-for="(article,index) in articles" :key="index" :article="article" :keyword="[keyword]"
                        class="mt10">
           </ArticleCard>
         </div>
-        <el-empty description="未找到相关文章" v-if="articles.length===0"></el-empty>
+        <el-empty description="未找到相关文章" v-else></el-empty>
       </div>
       <el-pagination
           class="page"
           background
           hide-on-single-page
           layout="prev, pager, next"
-          :total="20">
+          @current-change="handleCurrChange"
+          :current-page="searchArticleReq.page.offset"
+          :page-size="searchArticleReq.page.limit"
+          :total="searchArticleReq.page.total">
       </el-pagination>
     </div>
     <FootWaveLine></FootWaveLine>
@@ -46,6 +49,7 @@ import Nav from "@/layout/Nav";
 import FootWaveLine from "@/layout/Footer/FootWaveLine";
 import Search from "@/components/Search";
 import ArticleCard from "@/components/ArticleCard";
+import {searchArticleList} from "@/api/article";
 
 export default {
   name: "SearchResult",
@@ -55,95 +59,43 @@ export default {
       keyword: "",
       searchTab: ["文章"],
       activeIndex: 0,
+      searchArticleReq: {
+        keyword: "",
+        cid: 0,
+        tagID: 0,
+        order: 0,
+        searchType: 0,
+        page: {
+          offset: 1,
+          limit: 10,
+          total: 0
+        },
+      },
       count: 10,
-      articles: [
-        {
-          id: 2,
-          backgroundImg: "/image/20221122113917.jpg",
-          title: "测试文章标题",
-          abstract: "测试文章描述",
-          createTime: "2023-01-01 12:23:34",
-          viewCount: 1,
-          collectCount: 2,
-          likeCount: 3,
-          category: {
-            id: 1,
-            categoryName: "java"
-          },
-          user: {
-            nickname: "apple",
-            avatar: "/image/avatar.jpg"
-          }
-        },
-        {
-          id: 3,
-          backgroundImg: "/image/20221122113917.jpg",
-          title: "测试文章标题2",
-          abstract: "测试文章描述2",
-          createTime: "2023-01-01 12:23:34",
-          viewCount: 10,
-          collectCount: 20,
-          likeCount: 30,
-          category: {
-            id: 2,
-            categoryName: "java"
-          },
-          user: {
-            nickname: "apple",
-            avatar: "/image/avatar.jpg"
-          }
-        },
-        {
-          id: 4,
-          backgroundImg: "/image/20221122114204.jpg",
-          title: "测试文章标题2",
-          abstract: "测试文章描述2",
-          createTime: "2023-01-01 12:23:34",
-          viewCount: 10,
-          collectCount: 20,
-          likeCount: 30,
-          category: {
-            id: 4,
-            categoryName: "java"
-          },
-          user: {
-            nickname: "apple",
-            avatar: "/image/avatar.jpg"
-          }
-        },
-        {
-          id: 5,
-          backgroundImg: "/image/20221122114232.jpg",
-          title: "测试文章标题2",
-          abstract: "测试文章描述2",
-          createTime: "2023-01-01 12:23:34",
-          viewCount: 10,
-          collectCount: 20,
-          likeCount: 30,
-          category: {
-            id: 6,
-            categoryName: "java"
-          },
-          user: {
-            nickname: "apple",
-            avatar: "/image/avatar.jpg"
-          }
-        }
-      ]
+      articles: []
     }
   },
   created() {
     let keyword = this.$route.query.keyword
-    if (keyword) {
-      this.keyword = keyword
-    }
+    this.keyword = keyword
+    this.searchArticleReq.keyword = keyword
+    this.searchArticleList(this.searchArticleReq)
   },
   methods: {
     changeTab(index) {
       this.activeIndex = index
     },
-    searchArticle(item) {
-      this.keyword = item.keyword
+    handleCurrChange(offset) {
+      let req = this.searchArticleReq
+      req.page.offset = offset
+      this.searchArticleList(req);
+    },
+    async searchArticleList(req) {
+      const res = await searchArticleList(req);
+      if (res) {
+        this.articles = res.articles
+        this.searchArticleReq.page = res.page
+      }
     }
   }
 }
@@ -183,7 +135,7 @@ export default {
     .search-article-list {
       display: grid;
       grid-template-columns: auto auto;
-      grid-gap: 10px 20px;
+      grid-gap: 10px 30px;
       margin-top: 10px;
     }
   }

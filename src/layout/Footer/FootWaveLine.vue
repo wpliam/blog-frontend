@@ -1,5 +1,5 @@
 <template>
-  <div class="foot-wave-line ">
+  <div class="foot-wave-line">
     <div class="foot-content flex-between-center">
       <div class="my-face">
         稍微慢一点跳

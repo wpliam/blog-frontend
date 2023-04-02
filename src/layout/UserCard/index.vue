@@ -10,14 +10,10 @@
         </div>
       </div>
       <ClockIn title="签到领取今日奖励"></ClockIn>
-      <AuthorCount class="author-count"
-                   :article-count="user.articleCount"
-                   :comment-count="user.commentCount"
-                   :hot-count="user.hotCount"
-      />
+      <AuthorCount class="author-count" :uid="uid"/>
       <div class="user-btn">
         <div class="flex">
-          <a class="flex-column-center blue-color" @click.prevent="userCenter(0)">
+          <a class="flex-column-center blue-color" @click.prevent="userCenter(0,uid)">
             <span class="small-circle blue-bg-1"> <svg-icon icon-class="user"/></span>
             <span class="mt05 fs12">用户中心</span>
           </a>
@@ -58,30 +54,26 @@
 import FastLogin from "@/components/FastLogin";
 import ClockIn from "@/components/Click/ClockIn";
 import AuthorCount from "@/components/Click/AuthorCount";
-import {localUserInfo, removeUserInfo} from "@/util/storage";
-import {logout, staticUserInfo} from "@/api/user";
+import {localUserInfo, removeToken, removeUserInfo} from "@/util/storage";
+import {logout} from "@/api/user";
 
 export default {
   name: "UserCard",
   components: {AuthorCount, ClockIn, FastLogin},
   data() {
     return {
+      uid: 0,
       user: {}
     }
   },
   created() {
     let userInfo = localUserInfo();
     if (this.hasLogin && userInfo) {
-      this.staticUserInfo(userInfo.id)
+      this.user = userInfo
+      this.uid = userInfo.id
     }
   },
   methods: {
-    async staticUserInfo(uid) {
-      const res = await staticUserInfo(uid);
-      if (res) {
-        this.user = res.user
-      }
-    },
     logout() {
       this.$confirm("确定退出登录?", '提示', {
         confirmButtonText: "确定",
@@ -89,6 +81,7 @@ export default {
         type: "warning"
       }).then(() => {
         logout()
+        removeToken()
         removeUserInfo()
         this.refreshCurrRoute()
       }).catch(() => {

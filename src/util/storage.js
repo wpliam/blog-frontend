@@ -1,30 +1,30 @@
-const authKey = "apple"
+const userInfoKey = "userInfo"
+const authKey = "tokenKey"
 
 export function getToken() {
-    let userInfo = localStorage.getItem(authKey);
-    if (!userInfo) {
-        return ""
-    }
-    let item = JSON.parse(userInfo);
-    return item.token
+    return localStorage.getItem(authKey);
 }
 
 export function localUserInfo() {
-    let userInfo = localStorage.getItem(authKey);
+    let userInfo = localStorage.getItem(userInfoKey);
     if (userInfo) {
-        return JSON.parse(userInfo).user
+        return JSON.parse(userInfo)
     }
     return {}
 }
 
-export function isLogin() {
-    return getToken() !== ""
+export function setToken(token) {
+    localStorage.setItem(authKey, token)
 }
 
 export function setUserInfo(info) {
-    localStorage.setItem(authKey, JSON.stringify(info))
+    localStorage.setItem(userInfoKey, JSON.stringify(info))
+}
+
+export function removeToken() {
+    localStorage.removeItem(authKey)
 }
 
 export function removeUserInfo() {
-    localStorage.removeItem(authKey)
+    localStorage.removeItem(userInfoKey)
 }
