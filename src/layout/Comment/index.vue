@@ -27,7 +27,7 @@
           </div>
         </div>
       </div>
-      <Logged v-if="!hasLogin"></Logged>
+      <Logged v-else :title="`请登录后发表评论`"></Logged>
       <div class="msg-comments" ref="list-dom">
         <div class="comment-show" v-if="comments">
           <ul>

@@ -35,6 +35,16 @@ export function getUserInfo(uid) {
     })
 }
 
+export function getUserCollectList(uid) {
+    return request({
+        url: "/api/get_user_collect_list",
+        method: "post",
+        data: {
+            uid
+        }
+    })
+}
+
 export function refreshToken(uid, token) {
     return axios.post(store.state.requestURL + "/api/refresh_token", {uid: uid, token: token})
 }

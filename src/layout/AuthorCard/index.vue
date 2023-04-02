@@ -10,13 +10,13 @@
           <a class="nickname text-ellipsis" @click.prevent="userCenter(1,uid)">{{ user.nickname }}</a>
         </div>
       </div>
-      <AuthorCount class="mt10"
-                   :uid="uid"
-                   :need-fans="true"/>
       <div class="describe">
         <span v-if="user.describe">{{ user.describe }}</span>
         <span v-else>这个人很懒,什么都没有说</span>
       </div>
+      <AuthorCount class="mt10"
+                   :uid="uid"
+                   :need-fans="true"/>
     </div>
     <div class="author-action" v-if="!youSelf(uid)">
       <div class="flex">

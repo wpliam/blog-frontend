@@ -16,7 +16,7 @@
           <div class="l-other flex-between-center">
             <div class="l-user flex center">
               <el-avatar :src="article.user.avatar" :size="15"></el-avatar>
-              <a class="nickname">{{ article.user.nickname }}</a>
+              <a class="nickname" @click.prevent="userCenter(1,article.user.id)">{{ article.user.nickname }}</a>
             </div>
             <div class="l-view">
               {{ article.viewCount }}人已阅读

@@ -1,6 +1,6 @@
 <template>
   <div class="logged-box">
-    <div class="logged-title">请登录后发表评论</div>
+    <div class="logged-title">{{ title }}</div>
     <div class="logged-btn flex content-center">
       <div class="flex">
         <Login class="mr05"></Login>
@@ -20,6 +20,12 @@ import Register from "@/components/Click/Register";
 
 export default {
   name: "Logged",
+  props: {
+    title: {
+      type: String,
+      default: "请登录后发表"
+    }
+  },
   components: {Register, Login, FastLogin}
 }
 </script>

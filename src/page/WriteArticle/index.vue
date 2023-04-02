@@ -3,7 +3,7 @@
     <Nav></Nav>
     <div class="base-line-layout">
       <el-form ref="form" :model="writeForm" class="article-form">
-        <div class="content-layout show">
+        <div class="content-layout show" v-if="hasLogin">
           <el-input class="title"
                     v-model="writeForm.title"
                     placeholder="输入文章标题"
@@ -27,6 +27,9 @@
                         @change="changeContent"
           >
           </mavon-editor>
+        </div>
+        <div class="base-card" style="padding: 20px" v-else>
+          <Logged :title="`请登录后发表文章`"></Logged>
         </div>
         <div class="option-layout show">
           <el-form-item label="文章来源:">
@@ -216,10 +219,11 @@
 
 <script>
 import Nav from "@/layout/Nav";
+import Logged from "@/components/Logged";
 
 export default {
   name: "WriteArticle",
-  components: {Nav},
+  components: {Logged, Nav},
   data() {
     return {
       getRowKeys(row) {

@@ -31,7 +31,7 @@
           <div class="h-left">
             <el-avatar shape="square" :size="100" :src="userBaseInfo.avatar" style="margin-top: -60px"></el-avatar>
             <div class="user-info">
-              <a class="nickname">{{ userBaseInfo.nickname }}</a>
+              <a class="nickname" @click.prevent="userCenter(1,userBaseInfo.id)">{{ userBaseInfo.nickname }}</a>
               <p class="user-desc mt05">
                 <span v-if="userBaseInfo.desc">{{ userBaseInfo.desc }}</span>
                 <span v-else>这个人很懒,什么都没有写</span>
@@ -82,31 +82,29 @@
           <el-tabs type="border-card">
             <el-tab-pane label="个人资料">
               <div class="personal-box">
-                <div class="base-info">
-                  <div class="flex-between-center personal-title">
-                    <span>基本资料</span>
-                    <div>
-                      <el-button @click.prevent="edit" v-if="disabled" type="text">编辑</el-button>
-                      <el-button @click.prevent="save" v-else type="text">保存</el-button>
-                    </div>
+                <div class="flex-between-center personal-title">
+                  <span>基本资料</span>
+                  <div>
+                    <el-button @click.prevent="edit" v-if="disabled" type="text">编辑</el-button>
+                    <el-button @click.prevent="save" v-else type="text">保存</el-button>
                   </div>
-                  <el-form ref="personalForm" :model="userBaseInfo" label-position="left" label-width="80px"
-                           :disabled="disabled">
-                    <el-form-item label="用户昵称" prop="nickname">
-                      <el-input v-model="userBaseInfo.nickname"></el-input>
-                    </el-form-item>
-                    <el-form-item label="用户id" prop="username">
-                      <el-input v-model="userBaseInfo.username" :readonly="true"></el-input>
-                    </el-form-item>
-                    <el-form-item label="性别">
-                      <el-radio v-model="userBaseInfo.sex" :label="0">男</el-radio>
-                      <el-radio v-model="userBaseInfo.sex" :label="1">女</el-radio>
-                    </el-form-item>
-                    <el-form-item label="个人简介" prop="desc">
-                      <el-input v-model="userBaseInfo.desc"></el-input>
-                    </el-form-item>
-                  </el-form>
                 </div>
+                <el-form ref="userForm" :model="userBaseInfo" label-position="left" label-width="80px"
+                         :disabled="disabled">
+                  <el-form-item label="用户昵称" prop="nickname">
+                    <el-input v-model="userBaseInfo.nickname"></el-input>
+                  </el-form-item>
+                  <el-form-item label="用户id" prop="username">
+                    <el-input v-model="userBaseInfo.username" :readonly="true"></el-input>
+                  </el-form-item>
+                  <el-form-item label="性别">
+                    <el-radio v-model="userBaseInfo.sex" :label="0">男</el-radio>
+                    <el-radio v-model="userBaseInfo.sex" :label="1">女</el-radio>
+                  </el-form-item>
+                  <el-form-item label="个人简介" prop="desc">
+                    <el-input v-model="userBaseInfo.desc"></el-input>
+                  </el-form-item>
+                </el-form>
               </div>
             </el-tab-pane>
           </el-tabs>
@@ -116,7 +114,7 @@
         <el-tabs v-model="activeName" @tab-click="handleClick">
           <el-tab-pane v-for="(tab,index) in option" :label="tab.label" :name="tab.name" :key="index">
             <div v-if="activeName==='article' || activeName==='collect'">
-              <div v-if="articles.length > 0">
+              <div v-if="articles && articles.length > 0">
                 <ul class="article-content">
                   <li v-for="(article,index) in articles" :key="index">
                     <img :src="article.cover" class="c-img" alt="">
@@ -160,7 +158,7 @@ import Picture from "@/components/Picture";
 import ClockIn from "@/components/Click/ClockIn";
 import Follow from "@/components/Click/Follow";
 import Chat from "@/components/Click/Chat";
-import {getUserInfo, staticUserInfo} from "@/api/user";
+import {getUserCollectList, getUserInfo, staticUserInfo} from "@/api/user";
 import {searchArticleList} from "@/api/article";
 
 export default {
@@ -168,8 +166,11 @@ export default {
   components: {Chat, Follow, ClockIn, Picture, FootWaveLine, Nav},
   computed: {
     emptyText() {
-      if (this.articles.length === 0 && (this.activeName === 'article' || this.activeName === 'collect')) {
+      if (!this.articles || (this.articles.length === 0 && this.activeName === 'article')) {
         return "暂无文章内容"
+      }
+      if (!this.articles || (this.articles.length === 0 && this.activeName === "collect")) {
+        return "暂无收藏内容"
       }
       if (this.comments.length === 0 && this.activeName === 'comment') {
         return '暂无评论内容'
@@ -188,11 +189,6 @@ export default {
       articles: [], // 文章
       comments: [], // 评论
       fans: [], // 粉丝
-      page: {
-        offset: 1,
-        limit: 10,
-        total: 0
-      },
       searchArticleReq: {
         keyword: "",
         cid: 0,
@@ -202,7 +198,7 @@ export default {
         searchType: 0,
         page: {
           offset: 1,
-          limit: 10,
+          limit: 12,
           total: 0
         },
       },
@@ -262,15 +258,29 @@ export default {
       if (res && res.articles) {
         this.articles = res.articles
         this.searchArticleReq.page = res.page
+      } else {
+        this.articles = []
       }
     },
     handleCurrChange(offset) {
       let req = this.searchArticleReq
       req.page.offset = offset
-      this.searchArticle(req);
+      this.searchArticleList(req);
     },
     handleClick(tab, event) {
-
+      if (tab.name === "article") {
+        this.searchArticleReq.uid = this.uid
+        this.searchArticleReq.page = {offset: 1, limit: 10}
+        this.searchArticleList(this.searchArticleReq)
+      } else if (tab.name === "collect") {
+        getUserCollectList(this.uid).then(res => {
+          if (res && res.articles) {
+            this.articles = res.articles
+          } else {
+            this.articles = []
+          }
+        })
+      }
     },
     // 个人资料编辑按钮
     edit() {
