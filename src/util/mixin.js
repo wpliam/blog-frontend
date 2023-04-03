@@ -1,6 +1,7 @@
 import router from "@/router";
 import store from "@/store";
 import Enroll from "@/components/Enroll"
+import Search from "@/components/SearchDialog"
 import Vue from "vue";
 import {getToken, localUserInfo} from "@/util/storage";
 
@@ -82,6 +83,15 @@ export const globalMixin = {
             instance.withName("Login")
             document.body.appendChild(instance.$el)
         },
+        // 打开搜索框
+        openSearch() {
+            if (router.currentRoute.name === "SearchResult") {
+                return
+            }
+            const SearchBox = Vue.extend(Search)
+            let instance = new SearchBox().$mount()
+            document.body.appendChild(instance.$el)
+        },
         // 随机颜色
         randomColor() {
             let color = "rgba("
@@ -103,6 +113,13 @@ export const globalMixin = {
                 return false
             }
             return user.id === authorID
+        },
+        // 判断数组是否是空
+        arrEmpty(arr) {
+            if (!arr) {
+                return true
+            }
+            return arr.length === 0
         }
     }
 }

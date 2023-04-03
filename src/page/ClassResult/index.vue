@@ -1,7 +1,9 @@
 <template>
-  <div class="class-result-container">
-    <Nav></Nav>
-    <div class="base-line-layout">
+  <el-container>
+    <el-header style="padding: 0">
+      <Nav></Nav>
+    </el-header>
+    <el-main class="base-line-layout" style="padding: 20px 0">
       <div class="class-header base-card">
         <div class="content-title">
           <svg-icon v-if="contentType===0" icon-class="category"/>
@@ -11,7 +13,7 @@
         </div>
       </div>
       <div class="class-result">
-        <div class="result-list" v-if="articles">
+        <div class="result-list" v-if="!arrEmpty(articles)">
           <ArticleCard v-for="(article,index) in articles" :key="index" :article="article"
                        class="mt10 base-card result-item">
           </ArticleCard>
@@ -27,9 +29,10 @@
             :total="page.total">
         </el-pagination>
       </div>
-    </div>
+    </el-main>
+    <!--    <el-footer>Footer</el-footer>-->
     <FootWaveLine></FootWaveLine>
-  </div>
+  </el-container>
 </template>
 
 <script>
@@ -94,66 +97,62 @@ export default {
 </script>
 
 <style lang="less" scoped>
-.class-result-container {
-  min-height: 100vh;
+.class-header {
+  padding: 25px 10px;
+  font-size: 18px;
+  font-weight: bold;
 
-  .class-header {
-    padding: 25px 10px;
-    font-size: 18px;
-    font-weight: bold;
-
-    .content-title {
-      display: flex;
-      align-items: center;
-      position: relative;
-      padding-bottom: 10px;
-    }
-
-    .content-title:after {
-      position: absolute;
-      content: '';
-      width: 60px;
-      height: 3px;
-      top: auto;
-      left: 0;
-      bottom: -1px;
-      transition: .4s ease all;
-      border-radius: 2px;
-      background: rgba(18, 144, 219, .9);
-    }
-
-    .content-title:hover:after {
-      width: 100px;
-      transition: .4s ease all;
-    }
-
-    .content-name {
-      margin-left: 5px;
-    }
-
-    .content-count:before {
-      content: "";
-      width: 4px;
-      height: 4px;
-      margin: 0 0.5em;
-      border-radius: 50%;
-      display: inline-block;
-      background: var(--main-color);
-      opacity: .3;
-      vertical-align: 0.2em;
-    }
+  .content-title {
+    display: flex;
+    align-items: center;
+    position: relative;
+    padding-bottom: 10px;
   }
 
-  .class-result {
-    .result-list {
-      display: grid;
-      grid-template-columns: auto auto;
-      grid-gap: 10px 20px;
-      margin-top: 10px;
+  .content-title:after {
+    position: absolute;
+    content: '';
+    width: 60px;
+    height: 3px;
+    top: auto;
+    left: 0;
+    bottom: -1px;
+    transition: .4s ease all;
+    border-radius: 2px;
+    background: rgba(18, 144, 219, .9);
+  }
 
-      .result-item {
-        padding: 20px;
-      }
+  .content-title:hover:after {
+    width: 100px;
+    transition: .4s ease all;
+  }
+
+  .content-name {
+    margin-left: 5px;
+  }
+
+  .content-count:before {
+    content: "";
+    width: 4px;
+    height: 4px;
+    margin: 0 0.5em;
+    border-radius: 50%;
+    display: inline-block;
+    background: var(--main-color);
+    opacity: .3;
+    vertical-align: 0.2em;
+  }
+}
+
+.class-result {
+  .result-list {
+    display: grid;
+    grid-template-columns: auto auto;
+    grid-gap: 10px 20px;
+    margin-top: 10px;
+
+    .result-item {
+      padding: 20px;
     }
   }
 }

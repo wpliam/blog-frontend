@@ -1,7 +1,9 @@
 <template>
-  <div class="search-result-container">
-    <Nav></Nav>
-    <div class="base-line-layout">
+  <el-container>
+    <el-header style="padding: 0">
+      <Nav></Nav>
+    </el-header>
+    <el-main class="base-line-layout" style="padding: 20px 0">
       <div class="base-card search-frame">
         <div class="flex">
           <Search style="width: 600px;overflow: hidden" :value="keyword">
@@ -19,10 +21,10 @@
           搜索
           <span class="highlight">{{ keyword }}</span>
           共找到
-          <span class="highlight">{{ searchArticleReq.page.total }}</span>
+          <span class="highlight">{{ page.total }}</span>
           篇文章
         </div>
-        <div class="search-article-list" v-if="articles">
+        <div class="search-article-list" v-if="!arrEmpty(articles)">
           <ArticleCard v-for="(article,index) in articles" :key="index" :article="article" :keyword="[keyword]"
                        class="mt10">
           </ArticleCard>
@@ -35,13 +37,13 @@
           hide-on-single-page
           layout="prev, pager, next"
           @current-change="handleCurrChange"
-          :current-page="searchArticleReq.page.offset"
-          :page-size="searchArticleReq.page.limit"
-          :total="searchArticleReq.page.total">
+          :current-page="page.offset"
+          :page-size="page.limit"
+          :total="page.total">
       </el-pagination>
-    </div>
+    </el-main>
     <FootWaveLine></FootWaveLine>
-  </div>
+  </el-container>
 </template>
 
 <script>
@@ -71,6 +73,11 @@ export default {
           total: 0
         },
       },
+      page: {
+        offset: 1,
+        limit: 10,
+        total: 0
+      },
       count: 10,
       articles: []
     }
@@ -94,7 +101,7 @@ export default {
       const res = await searchArticleList(req);
       if (res) {
         this.articles = res.articles
-        this.searchArticleReq.page = res.page
+        this.page = res.page
       }
     }
   }
@@ -102,52 +109,47 @@ export default {
 </script>
 
 <style lang="less" scoped>
-.search-result-container {
-  .search-frame {
-    margin-top: 20px;
-    display: flex;
-    justify-content: center;
-    padding: 15px 0;
-    overflow: hidden;
+.search-frame {
+  display: flex;
+  justify-content: center;
+  padding: 15px 0;
+  overflow: hidden;
+}
+
+.search-result {
+  margin-top: 20px;
+  padding: 15px;
+
+  .search-tab {
+    color: #999;
+    border-bottom: 1px solid #ebeef5;
+    padding-bottom: 15px;
+
+    .each-tab {
+      margin-right: 10px;
+      cursor: pointer;
+    }
   }
 
-  .search-result {
-    margin-top: 20px;
-    padding: 15px;
+  .search-count {
+    margin-top: 10px;
+    color: #888;
+    font-size: 14px;
+  }
 
-    .search-tab {
-      color: #999;
-      border-bottom: 1px solid #ebeef5;
-      padding-bottom: 15px;
-
-      .each-tab {
-        margin-right: 10px;
-        cursor: pointer;
-      }
-    }
-
-    .search-count {
-      margin-top: 10px;
-      color: #888;
-      font-size: 14px;
-    }
-
-    .search-article-list {
-      display: grid;
-      grid-template-columns: auto auto;
-      grid-gap: 10px 30px;
-      margin-top: 10px;
-    }
+  .search-article-list {
+    display: grid;
+    grid-template-columns: auto auto;
+    grid-gap: 10px 30px;
+    margin-top: 10px;
   }
 }
 
 /* 宽度小于 960px 的屏幕使用该样式*/
 @media screen and (max-width: 980px) {
-  .search-result-container {
-    .search-result {
-      .search-article-list {
-        grid-template-columns: auto;
-      }
+  .search-result {
+    .search-article-list {
+      grid-template-columns: auto;
     }
   }
 }

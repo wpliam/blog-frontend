@@ -34,7 +34,7 @@ export default {
   },
   mounted() {
     this.getRandomArticle()
-    this.timer = setInterval(this.addRandomArticle, 2000)
+    // this.timer = setInterval(this.addRandomArticle, 2000)
   },
   methods: {
     async getRandomArticle() {
@@ -63,7 +63,6 @@ export default {
 
 <style lang="less" scoped>
 .foot-wave-line {
-  width: 100%;
   height: 50px;
 
   .foot-content {

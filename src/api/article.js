@@ -4,7 +4,7 @@ import request from "@/util/request";
 export function readArticle(articleID) {
     return request({
         url: `/api/read_article/${articleID}`,
-        method: "get",
+        method: "get"
     })
 }
 

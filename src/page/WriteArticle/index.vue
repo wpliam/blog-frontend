@@ -1,7 +1,9 @@
 <template>
-  <div class="write-article-container">
-    <Nav></Nav>
-    <div class="base-line-layout">
+  <el-container>
+    <el-header style="padding: 0">
+      <Nav></Nav>
+    </el-header>
+    <el-main class="base-line-layout" style="padding: 20px 0">
       <el-form ref="form" :model="writeForm" class="article-form">
         <div class="content-layout show" v-if="hasLogin">
           <el-input class="title"
@@ -202,8 +204,8 @@
           </el-form-item>
         </div>
       </el-form>
-    </div>
-    <div class="post-settings">
+    </el-main>
+    <el-footer>
       <div class="settings base-card">
         <div class="base-layout flex-between-center">
           <div class="post-left"></div>
@@ -213,8 +215,8 @@
           </div>
         </div>
       </div>
-    </div>
-  </div>
+    </el-footer>
+  </el-container>
 </template>
 
 <script>
@@ -383,209 +385,202 @@ export default {
 </script>
 
 <style lang="less" scoped>
-.write-article-container {
-  .article-form {
+.article-form {
 
-    .content-layout {
-      /deep/ .el-input__inner {
-        border: 0;
-        padding: 0;
-      }
-
-      .title {
-        font-size: 20px !important;
-        margin-bottom: 10px;
-      }
-
-      .title, .abstract {
-        position: relative;
-        border-bottom: 2px solid #efefef;
-      }
-
-      .title:after {
-        content: "";
-        position: absolute;
-        height: 2px;
-        background: #F56C6C;
-        width: 0;
-        transition: 2s ease all;
-        left: 0;
-        bottom: -2px;
-        border-radius: 2px;
-      }
-
-      .abstract:after {
-        content: "";
-        position: absolute;
-        height: 2px;
-        background: #409EFF;
-        width: 0;
-        transition: 2s ease all;
-        left: 0;
-        bottom: -2px;
-        border-radius: 2px;
-      }
-
-      .title:hover:after, .abstract:hover:after {
-        width: 100%;
-        transition: 2s ease all;
-      }
-
-      .content {
-        margin-top: 30px;
-      }
+  .content-layout {
+    /deep/ .el-input__inner {
+      border: 0;
+      padding: 0;
     }
 
-    .option-layout {
-      margin-top: 30px;
-
-      .opt-tag {
-        .el-tag {
-          margin-right: 10px;
-        }
-
-        .button-new-tag {
-          height: 32px;
-          line-height: 30px;
-          padding-top: 0;
-          padding-bottom: 0;
-        }
-
-        .input-new-tag {
-          width: 80px;
-          vertical-align: bottom;
-        }
-      }
-
-      .opt-img {
-        .avatar-uploader {
-          /deep/ .el-upload {
-            border: 1px dashed #d9d9d9;
-            border-radius: 6px;
-            cursor: pointer;
-            position: relative;
-            overflow: hidden;
-          }
-
-          /deep/ .el-upload:hover {
-            border-color: #409EFF;
-          }
-        }
-
-        .avatar-uploader-icon {
-          font-size: 28px;
-          color: #8c939d;
-          width: 178px;
-          height: 178px;
-          line-height: 178px;
-          text-align: center;
-        }
-
-        .avatar {
-          width: 178px;
-          height: 178px;
-          display: block;
-        }
-      }
-
-      .opt-recommend {
-        .add-article {
-          .add-content {
-            display: flex;
-
-            .source-area {
-
-              .search-area {
-                padding: 10px;
-                border: 1px solid #d0d9e0;
-              }
-
-              .result-area {
-                margin-top: 20px;
-                padding: 10px;
-                border: 1px solid #d0d9e0;
-              }
-            }
-          }
-        }
-
-        .target-area {
-          padding: 10px;
-          flex: 1;
-          border: 1px solid #d0d9e0;
-
-          .target-item {
-            overflow: hidden;
-            border-bottom: 1px solid #E8E8E8;
-            height: 24px;
-            line-height: 24px;
-            padding: 2px;
-            white-space: nowrap;
-            text-overflow: ellipsis;
-
-            .i-left {
-              .title {
-                color: #369;
-                font-size: 12px;
-              }
-            }
-
-            .i-right {
-              a {
-                color: SaddleBrown;
-                font-size: 12px;
-              }
-            }
-          }
-        }
-      }
+    .title {
+      font-size: 20px !important;
+      margin-bottom: 10px;
     }
-  }
 
-  .post-settings {
-    width: 100%;
-    height: 60px;
+    .title, .abstract {
+      position: relative;
+      border-bottom: 2px solid #efefef;
+    }
 
-    .settings {
-      position: fixed;
-      height: 60px;
-      line-height: 60px;
-      width: 100%;
-      background: var(--main-bg-color);
-      z-index: 999;
-      bottom: 0;
+    .title:after {
+      content: "";
+      position: absolute;
+      height: 2px;
+      background: #F56C6C;
+      width: 0;
+      transition: 2s ease all;
       left: 0;
+      bottom: -2px;
+      border-radius: 2px;
     }
 
-    .post-right {
-      .btn {
-        display: inline-block;
-        width: 100px;
-        height: 34px;
-        line-height: 34px;
-        border-radius: 17px;
+    .abstract:after {
+      content: "";
+      position: absolute;
+      height: 2px;
+      background: #409EFF;
+      width: 0;
+      transition: 2s ease all;
+      left: 0;
+      bottom: -2px;
+      border-radius: 2px;
+    }
+
+    .title:hover:after, .abstract:hover:after {
+      width: 100%;
+      transition: 2s ease all;
+    }
+
+    .content {
+      margin-top: 30px;
+    }
+  }
+
+  .option-layout {
+    margin-top: 30px;
+
+    .opt-tag {
+      .el-tag {
+        margin-right: 10px;
+      }
+
+      .button-new-tag {
+        height: 32px;
+        line-height: 30px;
+        padding-top: 0;
+        padding-bottom: 0;
+      }
+
+      .input-new-tag {
+        width: 80px;
+        vertical-align: bottom;
+      }
+    }
+
+    .opt-img {
+      .avatar-uploader {
+        /deep/ .el-upload {
+          border: 1px dashed #d9d9d9;
+          border-radius: 6px;
+          cursor: pointer;
+          position: relative;
+          overflow: hidden;
+        }
+
+        /deep/ .el-upload:hover {
+          border-color: #409EFF;
+        }
+      }
+
+      .avatar-uploader-icon {
+        font-size: 28px;
+        color: #8c939d;
+        width: 178px;
+        height: 178px;
+        line-height: 178px;
         text-align: center;
-        color: #fff;
-        font-size: 14px;
       }
 
-      .draft {
-        background: linear-gradient(135deg, #60e464 10%, #5cb85b 100%);;
+      .avatar {
+        width: 178px;
+        height: 178px;
+        display: block;
+      }
+    }
+
+    .opt-recommend {
+      .add-article {
+        .add-content {
+          display: flex;
+
+          .source-area {
+
+            .search-area {
+              padding: 10px;
+              border: 1px solid #d0d9e0;
+            }
+
+            .result-area {
+              margin-top: 20px;
+              padding: 10px;
+              border: 1px solid #d0d9e0;
+            }
+          }
+        }
       }
 
-      .push {
-        margin-left: 20px;
-        background: linear-gradient(135deg, #59c3fb 10%, #268df7 100%);;
+      .target-area {
+        padding: 10px;
+        flex: 1;
+        border: 1px solid #d0d9e0;
+
+        .target-item {
+          overflow: hidden;
+          border-bottom: 1px solid #E8E8E8;
+          height: 24px;
+          line-height: 24px;
+          padding: 2px;
+          white-space: nowrap;
+          text-overflow: ellipsis;
+
+          .i-left {
+            .title {
+              color: #369;
+              font-size: 12px;
+            }
+          }
+
+          .i-right {
+            a {
+              color: SaddleBrown;
+              font-size: 12px;
+            }
+          }
+        }
       }
     }
   }
+}
 
-  .show {
-    padding: 15px 30px;
-    border-radius: 8px;
-    background: #fff;
-    box-shadow: 0 0 10px rgba(116, 116, 116, 0.08);
+.settings {
+  position: fixed;
+  height: 60px;
+  line-height: 60px;
+  width: 100%;
+  background: var(--main-bg-color);
+  z-index: 999;
+  bottom: 0;
+  left: 0;
+}
+
+.post-right {
+  .btn {
+    display: inline-block;
+    width: 100px;
+    height: 34px;
+    line-height: 34px;
+    border-radius: 17px;
+    text-align: center;
+    color: #fff;
+    font-size: 14px;
   }
+
+  .draft {
+    background: linear-gradient(135deg, #60e464 10%, #5cb85b 100%);;
+  }
+
+  .push {
+    margin-left: 20px;
+    background: linear-gradient(135deg, #59c3fb 10%, #268df7 100%);;
+  }
+}
+
+.show {
+  padding: 15px 30px;
+  border-radius: 8px;
+  background: #fff;
+  box-shadow: 0 0 10px rgba(116, 116, 116, 0.08);
 }
 
 /deep/ .v-note-wrapper {

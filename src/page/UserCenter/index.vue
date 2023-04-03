@@ -1,7 +1,9 @@
 <template>
-  <div class="user-center-container">
-    <Nav></Nav>
-    <div class="base-line-layout">
+  <el-container>
+    <el-header style="padding: 0">
+      <Nav></Nav>
+    </el-header>
+    <el-main class="base-line-layout" style="padding: 20px 0">
       <div class="user-header base-card">
         <div class="user-cover">
           <img :src="userBaseInfo.cover" alt="" class="user-bg">
@@ -114,7 +116,7 @@
         <el-tabs v-model="activeName" @tab-click="handleClick">
           <el-tab-pane v-for="(tab,index) in option" :label="tab.label" :name="tab.name" :key="index">
             <div v-if="activeName==='article' || activeName==='collect'">
-              <div v-if="articles && articles.length > 0">
+              <div v-if="!arrEmpty(articles)">
                 <ul class="article-content">
                   <li v-for="(article,index) in articles" :key="index">
                     <img :src="article.cover" class="c-img" alt="">
@@ -133,22 +135,23 @@
               </div>
             </div>
             <el-pagination
+                v-if="activeName==='article'"
                 class="page"
                 background
                 hide-on-single-page
                 layout="prev, pager, next"
                 @current-change="handleCurrChange"
-                :current-page="searchArticleReq.page.offset"
-                :page-size="searchArticleReq.page.limit"
-                :total="searchArticleReq.page.total">
+                :current-page="page.offset"
+                :page-size="page.limit"
+                :total="page.total">
             </el-pagination>
             <el-empty v-if="emptyText" :description="emptyText"></el-empty>
           </el-tab-pane>
         </el-tabs>
       </div>
-    </div>
+    </el-main>
     <FootWaveLine></FootWaveLine>
-  </div>
+  </el-container>
 </template>
 
 <script>
@@ -166,16 +169,16 @@ export default {
   components: {Chat, Follow, ClockIn, Picture, FootWaveLine, Nav},
   computed: {
     emptyText() {
-      if (!this.articles || (this.articles.length === 0 && this.activeName === 'article')) {
+      if (this.arrEmpty(this.articles) && this.activeName === 'article') {
         return "暂无文章内容"
       }
-      if (!this.articles || (this.articles.length === 0 && this.activeName === "collect")) {
+      if (this.arrEmpty(this.articles) && this.activeName === "collect") {
         return "暂无收藏内容"
       }
-      if (this.comments.length === 0 && this.activeName === 'comment') {
+      if (this.arrEmpty(this.comments) && this.activeName === 'comment') {
         return '暂无评论内容'
       }
-      if (this.fans.length === 0 && this.activeName === 'fans') {
+      if (this.arrEmpty(this.fans) && this.activeName === 'fans') {
         return "暂无粉丝"
       }
       return ""
@@ -201,6 +204,11 @@ export default {
           limit: 12,
           total: 0
         },
+      },
+      page: {
+        offset: 1,
+        limit: 12,
+        total: 0,
       },
       option: [
         {
@@ -257,7 +265,7 @@ export default {
       const res = await searchArticleList(req);
       if (res && res.articles) {
         this.articles = res.articles
-        this.searchArticleReq.page = res.page
+        this.page = res.page
       } else {
         this.articles = []
       }
@@ -295,166 +303,164 @@ export default {
 </script>
 
 <style lang="less" scoped>
-.user-center-container {
-  .user-header {
-    height: 400px;
-    overflow: hidden;
+.user-header {
+  height: 400px;
+  overflow: hidden;
 
-    .user-cover {
-      height: 320px;
+  .user-cover {
+    height: 320px;
+    object-fit: cover;
+    overflow: hidden;
+    border-radius: var(--main-border-radius) var(--main-border-radius) 0 0;
+    position: relative;
+
+    .user-bg {
+      width: 100%;
+      height: 100%;
       object-fit: cover;
       overflow: hidden;
-      border-radius: var(--main-border-radius) var(--main-border-radius) 0 0;
-      position: relative;
-
-      .user-bg {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-        overflow: hidden;
-      }
-
-      .bg-count {
-        position: absolute;
-        top: 1em;
-        right: 0;
-        border-radius: 50px 0 0 50px;
-        text-shadow: none;
-        box-shadow: 0 1px 5px rgba(0, 0, 0, .2);
-        z-index: 1;
-        padding: 3px 8px;
-        color: white;
-        background-color: black;
-        opacity: .8;
-
-        .count {
-          margin-left: 2px;
-          opacity: 1;
-        }
-      }
     }
 
-    .header-content {
-      margin-top: 10px;
-      position: relative;
+    .bg-count {
+      position: absolute;
+      top: 1em;
+      right: 0;
+      border-radius: 50px 0 0 50px;
+      text-shadow: none;
+      box-shadow: 0 1px 5px rgba(0, 0, 0, .2);
+      z-index: 1;
+      padding: 3px 8px;
+      color: white;
+      background-color: black;
+      opacity: .8;
 
-      .h-left {
-        display: flex;
-
-        .user-info {
-          margin-left: 10px;
-        }
-      }
-
-      .h-right {
-        display: flex;
-        align-items: center;
-
-        .user-center-btn {
-          display: inline-block;
-          border-radius: var(--main-border-radius);
-          font-size: 14px;
-          font-weight: bold;
-          padding: 2px 10px;
-          color: #2997f7;
-          background: rgba(41, 151, 247, .1);
-        }
+      .count {
+        margin-left: 2px;
+        opacity: 1;
       }
     }
   }
 
-  .user-content {
-    margin-top: 20px;
-    display: flex;
-    justify-content: space-between;
+  .header-content {
+    margin-top: 10px;
+    position: relative;
 
-    .c-left {
-      width: 28%;
+    .h-left {
+      display: flex;
 
-      .user-count {
-        display: flex;
-        align-items: center;
-        justify-content: space-around;
-
-        .count {
-          font-size: 1.4em;
-        }
-
-        .name {
-          font-size: 0.9em;
-          opacity: .5;
-          margin-top: 5px;
-        }
+      .user-info {
+        margin-left: 10px;
       }
     }
 
-    .c-right {
-      width: 70%;
+    .h-right {
+      display: flex;
+      align-items: center;
 
-      .border-card {
-        .personal-box {
-          .personal-title {
-            height: 40px;
-            line-height: 40px;
-            border-bottom: 1px solid #ebeef5;
-            margin-bottom: 20px;
-            font-size: 14px;
-            color: #999999;
-          }
-        }
-      }
-    }
-  }
-
-  .author-content {
-    margin-top: 20px;
-    padding: 10px 15px;
-
-    .article-content {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-      grid-column-gap: 20px;
-      grid-row-gap: 20px;
-
-      .c-img {
-        width: 100%;
-        height: 180px;
-        object-fit: cover;
-        overflow: hidden;
+      .user-center-btn {
+        display: inline-block;
         border-radius: var(--main-border-radius);
-      }
-
-      .c-title {
-        font-size: 16px;
-        font-weight: bold;
-        color: var(--main-color);
-      }
-
-      .c-title:hover {
-        color: var(--wp--preset--color--title-hover);
-      }
-
-      .c-option {
         font-size: 14px;
-        color: #999;
+        font-weight: bold;
+        padding: 2px 10px;
+        color: #2997f7;
+        background: rgba(41, 151, 247, .1);
+      }
+    }
+  }
+}
 
-        .c-date {
+.user-content {
+  margin-top: 20px;
+  display: flex;
+  justify-content: space-between;
 
+  .c-left {
+    width: 28%;
+
+    .user-count {
+      display: flex;
+      align-items: center;
+      justify-content: space-around;
+
+      .count {
+        font-size: 1.4em;
+      }
+
+      .name {
+        font-size: 0.9em;
+        opacity: .5;
+        margin-top: 5px;
+      }
+    }
+  }
+
+  .c-right {
+    width: 70%;
+
+    .border-card {
+      .personal-box {
+        .personal-title {
+          height: 40px;
+          line-height: 40px;
+          border-bottom: 1px solid #ebeef5;
+          margin-bottom: 20px;
+          font-size: 14px;
+          color: #999999;
         }
+      }
+    }
+  }
+}
 
-        .c-date:before {
-          content: "";
-          width: 0.5em;
-          height: 0.5em;
-          border: 0.1em solid var(--wp--preset--color--vivid-purple);
-          border-radius: 1em;
-          vertical-align: 0.1em;
-          display: inline-block;
-        }
+.author-content {
+  margin-top: 20px;
+  padding: 10px 15px;
 
-        .c-meta {
+  .article-content {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    grid-column-gap: 20px;
+    grid-row-gap: 20px;
 
-        }
+    .c-img {
+      width: 100%;
+      height: 180px;
+      object-fit: cover;
+      overflow: hidden;
+      border-radius: var(--main-border-radius);
+    }
+
+    .c-title {
+      font-size: 16px;
+      font-weight: bold;
+      color: var(--main-color);
+    }
+
+    .c-title:hover {
+      color: var(--wp--preset--color--title-hover);
+    }
+
+    .c-option {
+      font-size: 14px;
+      color: #999;
+
+      .c-date {
+
+      }
+
+      .c-date:before {
+        content: "";
+        width: 0.5em;
+        height: 0.5em;
+        border: 0.1em solid var(--wp--preset--color--vivid-purple);
+        border-radius: 1em;
+        vertical-align: 0.1em;
+        display: inline-block;
+      }
+
+      .c-meta {
+
       }
     }
   }

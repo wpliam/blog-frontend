@@ -1,7 +1,9 @@
 <template>
-  <div class="read-article-container">
-    <Nav></Nav>
-    <div class="base-content-layout">
+  <el-container>
+    <el-header style="padding: 0">
+      <Nav></Nav>
+    </el-header>
+    <el-main class="base-layout" style="padding: 20px 0">
       <div class="left-aside">
         <div class="article-detail base-card">
           <div class="r-title">
@@ -123,9 +125,9 @@
         <AuthorCard :uid="uid"></AuthorCard>
         <Lovely class="mt20"></Lovely>
       </div>
-    </div>
+    </el-main>
     <FootWaveLine></FootWaveLine>
-  </div>
+  </el-container>
 </template>
 
 <script>
@@ -140,6 +142,7 @@ import {addViewCount, giveCollect, giveThumb} from "@/api/shared";
 
 export default {
   name: "ReadArticle",
+  inject: ["reload"],
   components: {Lovely, AuthorCard, Recommend, Comment, FootWaveLine, Nav},
   data() {
     return {
@@ -180,6 +183,7 @@ export default {
     },
     async giveThumb(id, likeType) {
       const res = await giveThumb(id, likeType);
+      console.log("giveThumb res ", res)
       if (res) {
         this.article.isLike = res.isLike
         this.article.likeCount = res.likeCount
@@ -187,7 +191,6 @@ export default {
     },
     async giveCollect(id) {
       const res = await giveCollect(id);
-      console.log("giveCollect res:", res)
       if (res) {
         this.article.isCollect = res.isCollect
         this.article.collectCount = res.collectCount
@@ -198,124 +201,122 @@ export default {
 </script>
 
 <style lang="less" scoped>
-.read-article-container {
-  .article-detail {
-    padding: 20px;
+.article-detail {
+  padding: 20px;
 
-    .r-title {
-      font-size: 22px;
-      font-weight: 700;
-      color: #4e5358;
-    }
+  .r-title {
+    font-size: 22px;
+    font-weight: 700;
+    color: #4e5358;
+  }
 
-    .r-header {
-      margin-top: 15px;
-      padding: 5px;
-      background: #f8f8f8;
-      border-radius: var(--main-border-radius);
+  .r-header {
+    margin-top: 15px;
+    padding: 5px;
+    background: #f8f8f8;
+    border-radius: var(--main-border-radius);
+    color: #999aaa;
+    font-size: 14px;
+    overflow: hidden;
+
+    .h-count {
       color: #999aaa;
       font-size: 14px;
-      overflow: hidden;
+    }
 
-      .h-count {
-        color: #999aaa;
+    .r-category {
+      .category-name {
+        margin-left: 3px;
+        border-radius: var(--main-border-radius);
         font-size: 14px;
-      }
-
-      .r-category {
-        .category-name {
-          margin-left: 3px;
-          border-radius: var(--main-border-radius);
-          font-size: 14px;
-          color: #5094d5;
-          padding: 1px 5px;
-          background-color: #f2f6fc;
-        }
-      }
-
-      .r-tags {
-        margin-left: 10px;
-
-        .tag-item {
-          display: inline-block;
-          cursor: pointer;
-          flex-shrink: 0;
-          position: relative;
-          margin-right: 5px;
-          font-size: 12px;
-          background-color: #f2f6fc;
-          color: #909399;
-          border: 1px solid #f2f6fc;
-          padding: 0 8px;
-          height: 26px;
-          line-height: 26px;
-          border-radius: 13px;
-          max-width: 125px;
-          white-space: nowrap;
-          overflow: hidden;
-          text-overflow: ellipsis;
-          -webkit-transition: border .25s, color .25s;
-          transition: border .25s, color .25s;
-        }
+        color: #5094d5;
+        padding: 1px 5px;
+        background-color: #f2f6fc;
       }
     }
 
-    .r-content {
-      margin-top: 20px;
-    }
+    .r-tags {
+      margin-left: 10px;
 
-    .r-actions {
-      display: flex;
-      justify-content: center;
-      margin-top: 30px;
-
-      .action {
+      .tag-item {
+        display: inline-block;
         cursor: pointer;
-        opacity: .7;
-      }
-
-      .post-collect {
-        margin: 0 30px;
-      }
-
-      .post-btn {
-        margin-top: 3px;
+        flex-shrink: 0;
+        position: relative;
+        margin-right: 5px;
+        font-size: 12px;
+        background-color: #f2f6fc;
+        color: #909399;
+        border: 1px solid #f2f6fc;
+        padding: 0 8px;
+        height: 26px;
+        line-height: 26px;
+        border-radius: 13px;
+        max-width: 125px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        -webkit-transition: border .25s, color .25s;
+        transition: border .25s, color .25s;
       }
     }
   }
 
-  .article-adjoin {
-    display: grid;
-    grid-template-columns: auto auto;
-    grid-gap: 10px 20px;
+  .r-content {
     margin-top: 20px;
-
-    .prev {
-      padding: 15px;
-      text-align: left;
-    }
-
-    .next {
-      padding: 15px;
-      text-align: right;
-    }
-
-    .adjoin-title {
-      color: #4e5358;
-      font-weight: bold;
-      margin-top: 5px;
-      font-size: 14px;
-    }
-
-    .adjoin-title:hover {
-      color: var(--wp--preset--color--title-hover);
-    }
   }
 
-  .label {
-    color: #999;
+  .r-actions {
+    display: flex;
+    justify-content: center;
+    margin-top: 30px;
+
+    .action {
+      cursor: pointer;
+      opacity: .7;
+    }
+
+    .post-collect {
+      margin: 0 30px;
+    }
+
+    .post-btn {
+      margin-top: 3px;
+    }
+  }
+}
+
+.article-adjoin {
+  display: grid;
+  grid-template-columns: auto auto;
+  grid-gap: 10px 20px;
+  margin-top: 20px;
+
+  .prev {
+    padding: 15px;
+    text-align: left;
+  }
+
+  .next {
+    padding: 15px;
+    text-align: right;
+  }
+
+  .adjoin-title {
+    color: #4e5358;
+    font-weight: bold;
+    margin-top: 5px;
     font-size: 14px;
   }
+
+  .adjoin-title:hover {
+    color: var(--wp--preset--color--title-hover);
+  }
+}
+
+.label {
+  color: #999;
+  font-size: 14px;
 }
 
 /deep/ .v-note-wrapper {

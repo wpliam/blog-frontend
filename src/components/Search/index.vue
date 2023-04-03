@@ -54,6 +54,7 @@
 <script>
 
 import {searchArticleList} from "@/api/article";
+import router from "@/router";
 
 export default {
   name: "Search",
@@ -105,7 +106,6 @@ export default {
     },
     // 搜索框选中之后,将选中的值赋值给searchVal
     handleAutoSelect(item) {
-      console.log("handleAutoSelect title:", item.title)
       this.keyword = item.title
       this.goSearch(item.title)
     },
@@ -124,10 +124,10 @@ export default {
       this.historyList.unshift(keyword)
       localStorage.setItem("historyList", JSON.stringify(this.historyList))
       let target = "_blank"
-      if (this.$route.name === "SearchResult") {
+      if (router.currentRoute.name === "SearchResult") {
         target = "_self"
       }
-      let route = this.$router.resolve({
+      let route = router.resolve({
         name: "SearchResult",
         query: {
           keyword: keyword

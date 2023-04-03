@@ -4,7 +4,7 @@
       <div class="flex user-info">
         <el-avatar :src="user.avatar"></el-avatar>
         <div class="ml10">
-          <a class="nickname">{{ user.nickname }}</a>
+          <a class="nickname" @click.prevent="userCenter(0,uid)">{{ user.nickname }}</a>
           <p class="user-desc" v-if="user.describe">{{ user.describe }}</p>
           <p class="user-desc" v-else>这个人很懒,什么都没有写</p>
         </div>
