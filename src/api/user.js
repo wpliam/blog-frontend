@@ -21,9 +21,9 @@ export function logout() {
     })
 }
 
-export function staticUserInfo(uid) {
+export function censusUserInfo(uid) {
     return request({
-        url: `/api/static_user_info/${uid}`,
+        url: `/api/census_user_info/${uid}`,
         method: "get"
     })
 }

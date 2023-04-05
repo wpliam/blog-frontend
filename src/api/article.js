@@ -8,6 +8,16 @@ export function readArticle(articleID) {
     })
 }
 
+export function searchKeywordFlow(keyword) {
+    return request({
+        url: "/api/search_keyword_flow",
+        method: "post",
+        data: {
+            keyword
+        }
+    })
+}
+
 // 搜索文章
 export function searchArticleList(data) {
     return request({

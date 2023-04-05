@@ -24,19 +24,19 @@
         </span>
       </el-tooltip>
     </a>
-    <a class="count-fans count-base" v-if="needFans">
-      <el-tooltip effect="dark" :content="`共${fansCount}个粉丝`" placement="top">
-        <span>
-          <svg-icon icon-class="solid-follow"/>
-          <span class="ml02">{{ fansCount }}</span>
-        </span>
-      </el-tooltip>
-    </a>
+<!--    <a class="count-fans count-base" v-if="needFans">-->
+<!--      <el-tooltip effect="dark" :content="`共${fansCount}个粉丝`" placement="top">-->
+<!--        <span>-->
+<!--          <svg-icon icon-class="solid-follow"/>-->
+<!--          <span class="ml02">{{ fansCount }}</span>-->
+<!--        </span>-->
+<!--      </el-tooltip>-->
+<!--    </a>-->
   </div>
 </template>
 
 <script>
-import {staticUserInfo} from "@/api/user";
+import {censusUserInfo} from "@/api/user";
 
 export default {
   name: "AuthorCount",
@@ -60,12 +60,12 @@ export default {
   },
   created() {
     if (this.uid > 0) {
-      this.staticUserInfo(this.uid)
+      this.censusUserInfo(this.uid)
     }
   },
   methods: {
-    async staticUserInfo(uid) {
-      const res = await staticUserInfo(uid);
+    async censusUserInfo(uid) {
+      const res = await censusUserInfo(uid);
       if (res) {
         this.articleCount = res.articleCount
         this.commentCount = res.commentCount

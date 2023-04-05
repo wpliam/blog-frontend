@@ -1,12 +1,12 @@
 <template>
   <el-dialog
-      :visible.sync="searchDrawer"
+      :visible.sync="searchDialog"
       title="搜索文章"
       width="600px"
       :show-close="false"
       :before-close="handleClose"
   >
-    <Search></Search>
+    <Search :close-search-dialog="handleClose"></Search>
   </el-dialog>
 </template>
 
@@ -18,12 +18,12 @@ export default {
   components: {Search},
   data() {
     return {
-      searchDrawer: true
+      searchDialog: true
     }
   },
   methods: {
     handleClose() {
-      this.searchDrawer = false
+      this.searchDialog = false
     }
   }
 }

@@ -25,9 +25,7 @@
           篇文章
         </div>
         <div class="search-article-list" v-if="!arrEmpty(articles)">
-          <ArticleCard v-for="(article,index) in articles" :key="index" :article="article" :keyword="[keyword]"
-                       class="mt10">
-          </ArticleCard>
+          <ArticleCard v-for="(article,index) in articles" :key="index" :article="article" class="mt10"/>
         </div>
         <el-empty description="未找到相关文章" v-else></el-empty>
       </div>

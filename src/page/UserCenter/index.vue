@@ -42,7 +42,7 @@
           </div>
           <div class="h-right">
             <div v-if="role===0">
-              <ClockIn ref="child" @click.native="$refs.child.clockIn()"></ClockIn>
+              <ClockIn></ClockIn>
             </div>
             <div v-if="role===1">
               <a v-if="youSelf(uid)" class="user-center-btn" @click.prevent="userCenter(0,uid)">
@@ -161,7 +161,7 @@ import Picture from "@/components/Picture";
 import ClockIn from "@/components/Click/ClockIn";
 import Follow from "@/components/Click/Follow";
 import Chat from "@/components/Click/Chat";
-import {getUserCollectList, getUserInfo, staticUserInfo} from "@/api/user";
+import {censusUserInfo, getUserCollectList, getUserInfo} from "@/api/user";
 import {searchArticleList} from "@/api/article";
 
 export default {
@@ -235,7 +235,7 @@ export default {
   },
   created() {
     this.getUserInfo(this.uid)
-    this.staticUserInfo(this.uid)
+    this.censusUserInfo(this.uid)
     // 查询的是作者信息,初始化时需要获取一下作者的文章信息
     if (this.role === 1) {
       this.searchArticleReq.uid = this.uid
@@ -248,14 +248,15 @@ export default {
       if (res) {
         this.userBaseInfo = res.user
         this.$store.commit("setFollow", res.isFollow)
+        this.$store.commit("setClock", res.isClock)
         if (this.userBaseInfo.desc === "") {
           this.userBaseInfo.desc = "这个人很懒,什么都没有写"
         }
         this.userBaseInfo.cover = "/image/banner1.jpg"
       }
     },
-    async staticUserInfo(uid) {
-      const res = await staticUserInfo(uid);
+    async censusUserInfo(uid) {
+      const res = await censusUserInfo(uid);
       if (res) {
         this.userCountInfo = res
       }

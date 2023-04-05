@@ -55,7 +55,7 @@ import FastLogin from "@/components/FastLogin";
 import ClockIn from "@/components/Click/ClockIn";
 import AuthorCount from "@/components/Click/AuthorCount";
 import {localUserInfo, removeToken, removeUserInfo} from "@/util/storage";
-import {logout} from "@/api/user";
+import {getUserInfo, logout} from "@/api/user";
 
 export default {
   name: "UserCard",
@@ -71,6 +71,12 @@ export default {
     if (this.hasLogin && userInfo) {
       this.user = userInfo
       this.uid = userInfo.id
+      getUserInfo(userInfo.id).then(res => {
+        if (res) {
+          this.user = res.user
+          this.$store.commit("setClock", res.isClock)
+        }
+      })
     }
   },
   methods: {

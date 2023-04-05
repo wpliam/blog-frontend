@@ -1,10 +1,10 @@
 <template>
-  <div @click.prevent="clockIn">
-    <a class="click-btn already-click" v-if="hasClock">
+  <div>
+    <a class="click-btn already-click" v-if="$store.getters.getClock" @click.prevent="openClock">
       <svg-icon icon-class="already-clock"/>
       已签到
     </a>
-    <a class="click-btn not-click" v-else>
+    <a class="click-btn not-click" v-else @click.prevent="clockIn">
       <svg-icon icon-class="not-clock"/>
       {{ title }}
     </a>
@@ -12,6 +12,8 @@
 </template>
 
 <script>
+import {punchClock} from "@/api/shared";
+
 export default {
   name: "ClockIn",
   props: {
@@ -21,13 +23,15 @@ export default {
     }
   },
   data() {
-    return {
-      hasClock: false
-    }
+    return {}
   },
   methods: {
-    clockIn() {
-      this.hasClock = true
+    async clockIn() {
+      if (this.$store.getters.getClock) {
+        return
+      }
+      await punchClock()
+      this.$store.commit("setClock", true)
     }
   }
 }

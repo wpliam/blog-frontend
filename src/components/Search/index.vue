@@ -2,6 +2,7 @@
   <div class="search-container">
     <el-autocomplete
         class="search-text"
+        ref="autocomplete"
         v-model="keyword"
         :fetch-suggestions="querySearch"
         placeholder="请输入内容"
@@ -11,27 +12,27 @@
     >
       <template slot-scope="{ item }">
         <div class="flex-between-center">
-          <p class="text-ellipsis">{{ item.title }}</p>
-          <!--          <p>10人搜索过</p>-->
+          <p class="text-ellipsis" v-html="item.keyword"></p>
+          <p style="color: #999;font-size: 14px">{{ item.version }}人搜过</p>
         </div>
       </template>
       <el-button slot="append" icon="el-icon-search" @click="goSearch(keyword)"></el-button>
     </el-autocomplete>
-    <div class="hot-search mt20" v-if="hotList.length>0">
+    <div class="hot-search mt20" v-if="!arrEmpty(hotList)">
       <p class="muted">热门搜索</p>
       <div class="tags">
         <el-tag
             class="tag-item"
             type="info"
             size="small"
-            v-for="(name,index) in hotList" :key="index"
-            @click="goSearch(name)"
+            v-for="(hot,index) in hotList" :key="index"
+            @click="goSearch(hot.keyword)"
         >
-          {{ name }}
+          {{ hot.keyword }}
         </el-tag>
       </div>
     </div>
-    <div class="history-search mt20" v-if="historyList.length>0">
+    <div class="history-search mt20" v-if="!arrEmpty(historyList)">
       <div class="flex-between-center">
         <p class="muted">历史搜索</p>
         <a @click.prevent="clearHistoryList"><i class="el-icon-delete"></i></a>
@@ -53,7 +54,7 @@
 
 <script>
 
-import {searchArticleList} from "@/api/article";
+import {searchArticleList, searchKeywordFlow} from "@/api/article";
 import router from "@/router";
 
 export default {
@@ -62,12 +63,16 @@ export default {
     value: {
       type: String,
       default: ""
+    },
+    closeSearchDialog: {
+      type: Function,
+      default: null
     }
   },
   data() {
     return {
       keyword: "", // 搜索的值
-      hotList: ["测试一", "测试二", "测试三"], // 热门搜索列表
+      hotList: [], // 热门搜索列表
       historyList: [], // 历史搜索列表
     }
   },
@@ -82,32 +87,29 @@ export default {
     if (JSON.parse(localStorage.getItem("historyList"))) {
       this.historyList = JSON.parse(localStorage.getItem("historyList"));
     }
+    searchKeywordFlow("").then(res => {
+      if (res) {
+        this.hotList = res.flows
+      }
+    })
   },
   methods: {
     // 获取搜索列表,根据输入的值调用后台接口查询,cb将搜索到的结果回调
     querySearch(queryStr, callback) {
-      let req = {
-        keyword: queryStr,
-        cid: 0,
-        tagID: 0,
-        order: 0,
-        searchType: 0,
-        page: {
-          offset: 1,
-          limit: 10,
-          total: 0
-        },
-      }
-      searchArticleList(req).then(res => {
-        if (res && res.articles) {
-          callback(res.articles)
+      searchKeywordFlow(queryStr).then(res => {
+        if (res) {
+          callback(res.flows)
         }
       })
     },
     // 搜索框选中之后,将选中的值赋值给searchVal
     handleAutoSelect(item) {
-      this.keyword = item.title
-      this.goSearch(item.title)
+      let temp = document.createElement("div")
+      temp.innerHTML = item.keyword
+      let output = temp.innerText || temp.textContent
+      temp = null
+      this.keyword = output
+      this.goSearch(output)
     },
     // 去搜索
     goSearch(keyword) {
@@ -116,6 +118,12 @@ export default {
         return
       }
       this.keyword = keyword
+      // 关闭父组件弹窗
+      if (this.closeSearchDialog) {
+        this.closeSearchDialog()
+      }
+      // 隐藏输入框
+      this.$refs.autocomplete.suggestions = []
       // 有搜索记录,删除之前的旧记录,将新的记录放在第一位
       if (this.historyList.includes(keyword)) {
         let index = this.historyList.indexOf(keyword)

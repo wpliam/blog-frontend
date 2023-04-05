@@ -26,13 +26,6 @@
             <span class="panel-num">{{ tagCount }}</span>
           </div>
         </div>
-        <!--        <div class="panel-item flex-between-center">-->
-        <!--          <svg-icon icon-class="archive-like" class-name="panel-icon"/>-->
-        <!--          <div class="flex-column-center archive-count">-->
-        <!--            <p class="panel-text">点赞数</p>-->
-        <!--            <span class="panel-num">{{ likeCount }}</span>-->
-        <!--          </div>-->
-        <!--        </div>-->
       </div>
       <div class="archive-label archive base-card mt20">
         <p class="label-title archive-title">标签</p>
@@ -82,17 +75,7 @@ export default {
       categoryCount: 0,
       tagCount: 0,
       likeCount: 0,
-      tags: [
-        {
-          tagName: "标签1"
-        },
-        {
-          tagName: "标签2"
-        },
-        {
-          tagName: "标签3"
-        }
-      ],
+      tags: [],
       articles: [],
       activeIdx: [],
     }
@@ -104,7 +87,6 @@ export default {
     async getArticleArchive() {
       const res = await getArticleArchive()
       if (res) {
-        console.log("res:", typeof res.article)
         this.articleCount = res.articleCount
         this.tagCount = res.tagCount
         this.categoryCount = res.categoryCount
@@ -179,7 +161,7 @@ export default {
 .archive-title {
   position: absolute;
   top: 15px;
-  left: -10px;
+  left: 0;
   color: #fff;
   -webkit-box-shadow: 2px 5px 10px rgb(49 58 70 / 15%);
   box-shadow: 2px 5px 10px rgb(49 58 70 / 15%);

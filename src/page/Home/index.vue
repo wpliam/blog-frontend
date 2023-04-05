@@ -12,10 +12,9 @@
       <div class="right-aside">
         <Notice></Notice>
         <HotArticle class="mt20"></HotArticle>
-        <TagCloud class="mt20"></TagCloud>
+<!--        <TagCloud class="mt20"></TagCloud>-->
       </div>
     </el-main>
-    <Footer></Footer>
     <FootWaveLine></FootWaveLine>
   </el-container>
 </template>
@@ -25,14 +24,13 @@ import Nav from "@/layout/Nav";
 import Banner from "@/layout/Carousel/Banner";
 import Category from "@/layout/Category";
 import ArticleList from "@/layout/ArticleList";
-import FootWaveLine from "@/layout/Footer/FootWaveLine";
 import HotArticle from "@/layout/HotArticle";
 import Notice from "@/layout/Notice";
 import TagCloud from "@/layout/TagCloud";
-import Footer from "@/layout/Footer";
+import FootWaveLine from "@/layout/Footer/FootWaveLine";
 
 export default {
   name: "Home",
-  components: {Footer, TagCloud, Notice, HotArticle, FootWaveLine, ArticleList, Category, Banner, Nav}
+  components: {FootWaveLine, TagCloud, Notice, HotArticle, ArticleList, Category, Banner, Nav}
 }
 </script>

@@ -2,6 +2,7 @@ import router from "@/router";
 import store from "@/store";
 import Enroll from "@/components/Enroll"
 import Search from "@/components/SearchDialog"
+import Clock from "@/components/ClockCard"
 import Vue from "vue";
 import {getToken, localUserInfo} from "@/util/storage";
 
@@ -55,7 +56,7 @@ export const globalMixin = {
             }
             window.open(route.href, target)
         },
-        // t=0分类 t=1 标签
+        // contentType=0分类 contentType=1 标签
         goClassResult(id, name, contentType) {
             let route = this.$router.resolve({
                 name: "ClassResult",
@@ -76,7 +77,7 @@ export const globalMixin = {
             let url = store.state.baseURL + router.currentRoute.fullPath
             window.open(url, "_self")
         },
-        // 去登录或注册
+        // 登录或注册
         openLogin() {
             const EnrollBox = Vue.extend(Enroll)
             let instance = new EnrollBox().$mount()
@@ -90,6 +91,18 @@ export const globalMixin = {
             }
             const SearchBox = Vue.extend(Search)
             let instance = new SearchBox().$mount()
+            document.body.appendChild(instance.$el)
+        },
+        // 打开签到页
+        openClock() {
+            let userInfo = localUserInfo();
+            if (!userInfo) {
+                this.$message.error("未登录")
+                return
+            }
+            const ClockBox = Vue.extend(Clock)
+            let instance = new ClockBox().$mount()
+            instance.execQuery(userInfo.id)
             document.body.appendChild(instance.$el)
         },
         // 随机颜色

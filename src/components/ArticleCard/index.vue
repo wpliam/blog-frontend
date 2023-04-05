@@ -3,12 +3,12 @@
     <Picture :background-img="article.cover"></Picture>
     <div class="article-info">
       <div>
-        <a class="a-title text-ellipsis" @click.prevent="readArticle(article)">
-          <text-highlight :queries="keyword">{{ article.title }}</text-highlight>
+        <a class="a-title text-ellipsis" @click.prevent="readArticle(article)" v-html="article.title">
+          <!--          <text-highlight :queries="keyword">{{ article.title }}</text-highlight>-->
         </a>
       </div>
-      <div class="a-abstract text-ellipsis-2">
-        <text-highlight :queries="keyword">{{ article.abstract }}</text-highlight>
+      <div class="a-abstract text-ellipsis-2" v-html="article.abstract">
+        <!--        <text-highlight :queries="keyword">{{ article.abstract }}</text-highlight>-->
       </div>
       <div class="a-other flex-between-center">
         <div class="a-meta flex center">
@@ -54,12 +54,6 @@ export default {
             avatar: ""
           }
         }
-      }
-    },
-    keyword: {
-      type: Array,
-      default() {
-        return [];
       }
     }
   },

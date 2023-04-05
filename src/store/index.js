@@ -9,15 +9,22 @@ export default new Vuex.Store({
         requestURL: "http://localhost:8888", // 后台请求地址
 
         hasFollow: false, // 是否关注
+        hasClock: false // 是否签到
     },
     getters: {
         getFollow(state) {
             return state.hasFollow
+        },
+        getClock(state) {
+            return state.hasClock
         }
     },
     mutations: {
         setFollow(state, isFollow = false) {
             state.hasFollow = isFollow
+        },
+        setClock(state, isClock = false) {
+            state.hasClock = isClock
         }
     },
     actions: {},

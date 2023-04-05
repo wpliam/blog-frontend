@@ -22,6 +22,7 @@ export function giveCollect(articleID) {
     })
 }
 
+// 关注
 export function giveFollow(authorID) {
     return request({
         url: "/api/give_follow",
@@ -37,5 +38,24 @@ export function addViewCount(articleID) {
     return request({
         url: `/api/add_view_count/${articleID}`,
         method: "get"
+    })
+}
+
+// 签到
+export function punchClock() {
+    return request({
+        url: "/api/punch_clock",
+        method: "get"
+    })
+}
+
+// 统计用户签到信息
+export function censusClockInfo(uid) {
+    return request({
+        url: "/api/census_clock_info",
+        method: "post",
+        data: {
+            uid
+        }
     })
 }
