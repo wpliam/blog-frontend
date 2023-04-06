@@ -1,5 +1,5 @@
 <template>
-  <div class="recommend-container" v-if="recommends.length > 0">
+  <div class="recommend-container" v-if="!arrEmpty(recommends)">
     <slot></slot>
     <div class="recommend-content base-card">
       <swiper :options="swiperOption" ref="mySwiper">

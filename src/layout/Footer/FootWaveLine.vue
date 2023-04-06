@@ -39,8 +39,8 @@ export default {
   methods: {
     async getRandomArticle() {
       const res = await searchArticleList({searchType: 1})
-      if (res) {
-        this.articles = res.articles
+      if (res.code === 0) {
+        this.articles = res.data.articles
         this.addRandomArticle()
       }
     },

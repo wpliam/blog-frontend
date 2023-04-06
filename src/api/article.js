@@ -42,3 +42,11 @@ export function getArticleArchive() {
         method: "get"
     })
 }
+
+export function writeArticle(data) {
+    return request({
+        url: "/api/write_article",
+        method: "post",
+        data
+    })
+}

@@ -245,10 +245,10 @@ export default {
   methods: {
     async getUserInfo(uid) {
       const res = await getUserInfo(uid);
-      if (res) {
-        this.userBaseInfo = res.user
-        this.$store.commit("setFollow", res.isFollow)
-        this.$store.commit("setClock", res.isClock)
+      if (res.code === 0) {
+        this.userBaseInfo = res.data.user
+        this.$store.commit("setFollow", res.data.isFollow)
+        this.$store.commit("setClock", res.data.isClock)
         if (this.userBaseInfo.desc === "") {
           this.userBaseInfo.desc = "这个人很懒,什么都没有写"
         }
@@ -257,16 +257,16 @@ export default {
     },
     async censusUserInfo(uid) {
       const res = await censusUserInfo(uid);
-      if (res) {
-        this.userCountInfo = res
+      if (res.code === 0) {
+        this.userCountInfo = res.data
       }
     },
     // 搜索文章
     async searchArticleList(req) {
       const res = await searchArticleList(req);
-      if (res && res.articles) {
-        this.articles = res.articles
-        this.page = res.page
+      if (res.code === 0) {
+        this.articles = res.data.articles
+        this.page = res.data.page
       } else {
         this.articles = []
       }
@@ -283,8 +283,8 @@ export default {
         this.searchArticleList(this.searchArticleReq)
       } else if (tab.name === "collect") {
         getUserCollectList(this.uid).then(res => {
-          if (res && res.articles) {
-            this.articles = res.articles
+          if (res.code === 0) {
+            this.articles = res.data.articles
           } else {
             this.articles = []
           }

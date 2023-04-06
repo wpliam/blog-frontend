@@ -1,7 +1,7 @@
 <template>
   <div class="author-card base-card">
     <div class="author-cover">
-      <img src="/image/20221122114242.jpg" alt="" class="author-bg-img">
+      <img src="http://localhost:8888/api/download/aaf3e53a68d34257a055e5f3e7dd78c0_20230406190756.jpeg" alt="" class="author-bg-img">
     </div>
     <div class="author-info">
       <el-avatar :src="user.avatar" :size="80"></el-avatar>
@@ -49,9 +49,9 @@ export default {
   },
   created() {
     getUserInfo(this.uid).then(res => {
-      if (res) {
-        this.user = res.user
-        this.$store.commit("setFollow", res.isFollow)
+      if (res.code === 0) {
+        this.user = res.data.user
+        this.$store.commit("setFollow", res.data.isFollow)
       }
     })
   },

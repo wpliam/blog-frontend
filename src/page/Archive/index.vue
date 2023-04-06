@@ -86,13 +86,14 @@ export default {
   methods: {
     async getArticleArchive() {
       const res = await getArticleArchive()
-      if (res) {
-        this.articleCount = res.articleCount
-        this.tagCount = res.tagCount
-        this.categoryCount = res.categoryCount
-        this.tags = res.tags
+      if (res.code === 0) {
+        let data = res.data
+        this.articleCount = data.articleCount
+        this.tagCount = data.tagCount
+        this.categoryCount = data.categoryCount
+        this.tags = data.tags
         let keys = []
-        Object.keys(res.article).forEach(key => {
+        Object.keys(data.article).forEach(key => {
           keys.push(key)
         })
         keys.sort((a, b) => {
@@ -102,7 +103,7 @@ export default {
         for (let key of keys) {
           articles.push({
             timestamp: key,
-            collapse: res.article[key]
+            collapse: data.article[key]
           })
         }
         this.articles = articles

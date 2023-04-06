@@ -82,9 +82,9 @@ export default {
         this.searchArticleParam.tagID = this.id
       }
       const res = await searchArticleList(this.searchArticleParam);
-      if (res) {
-        this.page = res.page
-        this.articles = res.articles
+      if (res.code === 0) {
+        this.page = res.data.page
+        this.articles = res.data.articles
       }
     },
     handleCurrChange(offset) {

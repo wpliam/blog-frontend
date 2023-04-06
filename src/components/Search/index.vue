@@ -88,8 +88,8 @@ export default {
       this.historyList = JSON.parse(localStorage.getItem("historyList"));
     }
     searchKeywordFlow("").then(res => {
-      if (res) {
-        this.hotList = res.flows
+      if (res.code === 0) {
+        this.hotList = res.data.flows
       }
     })
   },
@@ -97,8 +97,8 @@ export default {
     // 获取搜索列表,根据输入的值调用后台接口查询,cb将搜索到的结果回调
     querySearch(queryStr, callback) {
       searchKeywordFlow(queryStr).then(res => {
-        if (res) {
-          callback(res.flows)
+        if (res.code === 0) {
+          callback(res.data.flows)
         }
       })
     },

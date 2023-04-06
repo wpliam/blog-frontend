@@ -28,8 +28,9 @@ export default {
   methods: {
     async giveFollow(authorID) {
       const res = await giveFollow(authorID);
-      if (res) {
-        this.$store.commit("setFollow", res.isFollow)
+      if (res.code === 0) {
+        let data = res.data
+        this.$store.commit("setFollow", data.isFollow)
       }
     }
   }

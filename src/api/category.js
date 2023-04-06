@@ -7,3 +7,11 @@ export function getCategoryCard() {
         method: "get"
     })
 }
+
+// 获取分类列表
+export function getCategoryList() {
+    return request({
+        url: "/api/get_category_list",
+        method: "get"
+    })
+}

@@ -5,7 +5,6 @@ import store from "@/store";
 import md5 from 'js-md5'
 import {getToken, localUserInfo, removeToken, removeUserInfo, setToken} from "@/util/storage";
 import {refreshToken} from "@/api/user";
-import {Message} from "element-ui";
 
 const request = axios.create({
     baseURL: store.state.requestURL,
@@ -57,10 +56,7 @@ request.interceptors.response.use(
     async response => {
         const code = response.data.code || 0
         const msg = response.data.msg
-        if (code !== 0) {
-            Message.error(msg)
-        }
-        return response.data.data
+        return response.data
     }, errorHandler
 )
 

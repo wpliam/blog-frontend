@@ -59,9 +59,9 @@ export default {
   methods: {
     async login() {
       const res = await login(this.loginForm.username, this.loginForm.password);
-      if (res) {
-        setToken(res.token)
-        setUserInfo(res.user)
+      if (res.code === 0) {
+        setToken(res.data.token)
+        setUserInfo(res.data.user)
         this.refreshCurrRoute()
       } else {
         console.log("用户名或密码错误")

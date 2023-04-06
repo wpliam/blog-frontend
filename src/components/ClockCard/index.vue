@@ -19,11 +19,10 @@
         </div>
         <div class="grand">本月已签到<span class="grand-count">{{ monthClockNum }}</span>天</div>
       </div>
-
       <div>
         <div class="flex-between-center mt20">
           <div class="grand">连续签到奖励</div>
-          <div class="grand">已连续签到 <span class="grand-count">{{ continuousClockNum }}</span> 天</div>
+          <div class="grand">已连续签到<span class="grand-count">{{ continuousClockNum }}</span>天</div>
         </div>
         <ul class="flex-between-center mt10">
           <li class="flex-column-center" v-for="day in days">
@@ -66,15 +65,16 @@ export default {
     },
     execQuery(uid) {
       censusClockInfo(uid).then(res => {
-        if (res) {
-          this.monthClockNum = res.monthClockNum
-          this.continuousClockNum = res.continuousClockNum
-          this.days = res.days
+        if (res.code === 0) {
+          let data = res.data
+          this.monthClockNum = data.monthClockNum
+          this.continuousClockNum = data.continuousClockNum
+          this.days = data.days
         }
       })
       getUserInfo(uid).then(res => {
-        if (res) {
-          this.user = res.user
+        if (res.code === 0) {
+          this.user = res.data.user
         }
       })
     }

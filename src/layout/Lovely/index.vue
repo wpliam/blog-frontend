@@ -46,8 +46,8 @@ export default {
   methods: {
     async getLovelyArticle() {
       const res = await getHotArticle();
-      if (res) {
-        this.articles = res.articles
+      if (res.code === 0) {
+        this.articles = res.data.articles
       }
     }
   }

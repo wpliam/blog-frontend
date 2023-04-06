@@ -24,14 +24,14 @@
         </span>
       </el-tooltip>
     </a>
-<!--    <a class="count-fans count-base" v-if="needFans">-->
-<!--      <el-tooltip effect="dark" :content="`共${fansCount}个粉丝`" placement="top">-->
-<!--        <span>-->
-<!--          <svg-icon icon-class="solid-follow"/>-->
-<!--          <span class="ml02">{{ fansCount }}</span>-->
-<!--        </span>-->
-<!--      </el-tooltip>-->
-<!--    </a>-->
+    <!--    <a class="count-fans count-base" v-if="needFans">-->
+    <!--      <el-tooltip effect="dark" :content="`共${fansCount}个粉丝`" placement="top">-->
+    <!--        <span>-->
+    <!--          <svg-icon icon-class="solid-follow"/>-->
+    <!--          <span class="ml02">{{ fansCount }}</span>-->
+    <!--        </span>-->
+    <!--      </el-tooltip>-->
+    <!--    </a>-->
   </div>
 </template>
 
@@ -66,11 +66,12 @@ export default {
   methods: {
     async censusUserInfo(uid) {
       const res = await censusUserInfo(uid);
-      if (res) {
-        this.articleCount = res.articleCount
-        this.commentCount = res.commentCount
-        this.hotCount = res.hotCount
-        this.fansCount = res.fansCount
+      if (res.code === 0) {
+        let data = res.data
+        this.articleCount = data.articleCount
+        this.commentCount = data.commentCount
+        this.hotCount = data.hotCount
+        this.fansCount = data.fansCount
       }
     }
   }

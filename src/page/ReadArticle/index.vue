@@ -164,13 +164,14 @@ export default {
   methods: {
     async getArticleInfo() {
       const res = await readArticle(this.articleID);
-      if (res) {
-        this.article = res.article
-        this.next = res.next
-        this.prev = res.prev
-        this.tags = res.tags
-        this.recommend = res.recommend
-        this.comment = res.comment
+      if (res.code === 0) {
+        let data = res.data
+        this.article = data.article
+        this.next = data.next
+        this.prev = data.prev
+        this.tags = data.tags
+        this.recommend = data.recommend
+        this.comment = data.comment
       }
       if (this.comment) {
         this.commentCount = this.comment.length
@@ -183,17 +184,16 @@ export default {
     },
     async giveThumb(id, likeType) {
       const res = await giveThumb(id, likeType);
-      console.log("giveThumb res ", res)
-      if (res) {
-        this.article.isLike = res.isLike
-        this.article.likeCount = res.likeCount
+      if (res.code === 0) {
+        this.article.isLike = res.data.isLike
+        this.article.likeCount = res.data.likeCount
       }
     },
     async giveCollect(id) {
       const res = await giveCollect(id);
-      if (res) {
-        this.article.isCollect = res.isCollect
-        this.article.collectCount = res.collectCount
+      if (res.code === 0) {
+        this.article.isCollect = res.data.isCollect
+        this.article.collectCount = res.data.collectCount
       }
     }
   }

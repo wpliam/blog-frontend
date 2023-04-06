@@ -72,9 +72,9 @@ export default {
       this.user = userInfo
       this.uid = userInfo.id
       getUserInfo(userInfo.id).then(res => {
-        if (res) {
-          this.user = res.user
-          this.$store.commit("setClock", res.isClock)
+        if (res.code === 0) {
+          this.user = res.data.user
+          this.$store.commit("setClock", res.data.isClock)
         }
       })
     }

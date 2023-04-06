@@ -56,8 +56,8 @@ export default {
   methods: {
     async getBanner() {
       const res = await getBannerCard();
-      if (res) {
-        this.banners = res.banners
+      if (res.code === 0) {
+        this.banners = res.data.banners
       }
     },
     onMouseenter() {

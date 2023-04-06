@@ -35,11 +35,11 @@
         </div>
         <div class="option-layout show">
           <el-form-item label="文章来源:">
-            <el-radio v-model="writeForm.source" :label="0">原创</el-radio>
-            <el-radio v-model="writeForm.source" :label="1">转载</el-radio>
+            <el-radio v-model="writeForm.articleType" :label="0">原创</el-radio>
+            <el-radio v-model="writeForm.articleType" :label="1">转载</el-radio>
           </el-form-item>
           <el-form-item label="文章分类:">
-            <el-select v-model="writeForm.categoryID" size="small" clearable placeholder="请选择">
+            <el-select v-model="writeForm.cid" size="small" clearable placeholder="请选择">
               <el-option
                   v-for="item in categoryList"
                   :key="item.id"
@@ -51,7 +51,7 @@
           <el-form-item label="文章标签:" class="opt-tag">
             <el-tag
                 :key="tag"
-                v-for="tag in writeForm.dynamicTags"
+                v-for="tag in writeForm.tags"
                 closable
                 :disable-transitions="false"
                 @close="handleClose(tag)">
@@ -72,7 +72,7 @@
           <el-form-item label="文章配图:" class="opt-img">
             <el-upload
                 class="avatar-uploader"
-                action="#"
+                :action="$store.state.uploadURL"
                 :show-file-list="false"
                 :on-success="handleAvatarSuccess"
                 :before-upload="beforeAvatarUpload">
@@ -94,10 +94,10 @@
                   <div class="source-area">
                     <div class="search-area">
                       <div class="one-line flex-between-center">
-                        <el-input v-model="searchVal" placeholder="输入文章标题" size="small"></el-input>
+                        <el-input v-model="searchTitle" placeholder="输入文章标题" size="small"></el-input>
                       </div>
                       <div class="two-line flex-between-center">
-                        <el-select v-model="searchCategoryName" size="small" clearable placeholder="请选择">
+                        <el-select v-model="searchCid" size="small" clearable placeholder="请选择">
                           <el-option
                               v-for="item in categoryList"
                               :key="item.id"
@@ -105,7 +105,7 @@
                               :value="item.categoryName">
                           </el-option>
                         </el-select>
-                        <el-button size="small" type="primary" @click="searchArticle">搜索</el-button>
+                        <el-button size="small" type="primary" @click="searchArticleList">搜索</el-button>
                       </div>
                     </div>
                     <div class="result-area">
@@ -175,9 +175,9 @@
                 <el-button type="primary" size="small" @click="showTargetData">确 定</el-button>
               </div>
             </el-dialog>
-            <div v-if="writeForm.recommendArticles.length > 0">
+            <div v-if="writeForm.recommends.length > 0">
               <el-table
-                  :data="writeForm.recommendArticles"
+                  :data="writeForm.recommends"
                   size="mini"
               >
                 <el-table-column
@@ -193,7 +193,7 @@
                     <el-button
                         type="text"
                         size="small"
-                        @click.native.prevent="deleteRow(scope.$index, writeForm.recommendArticles)"
+                        @click.native.prevent="deleteRow(scope.$index, writeForm.recommends)"
                     >
                       移除
                     </el-button>
@@ -211,7 +211,7 @@
           <div class="post-left"></div>
           <div class="post-right">
             <a href="#" class="draft btn">保存草稿</a>
-            <a href="#" class="push btn" @click.prevent="setArticleInfo">提交发布</a>
+            <a href="#" class="push btn" @click.prevent="addArticle">提交发布</a>
           </div>
         </div>
       </div>
@@ -222,6 +222,8 @@
 <script>
 import Nav from "@/layout/Nav";
 import Logged from "@/components/Logged";
+import {getCategoryList} from "@/api/category";
+import {searchArticleList, writeArticle} from "@/api/article";
 
 export default {
   name: "WriteArticle",
@@ -236,42 +238,49 @@ export default {
       dialogVisible: false, // 文章推荐窗开关
       content: "", // 文章内容
 
-      searchVal: "",
-      searchCategoryName: "",
+      searchTitle: "",
+      searchCid: 0,
 
       page: {
         offset: 1,
         limit: 10,
         total: 0
       },
-
+      searchArticleReq: {
+        title: "",
+        keyword: "",
+        cid: 0,
+        tagID: 0,
+        order: 0,
+        searchType: 0,
+        page: {
+          offset: 1,
+          limit: 10,
+          total: 0
+        },
+      },
       writeForm: {
         title: "",
         abstract: "",
         content: "",
         cover: "",
-        dynamicTags: [],
-        recommendArticles: [],
-        categoryID: 0,
-        source: 0,
+        tags: [],
+        recommends: [],
+        cid: 0,
+        articleType: 0,
       },
-      categoryList: [
-        {
-          id: 0,
-          categoryName: ""
-        },
-        {
-          id: 1,
-          categoryName: "java"
-        }
-      ],
+      categoryList: [],
 
       sourceData: [], // 搜索当前页的文章
       targetData: [] // 选中的文章
     }
   },
-  mounted() {
-
+  created() {
+    getCategoryList().then(res => {
+      if (res.code === 0) {
+        this.categoryList = res.data.categoryList
+      }
+    })
   },
   methods: {
     deleteRow(index, rows) {
@@ -286,42 +295,41 @@ export default {
         })
       }
     },
-    // 搜索文章
-    searchArticle() {
-
+    // 添加文章
+    async addArticle() {
+      const res = await writeArticle(this.writeForm);
+      if (res.code === 0) {
+        console.log("writeArticle success")
+      }
+    },
+    async searchArticleList() {
+      this.searchArticleReq.title = this.searchTitle
+      this.searchArticleReq.cid = this.searchCid
+      const res = await searchArticleList(this.searchArticleReq);
+      if (res.code === 0) {
+        if (res.data.articles) {
+          this.sourceData = res.data.articles
+          this.page = res.data.page
+        }
+      }
     },
     // 文章推荐页,每页数量调整时触发
     handleSizeChange(val) {
-      this.page.limit = val
-      this.searchArticle()
+      this.searchArticleReq.page.limit = val
+      this.searchArticleList()
     },
     // 文章推荐页,页面跳转时触发
     handleCurrentChange(val) {
-      this.page.offset = val
-      this.searchArticle()
+      this.searchArticleReq.page.offset = val
+      this.searchArticleList()
     },
     // 文章内容改变时触发
     changeContent(value, render) {
       this.writeForm.content = render
     },
-    // 保存文章或者保存草稿
-    setArticleInfo() {
-      let article = {
-        userID: 0,
-        title: this.writeForm.title,
-        abstract: this.writeForm.abstract,
-        content: this.writeForm.content,
-        status: 1,
-        cover: "/image/20221122114139.jpg",
-        categoryID: this.writeForm.categoryID,
-      }
-      let tags = this.writeForm.dynamicTags
-      let recommendArticle = this.writeForm.recommendArticles
-
-    },
     // 标签移除
     handleClose(tag) {
-      this.writeForm.dynamicTags.splice(this.writeForm.dynamicTags.indexOf(tag), 1);
+      this.writeForm.tags.splice(this.writeForm.tags.indexOf(tag), 1);
     },
     // 显示标签
     showInput() {
@@ -333,20 +341,22 @@ export default {
     handleInputConfirm() {
       let inputValue = this.tagValue;
       if (inputValue) {
-        if (!this.writeForm.dynamicTags.includes(inputValue)) {
-          this.writeForm.dynamicTags.push(inputValue);
+        if (!this.writeForm.tags.includes(inputValue)) {
+          this.writeForm.tags.push(inputValue);
         }
       }
       this.tagVisible = false;
       this.tagValue = '';
     },
     handleAvatarSuccess(res, file) {
-      this.writeForm.imageUrl = URL.createObjectURL(file.raw);
+      if (res.code === 0) {
+        // this.writeForm.cover = URL.createObjectURL(file.raw); 后面换成域名了可以用这个
+        this.writeForm.cover = res.data.url
+      }
     },
     beforeAvatarUpload(file) {
       const isJPG = file.type === 'image/jpeg';
       const isLt2M = file.size / 1024 / 1024 < 2;
-
       if (!isJPG) {
         this.$message.error('上传头像图片只能是 JPG 格式!');
       }
@@ -365,18 +375,18 @@ export default {
       })
     },
     recommendArticlePageClose() {
-      this.searchVal = ""
+      this.searchTitle = ""
       this.targetData = []
       this.sourceData = []
     },
     showTargetData() {
-      this.writeForm.recommendArticles = this.writeForm.recommendArticles.concat(this.targetData)
+      this.writeForm.recommends = this.writeForm.recommends.concat(this.targetData)
       this.dialogVisible = false
     },
     removeArticle(item) {
-      for (let i = 0; i < this.writeForm.recommendArticles.length; i++) {
-        if (this.writeForm.recommendArticles[i].id === item.id) {
-          this.writeForm.recommendArticles.splice(i, 1)
+      for (let i = 0; i < this.writeForm.recommends.length; i++) {
+        if (this.writeForm.recommends[i].id === item.id) {
+          this.writeForm.recommends.splice(i, 1)
         }
       }
     }

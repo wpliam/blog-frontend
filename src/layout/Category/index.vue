@@ -57,8 +57,8 @@ export default {
   methods: {
     async getCategoryCard() {
       const res = await getCategoryCard()
-      if (res) {
-        this.aggregations = res.categoryCard
+      if (res.code === 0) {
+        this.aggregations = res.data.categoryCard
       }
     }
   }

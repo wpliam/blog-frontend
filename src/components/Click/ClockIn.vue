@@ -30,8 +30,11 @@ export default {
       if (this.$store.getters.getClock) {
         return
       }
-      await punchClock()
-      this.$store.commit("setClock", true)
+      const res = await punchClock();
+      if (res.code === 0) {
+        this.$message.success("签到成功")
+        this.$store.commit("setClock", true)
+      }
     }
   }
 }

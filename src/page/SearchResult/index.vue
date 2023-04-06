@@ -97,9 +97,9 @@ export default {
     },
     async searchArticleList(req) {
       const res = await searchArticleList(req);
-      if (res) {
-        this.articles = res.articles
-        this.page = res.page
+      if (res.code === 0) {
+        this.articles = res.data.articles
+        this.page = res.data.page
       }
     }
   }

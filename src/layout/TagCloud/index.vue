@@ -47,8 +47,8 @@ export default {
   methods: {
     async getTagCard() {
       const res = await getTagCard();
-      if (res) {
-        this.tags = res.tags
+      if (res.code === 0) {
+        this.tags = res.data.tags
       }
     },
     wordClickHandler(name, value, vm) {
