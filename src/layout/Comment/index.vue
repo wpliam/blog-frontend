@@ -21,7 +21,7 @@
             <div class="comment-tips-right">
               <el-button type="info" round v-show="isRespond" @click.prevent="removeRespond" size="small">取消回复
               </el-button>
-              <el-button type="primary" round class="send-comment" size="small" @click="">发表评论
+              <el-button type="primary" round class="send-comment" size="small" @click="addComment">发表评论
               </el-button>
             </div>
           </div>
@@ -48,10 +48,15 @@
                   </div>
                   <div class="comment-footer">
                     <div class="msg-replay">
-                      <a href="#" class="msg-like">
-                        <svg-icon icon-class="like"/>
-                        顶
-                        <span v-if="root.likes">({{ root.likes }})</span>
+                      <a href="#" class="msg-like" @click.prevent="giveThumb(root.id)">
+                        <span v-if="root.isLike">
+                          <svg-icon icon-class="like-red"></svg-icon>
+                          <span style="color: #d81e06"> {{ root.likes }}</span>
+                        </span>
+                        <span v-else>
+                          <svg-icon icon-class="like"/>
+                          <span> {{ root.likes }}</span>
+                        </span>
                       </a>
                       <a href="#" @click.prevent="respondMsg($event,root)">
                         <svg-icon icon-class="message"/>
@@ -79,11 +84,17 @@
                       {{ sub.content }}
                     </div>
                     <div class="comment-footer">
-                      <a href="#" class="msg-like">
-                        <svg-icon icon-class="like"/>
-                        顶
+                      <a class="msg-like" @click.prevent="giveThumb(sub.id)">
+                        <span v-if="sub.isLike">
+                          <svg-icon icon-class="like-red"></svg-icon>
+                          <span style="color: #d81e06"> {{ sub.likes }}</span>
+                        </span>
+                        <span v-else>
+                          <svg-icon icon-class="like"/>
+                          <span> {{ sub.likes }}</span>
+                        </span>
                       </a>
-                      <a href="#" @click.prevent="respondMsg($event,root,sub)" class="msg-replay">
+                      <a @click.prevent="respondMsg($event,root,sub)" class="msg-replay">
                         <svg-icon icon-class="message"/>
                         回复
                       </a>
@@ -103,40 +114,68 @@
 <script>
 
 import Logged from "@/components/Logged";
+import {addComment, getComment} from "@/api/comment";
+import {localUserInfo} from "@/util/storage";
+import {giveThumb} from "@/api/shared";
 
 export default {
   name: "Comment",
   components: {Logged},
   inject: ["reload"],
   props: {
-    comments: {
-      type: Array,
-      default() {
-        return []
-      }
+    articleID: {
+      type: Number,
+      default: 0
     }
   },
   data() {
     return {
       isRespond: false,
+      comments: [],
       user: {},
       content: "",
       replyInfo: {}
     }
   },
   created() {
+    let userInfo = localUserInfo()
+    if (userInfo) {
+      this.user = userInfo
+    }
+    this.getComment(this.articleID)
   },
   methods: {
-    setCommentInfo() {
+    async getComment(articleID) {
+      const res = await getComment(articleID);
+      if (res.code === 0) {
+        this.comments = res.data.comment
+      } else {
+        this.$message.error("获取评论失败" + res.msg)
+      }
+    },
+    async addComment() {
       let comment = {
         parentID: this.replyInfo.parentID,
         content: this.content,
         articleID: this.articleID,
-        status: 1,
         replyCommentID: this.replyInfo.replyCommentID,
         replyUserID: this.replyInfo.replyUserID
       }
-      this.reload()
+      const res = await addComment(comment);
+      if (res.code === 0) {
+        this.$message.success("评论添加成功")
+        this.reload()
+      } else {
+        this.$message.error("评论失败 " + res.msg)
+      }
+    },
+    async giveThumb(id) {
+      const res = await giveThumb(id, 1);
+      if (res.code === 0) {
+        this.reload()
+      } else {
+        this.$message.error("点赞失败 " + res.msg)
+      }
     },
     // 回复
     respondMsg(e, root, sub) {

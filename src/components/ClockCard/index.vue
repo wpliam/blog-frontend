@@ -55,7 +55,50 @@ export default {
       clockDialog: true,
       monthClockNum: 0,
       continuousClockNum: 0,
-      days: [],
+      days: {
+        1: {
+          day: "一",
+          points: 10,
+          experience: 10,
+          isClock: false
+        },
+        2: {
+          day: "二",
+          points: 20,
+          experience: 20,
+          isClock: false
+        },
+        3: {
+          day: "三",
+          points: 30,
+          experience: 30,
+          isClock: false
+        },
+        4: {
+          day: "四",
+          points: 40,
+          experience: 40,
+          isClock: false
+        },
+        5: {
+          day: "五",
+          points: 50,
+          experience: 50,
+          isClock: false
+        },
+        6: {
+          day: "六",
+          points: 60,
+          experience: 60,
+          isClock: false
+        },
+        7: {
+          day: "七",
+          points: 70,
+          experience: 70,
+          isClock: false
+        }
+      },
       user: {}
     }
   },
@@ -69,7 +112,9 @@ export default {
           let data = res.data
           this.monthClockNum = data.monthClockNum
           this.continuousClockNum = data.continuousClockNum
-          this.days = data.days
+          for (let i = 1; i <= this.continuousClockNum; i++) {
+            this.days[i].isClock = true
+          }
         }
       })
       getUserInfo(uid).then(res => {

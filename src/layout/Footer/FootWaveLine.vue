@@ -34,7 +34,7 @@ export default {
   },
   mounted() {
     this.getRandomArticle()
-    // this.timer = setInterval(this.addRandomArticle, 2000)
+    this.timer = setInterval(this.addRandomArticle, 2000)
   },
   methods: {
     async getRandomArticle() {

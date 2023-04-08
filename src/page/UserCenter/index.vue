@@ -120,12 +120,12 @@
                 <ul class="article-content">
                   <li v-for="(article,index) in articles" :key="index">
                     <img :src="article.cover" class="c-img" alt="">
-                    <a class="text-ellipsis-2 c-title">{{ article.title }}</a>
+                    <a class="text-ellipsis-2 c-title" @click.prevent="readArticle(article)">{{ article.title }}</a>
                     <div class="flex-between-center mt10 c-option">
                       <div class="c-date">
                         {{ article.createTime|computeDate }}
                       </div>
-                      <a>
+                      <a @click.prevent="goClassResult(article.cid,article.categoryName,0)">
                         <svg-icon icon-class="category"/>
                         {{ article.categoryName }}
                       </a>
@@ -219,14 +219,14 @@ export default {
           label: "收藏",
           name: "collect",
         },
-        {
-          label: "评论",
-          name: "comment",
-        },
-        {
-          label: "粉丝",
-          name: "fans",
-        }
+        // {
+        //   label: "评论",
+        //   name: "comment",
+        // },
+        // {
+        //   label: "粉丝",
+        //   name: "fans",
+        // }
       ],
       disabled: true, // 编辑,保存开关
       userBaseInfo: {}, // 用户基本信息
@@ -283,7 +283,7 @@ export default {
         this.searchArticleList(this.searchArticleReq)
       } else if (tab.name === "collect") {
         getUserCollectList(this.uid).then(res => {
-          if (res.code === 0) {
+          if (res.code === 0 && res.data && res.data.articles) {
             this.articles = res.data.articles
           } else {
             this.articles = []

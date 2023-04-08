@@ -21,7 +21,7 @@
               </span>
               <a class="ml10 h-count">
                 <svg-icon icon-class="comment"/>
-                <span> 评论 {{ commentCount }}</span>
+                <span> 评论 {{ article.commentCount }}</span>
               </a>
               <a class="ml10 h-count" @click.prevent="giveCollect(articleID)">
                 <div v-if="article.isCollect">
@@ -117,7 +117,7 @@
         <Recommend class="mt20" v-if="recommend" :recommends="recommend">
           <p class="title-theme">推荐</p>
         </Recommend>
-        <Comment class="mt20" :comments="comment">
+        <Comment class="mt20" :articleID="articleID">
           <p class="title-theme">评论</p>
         </Comment>
       </div>
@@ -154,16 +154,15 @@ export default {
       tags: [],
       recommend: [],
       comment: [],
-      commentCount: 0
     }
   },
   created() {
-    this.getArticleInfo()
+    this.getArticleInfo(this.articleID)
     addViewCount(this.articleID)
   },
   methods: {
-    async getArticleInfo() {
-      const res = await readArticle(this.articleID);
+    async getArticleInfo(articleID) {
+      const res = await readArticle(articleID);
       if (res.code === 0) {
         let data = res.data
         this.article = data.article
@@ -171,15 +170,6 @@ export default {
         this.prev = data.prev
         this.tags = data.tags
         this.recommend = data.recommend
-        this.comment = data.comment
-      }
-      if (this.comment) {
-        this.commentCount = this.comment.length
-        for (let item of this.comment) {
-          if (item.subComment) {
-            this.commentCount = this.commentCount + item.subComment.length
-          }
-        }
       }
     },
     async giveThumb(id, likeType) {

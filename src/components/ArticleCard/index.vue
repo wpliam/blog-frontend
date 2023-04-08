@@ -44,15 +44,11 @@ export default {
           title: "",
           abstract: "",
           createTime: "",
-          category: {
-            id: 0,
-            categoryName: ""
-          },
-          user: {
-            id: 0,
-            nickname: "",
-            avatar: ""
-          }
+          cid: 0,
+          categoryName: "",
+          uid: 0,
+          nickname: "",
+          avatar: ""
         }
       }
     }

@@ -26,6 +26,7 @@
                         :toolbarsFlag="true"
                         :subfield="false"
                         :editable="true"
+                        @imgAdd="imgAdd"
                         @change="changeContent"
           >
           </mavon-editor>
@@ -72,7 +73,7 @@
           <el-form-item label="文章配图:" class="opt-img">
             <el-upload
                 class="avatar-uploader"
-                :action="$store.state.uploadURL"
+                :action="$store.getters.getUploadURL"
                 :show-file-list="false"
                 :on-success="handleAvatarSuccess"
                 :before-upload="beforeAvatarUpload">
@@ -140,7 +141,7 @@
                             label="发布时间"
                             width="200">
                           <template slot-scope="scope">
-                            {{ scope.row.createTime }}
+                            {{ scope.row.createTime|timeLayout }}
                           </template>
                         </el-table-column>
                       </el-table>
@@ -175,7 +176,7 @@
                 <el-button type="primary" size="small" @click="showTargetData">确 定</el-button>
               </div>
             </el-dialog>
-            <div v-if="writeForm.recommends.length > 0">
+            <div v-if="!arrEmpty(writeForm.recommends)">
               <el-table
                   :data="writeForm.recommends"
                   size="mini"
@@ -210,7 +211,7 @@
         <div class="base-layout flex-between-center">
           <div class="post-left"></div>
           <div class="post-right">
-            <a href="#" class="draft btn">保存草稿</a>
+            <!--            <a href="#" class="draft btn">保存草稿</a>-->
             <a href="#" class="push btn" @click.prevent="addArticle">提交发布</a>
           </div>
         </div>
@@ -224,9 +225,11 @@ import Nav from "@/layout/Nav";
 import Logged from "@/components/Logged";
 import {getCategoryList} from "@/api/category";
 import {searchArticleList, writeArticle} from "@/api/article";
+import {upload} from "@/api/file";
 
 export default {
   name: "WriteArticle",
+  inject: ["reload"],
   components: {Logged, Nav},
   data() {
     return {
@@ -286,6 +289,14 @@ export default {
     deleteRow(index, rows) {
       rows.splice(index, 1);
     },
+    async imgAdd(pos, $file) {
+      let formData = new FormData()
+      formData.append('file', $file)
+      const res = await upload(formData);
+      if (res.code === 0) {
+        this.$refs.md.$img2Url(pos, res.data.url)
+      }
+    },
     // table表格数据变化时触发
     handleSelectionChange(rows) {
       this.targetData = [];
@@ -299,6 +310,8 @@ export default {
     async addArticle() {
       const res = await writeArticle(this.writeForm);
       if (res.code === 0) {
+        this.$message.success("文章添加成功,等待审核。。。")
+        this.reload()
         console.log("writeArticle success")
       }
     },
@@ -486,15 +499,16 @@ export default {
       .avatar-uploader-icon {
         font-size: 28px;
         color: #8c939d;
-        width: 178px;
-        height: 178px;
-        line-height: 178px;
-        text-align: center;
+        min-width: 190px;
+        min-height: 130px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
       }
 
       .avatar {
-        width: 178px;
-        height: 178px;
+        width: 190px;
+        height: 130px;
         display: block;
       }
     }
@@ -559,7 +573,7 @@ export default {
   line-height: 60px;
   width: 100%;
   background: var(--main-bg-color);
-  z-index: 999;
+  z-index: 1600;
   bottom: 0;
   left: 0;
 }
